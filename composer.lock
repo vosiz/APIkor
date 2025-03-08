@@ -1,0 +1,131 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "14de78ad86abce65ed75d66bc144876d",
+    "packages": [
+        {
+            "name": "vosiz/php-enum",
+            "version": "v2.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vosiz/php-enum.git",
+                "reference": "47f6d5e196f8645a19a1ba85ace243c6ba07b468"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vosiz/php-enum/zipball/47f6d5e196f8645a19a1ba85ace243c6ba07b468",
+                "reference": "47f6d5e196f8645a19a1ba85ace243c6ba07b468",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "vosiz/php-utils": ">=1.1.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Vosiz\\Enums\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP simple enum-like class",
+            "support": {
+                "issues": "https://github.com/vosiz/php-enum/issues",
+                "source": "https://github.com/vosiz/php-enum/tree/v2.1.1"
+            },
+            "time": "2025-03-06T04:24:15+00:00"
+        },
+        {
+            "name": "vosiz/php-utils",
+            "version": "1.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vosiz/php-utils.git",
+                "reference": "420e96bc8b43da4017154e6351ed1269fcb11a6f"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/420e96bc8b43da4017154e6351ed1269fcb11a6f",
+                "reference": "420e96bc8b43da4017154e6351ed1269fcb11a6f",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "type": "library",
+            "autoload": {
+                "files": [
+                    "src/convert.php",
+                    "src/functions.php",
+                    "src/exc.php",
+                    "src/keyval.php"
+                ],
+                "psr-4": {
+                    "Vosiz\\Utils\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A PHP utilities",
+            "support": {
+                "issues": "https://github.com/vosiz/php-utils/issues",
+                "source": "https://github.com/vosiz/php-utils/tree/1.2.1"
+            },
+            "time": "2025-03-07T22:06:26+00:00"
+        },
+        {
+            "name": "vosiz/va-tools",
+            "version": "v1.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/vosiz/va-tools.git",
+                "reference": "fe96fe1e8b219f05a2871567356a755f69ee25c0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/fe96fe1e8b219f05a2871567356a755f69ee25c0",
+                "reference": "fe96fe1e8b219f05a2871567356a755f69ee25c0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4",
+                "vosiz/php-utils": ">=1.1.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "VaTools\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHP tools",
+            "support": {
+                "issues": "https://github.com/vosiz/va-tools/issues",
+                "source": "https://github.com/vosiz/va-tools/tree/v1.0.2"
+            },
+            "time": "2025-02-22T22:07:11+00:00"
+        }
+    ],
+    "packages-dev": [],
+    "aliases": [],
+    "minimum-stability": "stable",
+    "stability-flags": [],
+    "prefer-stable": false,
+    "prefer-lowest": false,
+    "platform": {
+        "php": ">=7.4"
+    },
+    "platform-dev": [],
+    "plugin-api-version": "2.2.0"
+}
