@@ -27,44 +27,80 @@ class EngineDiagnostics {
         self::$DefaultLevel = EngineDiagnosticsLevelEnum::GetEnum('error');
     }   
 
+    /**
+     * Message of type debug
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA 
+     */
     public static function Debug($fmt, ...$args) {
 
         self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('debug'), $fmt, ...$args);
     }
 
+    /**
+     * Message of type info
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA 
+     */
     public static function Info($fmt, ...$args) {
 
         self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('info'), $fmt, ...$args);
     }
 
+    /**
+     * Message of type warning
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA 
+     */
     public static function Warning($fmt, ...$args) {
 
-        self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('warning'), $fmt, ...$args);
+        self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('warn'), $fmt, ...$args);
     }
 
+    /**
+     * Message of type error
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA 
+     */
     public static function Error($fmt, ...$args) {
 
         self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('error'), $fmt, ...$args);
     }
 
+    /**
+     * Message of type fatal
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA 
+     */
     public static function Fatal($fmt, ...$args) {
 
         self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('fatal'), $fmt, ...$args);
     }
 
+    /**
+     * Message of type exception
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA 
+     */
     public static function Exc($fmt, ...$args) {
 
         self::CreateMessage(EngineDiagnosticsLevelEnum::GetEnum('exc'));
     }
 
-    public static function CreateMessage(EngineDiagnosticsLevelEnum $type, $fmt, ...$args) {
+    /**
+     * Creates a engine message
+     * @param EngineDiagnosticsLevelEnum $type message type
+     * @param string $fmt formatted text
+     * @param mixed ...$args VA
+     */
+    public static function CreateMessage(EngineDiagnosticsLevelEnum $type, string $fmt, ...$args) {
 
         $message = new Message($type, $fmt, ...$args);
         self::$Messages->Add($message);
     }
 
     /**
-     * 
+     * Prints configurations
      */
     public function PrintConfigs() {
 
@@ -72,7 +108,7 @@ class EngineDiagnostics {
             return;
 
         $configs = self::$Engine->GetConfigurator()->GetConfigs();
-        echo "Configurations</br>";
+        $this->PrintHeader("Configurations");
         foreach($configs->ToArray() as $category => $config)  {
 
             echo "+ ".$category."</br>";
@@ -84,7 +120,7 @@ class EngineDiagnostics {
     }
 
     /**
-     * 
+     * Prints messages
      */
     public function PrintMessages() {
     
@@ -96,13 +132,15 @@ class EngineDiagnostics {
         if($lvl)
             $higher_than = $lvl;
 
+        $this->PrintHeader('Messages');
         $cnt = self::$Messages->Count();
         echo "Total messages: ".$cnt.'</br>';
         if($cnt > 0) {
-
+            
             echo "Filtration-level: ".$higher_than->GetName().'+</br>';
             foreach(self::$Messages->ToArray() as $m) {
                 
+                echo $m->GetLevel()->GetValue().' ';
                 if($m->GetLevel()->GetValue() >= $higher_than->GetValue())
                     echo $m->__toString().'</br>';
             }
@@ -110,7 +148,9 @@ class EngineDiagnostics {
     }
 
     /**
-     * 
+     * Returns config as string value
+     * @param mixed $value configuration value
+     * @return string
      */
     private function ConfigValueToString($value) {
 
@@ -126,5 +166,14 @@ class EngineDiagnostics {
 
             return tostr($value);
         }
+    }
+
+    /**
+     * Prints simple header
+     * @param string $string text to show
+     */
+    private function PrintHeader(string $string) {
+
+        echo sprintf('<b>%s</b></br>', $string);
     }
 }
