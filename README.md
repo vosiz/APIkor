@@ -14,7 +14,8 @@ No commercial-like goals are "hard-planned" (read: "just a hobby")
 - [x] Simple inner-logging
 - [ ] Configurator - Flagword support
 - [ ] Diagnostics - status check
-- [ ] URL parsing and processing
+- [x] Diagnostics - modes
+- [x] URL parsing and processing
 - [ ] Action call
 - [ ] Action call - api version
 - [ ] Response - basics
@@ -28,12 +29,13 @@ No commercial-like goals are "hard-planned" (read: "just a hobby")
 - [ ] Model
 - [ ] Database connection
 - [ ] Database - model reflection
-- [ ] Service- basics
+- [ ] Service - basics
 - [ ] Dataservice
 - [ ] Enumservice
 - [ ] Modules
 - [ ] Basic Modules (shared simple modules)
 - [ ] Samples
+- [ ] Sample CRM
 - [ ] Complete docs
 - [ ] Error/exc handler
 - [ ] Wiki?
