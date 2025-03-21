@@ -51,6 +51,21 @@ class EngineConfig extends \Keyvalps {
     }
 
     /**
+     * ToString override
+     */
+    public function __toString() {
+
+        $key = $this->GetKey();
+        $val = $this->GetValue();
+
+        return sprintf("%s: %s[%s] = %s", 
+            typeof($this), 
+            $this->Category, 
+            tostr($key), 
+            tostr($val));
+    }
+
+    /**
      * Converts to Configuration
      * @param string $key Identification
      * @param mixed $value Value
