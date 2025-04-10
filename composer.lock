@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e6d46ccc40f24a1e90a4cf29e5b72898",
+    "content-hash": "eb8ad2d6b0b4157ea120426faf4cc86d",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -46,16 +46,16 @@
         },
         {
             "name": "vosiz/php-utils",
-            "version": "v1.3.4",
+            "version": "v1.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/php-utils.git",
-                "reference": "ef53199841b8975a19ad406a81afda1b57910200"
+                "reference": "3ae0c1e368029154f659fba8851b19e17f3f6fda"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/ef53199841b8975a19ad406a81afda1b57910200",
-                "reference": "ef53199841b8975a19ad406a81afda1b57910200",
+                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/3ae0c1e368029154f659fba8851b19e17f3f6fda",
+                "reference": "3ae0c1e368029154f659fba8851b19e17f3f6fda",
                 "shasum": ""
             },
             "require": {
@@ -67,8 +67,9 @@
                     "src/convert.php",
                     "src/functions.php",
                     "src/exc.php",
-                    "src/keyval.php",
-                    "src/collections/collection.php"
+                    "src/collections/collection.php",
+                    "src/singleton.php",
+                    "src/compare.php"
                 ],
                 "psr-4": {
                     "Vosiz\\Utils\\": "src/"
@@ -81,28 +82,28 @@
             "description": "A PHP utilities library",
             "support": {
                 "issues": "https://github.com/vosiz/php-utils/issues",
-                "source": "https://github.com/vosiz/php-utils/tree/v1.3.4"
+                "source": "https://github.com/vosiz/php-utils/tree/v1.4.4"
             },
-            "time": "2025-03-14T21:20:33+00:00"
+            "time": "2025-04-09T22:16:44+00:00"
         },
         {
             "name": "vosiz/va-tools",
-            "version": "v1.3.2",
+            "version": "v1.5.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/va-tools.git",
-                "reference": "7d2b5714e8532cb3d5149e5075895dde7cec8183"
+                "reference": "1127f4842f0bb136a16dcb5201dafe4991c785a9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/7d2b5714e8532cb3d5149e5075895dde7cec8183",
-                "reference": "7d2b5714e8532cb3d5149e5075895dde7cec8183",
+                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/1127f4842f0bb136a16dcb5201dafe4991c785a9",
+                "reference": "1127f4842f0bb136a16dcb5201dafe4991c785a9",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4",
                 "vosiz/php-enum": ">=2.2.0",
-                "vosiz/php-utils": ">=1.3.4"
+                "vosiz/php-utils": ">=1.4.4"
             },
             "type": "library",
             "autoload": {
@@ -110,7 +111,8 @@
                     "src/filter/strfilter.php",
                     "src/parser/url.php",
                     "src/struct/flag.php",
-                    "src/struct/nodeh.php"
+                    "src/struct/nodeh.php",
+                    "src/shorty.php"
                 ],
                 "psr-4": {
                     "Vosiz\\VaTools\\": "src/"
@@ -123,9 +125,9 @@
             "description": "PHP tools (from Varaible Arts)",
             "support": {
                 "issues": "https://github.com/vosiz/va-tools/issues",
-                "source": "https://github.com/vosiz/va-tools/tree/v1.3.2"
+                "source": "https://github.com/vosiz/va-tools/tree/v1.5.1"
             },
-            "time": "2025-03-20T01:42:46+00:00"
+            "time": "2025-04-10T20:15:20+00:00"
         }
     ],
     "packages-dev": [],

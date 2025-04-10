@@ -140,7 +140,7 @@ class EngineDiagnostics {
             echo "Filtration-level: ".$higher_than->GetName().'+</br>';
             foreach(self::$Messages->ToArray() as $m) {
                 
-                echo $m->GetLevel()->GetValue().' ';
+                echo sprintf("0x%02X ", intval($m->GetLevel()->GetValue()));
                 if($m->GetLevel()->GetValue() >= $higher_than->GetValue())
                     echo $m->__toString().'</br>';
             }

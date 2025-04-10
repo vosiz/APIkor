@@ -11,8 +11,8 @@
     },
     "require": {
         "php": ">=7.4",
-        "vosiz/php-utils": ">=1.3.4",
+        "vosiz/php-utils": ">=1.4.5",
         "vosiz/php-enum": ">=2.2.1",
-        "vosiz/va-tools": ">=1.3.2"
+        "vosiz/va-tools": ">=1.5.1"
     }
 }
