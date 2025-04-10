@@ -25,7 +25,8 @@ class EngineConfigEnum extends Enum {
     public static function Init(): void {
 
         $vals = [
-            'diagnostics' => 0,
+            'diagnostics'   => 0,
+            'paths'         => 1,
         ];
         self::AddValues($vals);
     } 
@@ -100,6 +101,8 @@ class EngineConfig extends \Keyvalps {
 
 class EngineConfigurator {
 
+    const MODULES_PATH = __DIR__.'/modules';
+
     private $Configs;   public function GetConfigs() {  return $this->Configs; }
 
     /** 
@@ -168,6 +171,8 @@ class EngineConfigurator {
         try {
 
             $clist = $this->Configs->{$category};
+            if($clist === NULL)
+                throw new EngineConfigException('Engine config category not found');
             $record = $clist->{$key};
 
             return $record;

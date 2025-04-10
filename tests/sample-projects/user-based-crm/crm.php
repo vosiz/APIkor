@@ -27,6 +27,9 @@ if(!PRODUCTION) {
 // instantiate engine
 $engine = new Engine($engine_mode);
 
+// mandatory configuration
+$engine->SetupConfig(EngineConfig::ToConfig('modules', __DIR__.'/crm/modules', 'paths'));
+
 // optional, configuration
 $engine->SetupConfig(EngineConfig::ToConfig('print_messages', true, 'diagnostics'));
 $engine->SetupConfig(EngineConfig::ToConfig('print_configs', true, 'diagnostics'));
@@ -35,6 +38,24 @@ $engine->SetupConfig(EngineConfig::ToConfig('level', DiagLevelEnum::GetEnum('deb
 
 
 // let it work
-$output = $engine->Work();
-if($output === NULL)
+try {
+
+    $output = $engine->Work();
+    $engine ->Diagnose();
+
+} catch(\Exception $exc) {
+
+    if(!PRODUCTION) {
+
+        [$status, $desc, $data] = $engine->CheckStatus();
+        echo sprintf("Engine state '%s' (%s)", $status->GetKey(), $desc);
+        echo sprintf("<br>Data (%d): <br>", count($data));
+        foreach($data as $str) {
+
+            echo "- [ERROR] ".$str."<br>";
+        }
+    }
+    
     $engine->Diagnose();
+}
+
