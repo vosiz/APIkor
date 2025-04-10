@@ -8,15 +8,18 @@ A php framework for API building
 Made by personal need, so feel free to use it if it fits your needs.
 No commercial-like goals are "hard-planned" (read: "just a hobby")
 
+## Disclaimer
+Version 0.x.y are not supposed to be used. Wait for 1+.x.y
+
 ## Roadmap
 - [x] Configurator - basics
 - [x] Diagnostics - basics
 - [x] Simple inner-logging
 - [ ] Configurator - Flagword support
-- [ ] Diagnostics - status check
+- [x] Diagnostics - status check
 - [x] Diagnostics - modes
 - [x] URL parsing and processing
-- [ ] Action call
+- [x] Action call
 - [ ] Action call - api version
 - [ ] Response - basics
 - [ ] Response - encapsulate
