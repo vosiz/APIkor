@@ -10,7 +10,8 @@ use Apikor\Tools\UrlParser;
 use Apikor\Tools as Tools;
 use Vosiz\Enums\Enum;
 use Vosiz\Utils\Collections\Collection;
-
+use Apikor\Response;
+use Apikor\Output\Formatter;
 
 class EngineStatusEnum extends Enum {
 
@@ -287,11 +288,11 @@ class Engine {
 
         try {
 
-            $module_name = $this->Parser->GetModule();
-            $controller_name = $this->Parser->GetController();
-            $action_name = $this->Parser->GetAction();
-            $version = $this->Parser->GetVersion();
-            $pars = $this->Parser->GetParameters();
+            $module_name        = $this->Parser->GetModule();
+            $controller_name    = $this->Parser->GetController();
+            $action_name        = $this->Parser->GetAction();
+            $version            = $this->Parser->GetVersion();
+            $pars               = $this->Parser->GetParameters();
 
             // module/controller
             $controller_path = Tools\FILEOPS_Exists(
@@ -301,14 +302,17 @@ class Engine {
             Diag::Debug('Controller path at \'%s\'', $controller_path);
             require_once($controller_path);
             $cls = sprintf("Apikor\%sModule\%sController", ucfirst($module_name), ucfirst($controller_name));
-            $controller = new $cls();
+            $controller = new $cls($pars);
 
-            // action call
-            $data = $this->CallAction($controller, ucfirst($action_name), intval($version), $pars);
+            // action call - get message
+            $message = $this->CallAction($controller, ucfirst($action_name), intval($version));
+            if($message === null || !$message || !($message instanceof Response\Message)) {
 
-            // response creation
-            // create response structure (header, payload... etc)
-            return print_r($data, true); //TODO: test
+                throw new \Exception("Message is null, empty or not Message");
+            }
+
+            // response creation (wrapping)
+            return Response\Response::Create($message);
 
         } catch (\Exception $exc) {
 
@@ -325,12 +329,11 @@ class Engine {
         try {
 
             $format = $this->Parser->GetFormat();
-            // TODO: double call??
-            //TODO: implement debug with backtracking
-            //debug($format);
-            debug($response);
             require_once(__DIR__.'/output/formats/'.$format.'.php');
             Diag::Debug("Will format to '$format'");
+            $formatter = Formatter::Translate($format);
+
+            return $formatter->Format($response);
 
         } catch (\Exception $exc) {
 
@@ -344,10 +347,22 @@ class Engine {
      * Finds and call action
      * TODO:
      */
-    private function CallAction(Controller $controller, string $action, int $version, array $pars = array()) {
+    private function CallAction(Controller $controller, string $action, int $version) {
 
-        $action = $controller->FindAction($action, $version);
-        Diag::Debug("Found action '$action' in controller '%s'", $controller->__toString());
-        return $controller->{$action}($pars);
+        try {
+
+            // action serach and call
+            $action = $controller->FindAction($action, $version);
+            Diag::Debug("Found action '$action' in controller '%s'", $controller->__toString());   
+            $defs = $controller->ActionCheck($action);        
+            Diag::Debug("Found %d definitions rules for '$action'", count($defs));
+            $controller->ApplyActionRules($defs);    
+            return $controller->{$action}();
+
+        } catch (\Exception $exc) {
+
+            throw $exc;            
+        }
+        
     }
 }
