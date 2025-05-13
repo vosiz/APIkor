@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb8ad2d6b0b4157ea120426faf4cc86d",
+    "content-hash": "5e44c369e0ee20ea886aeecd0ca23817",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -46,16 +46,16 @@
         },
         {
             "name": "vosiz/php-utils",
-            "version": "v1.4.4",
+            "version": "v1.4.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/php-utils.git",
-                "reference": "3ae0c1e368029154f659fba8851b19e17f3f6fda"
+                "reference": "0d6e4a81ccfe3cbd0430b5f95da09de24ad5c5da"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/3ae0c1e368029154f659fba8851b19e17f3f6fda",
-                "reference": "3ae0c1e368029154f659fba8851b19e17f3f6fda",
+                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/0d6e4a81ccfe3cbd0430b5f95da09de24ad5c5da",
+                "reference": "0d6e4a81ccfe3cbd0430b5f95da09de24ad5c5da",
                 "shasum": ""
             },
             "require": {
@@ -82,22 +82,22 @@
             "description": "A PHP utilities library",
             "support": {
                 "issues": "https://github.com/vosiz/php-utils/issues",
-                "source": "https://github.com/vosiz/php-utils/tree/v1.4.4"
+                "source": "https://github.com/vosiz/php-utils/tree/v1.4.6"
             },
-            "time": "2025-04-09T22:16:44+00:00"
+            "time": "2025-05-13T00:04:41+00:00"
         },
         {
             "name": "vosiz/va-tools",
-            "version": "v1.5.1",
+            "version": "v1.6.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/va-tools.git",
-                "reference": "1127f4842f0bb136a16dcb5201dafe4991c785a9"
+                "reference": "4458d4987ad2be4ffcaacd709a65ec522ea7b3d7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/1127f4842f0bb136a16dcb5201dafe4991c785a9",
-                "reference": "1127f4842f0bb136a16dcb5201dafe4991c785a9",
+                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/4458d4987ad2be4ffcaacd709a65ec522ea7b3d7",
+                "reference": "4458d4987ad2be4ffcaacd709a65ec522ea7b3d7",
                 "shasum": ""
             },
             "require": {
@@ -125,9 +125,9 @@
             "description": "PHP tools (from Varaible Arts)",
             "support": {
                 "issues": "https://github.com/vosiz/va-tools/issues",
-                "source": "https://github.com/vosiz/va-tools/tree/v1.5.1"
+                "source": "https://github.com/vosiz/va-tools/tree/v1.6.2"
             },
-            "time": "2025-04-10T20:15:20+00:00"
+            "time": "2025-05-11T20:15:58+00:00"
         }
     ],
     "packages-dev": [],
