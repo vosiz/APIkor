@@ -8,13 +8,19 @@ class UrlParameters {
 
     private $Pars;  public function GetParams()     { return $this->Pars;   }
 
-    // TODO:
+    /**
+     * Constructor - params setup
+     */
     public function __construct(array $params = array()) {
 
         $this->Pars = $params;
     }
 
-    // TODO:
+    /**
+     * Checks all requireds
+     * @param array Keys required
+     * @return array Not found ones
+     */
     public function CheckRequired(array $req = array()) {
 
         $not_found = array();
@@ -31,7 +37,10 @@ class UrlParameters {
         return $not_found;
     }
 
-    // TODO:
+    /**
+     * Sets default values
+     * @param array $optional Values which has default value
+     */
     public function SetDefaults(array $optional = array()) {
 
         $pars = Collection::ToCollection($this->Pars);

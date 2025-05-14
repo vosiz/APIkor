@@ -41,13 +41,22 @@ class FunctionDefinitionRule {
         $this->Value = is_null($value) ? "" : $value;
     }
 
-    // TODO:
+    /**
+     * Macro for required definition rule
+     * @param mixed $key Parameter name
+     * @return FunctionDefinitionRule
+     */
     public static function Required($key) {
 
         return new FunctionDefinitionRule(FunctionDefinitionRuleEnum::GetEnum('required'), $key);
     }
 
-    // TODO:
+    /**
+     * Macro for definition rule with default value
+     * @param mixed $key Parameter name
+     * @param mixed $value Parameter default value
+     * @return FunctionDefinitionRule
+     */
     public static function Default($key, $value = null) {
 
         return new FunctionDefinitionRule(FunctionDefinitionRuleEnum::GetEnum('default'), $key, $value);
@@ -83,7 +92,12 @@ abstract class Controller {
         return get_class($this);
     }
 
-    /** TODO: */
+    /** Looks for action 
+     * @param string $action Action name
+     * @param int $version Action suffix (default empty string)
+     * @return string Action/method name
+     * @throws Exception
+    */
     public function FindAction(string $action, int $version = null) {
 
         $functions = get_class_methods($this);
@@ -105,7 +119,12 @@ abstract class Controller {
         throw new \Exception("Action '{$action}' (v{$version}) not found in " . get_class($this));
     }
 
-    // TODO
+    /**
+     * Get action registered rules
+     * @param string $action_name Name of action
+     * @return FunctionDefinitionRule[] 
+     * @throws Exception
+     */
     public function ActionCheck(string $action_name) {
 
         try {
@@ -127,7 +146,11 @@ abstract class Controller {
 
     }
 
-    // TODO:
+    /**
+     * Apply and check if requirements of rules are met
+     * @param FunctionDefinitionRule[] $rules
+     * @throws Exception
+     */
     public function ApplyActionRules(array $rules = array()) {
 
         try  {
@@ -164,7 +187,14 @@ abstract class Controller {
         
     }
 
-    // TODO:
+    /**
+     * Get URL params
+     * @param bool $get True uses GET, false uses POST
+     * @param bool $as_array True assoc array, false Params class
+     * @param mixed $key Instead of all gets particular one
+     * @return mixed
+     * @throws Exception
+     */
     protected function GetParams(bool $get = true, bool $as_array = true, $key = null) {
 
         try {
@@ -184,7 +214,12 @@ abstract class Controller {
         
     }
     
-    // TODO:
+    /**
+     * Registers definition rule for action
+     * @param string $action Action name
+     * @param FunctionDefinitionRule[] $rules Action definition rules
+     * @throws Exception
+     */
     protected function AddFuncDefRules(string $action, array $rules = array()) {
 
         try  {

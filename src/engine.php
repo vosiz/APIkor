@@ -282,7 +282,9 @@ class Engine {
     }
 
     /**
-     * TODO:
+     * Creates reponse on request
+     * @return Response\Response
+     * @throws EngineWorkException
      */
     private function Respond() {
 
@@ -322,7 +324,7 @@ class Engine {
     }
 
     /**
-     * TODO:
+     * Formats response to desired format
      */
     private function Format($response) {
 
@@ -345,7 +347,11 @@ class Engine {
 
     /**
      * Finds and call action
-     * TODO:
+     * @param Controller $controller Controller
+     * @param string $action Action to trigger
+     * @param int $version Action version
+     * @return mixed
+     * @throws Exception
      */
     private function CallAction(Controller $controller, string $action, int $version) {
 

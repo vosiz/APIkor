@@ -7,7 +7,7 @@ use Apikor\Helpers\MessageCreator as CreateMsg;
 
 class TestController extends \Apikor\Controller {
 
-    // TODO:
+    // Abstract implementation
     protected function _FunctionDefinitionsSetup() {
 
         $this->AddFuncDefRules('Aloha');
