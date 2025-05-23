@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5e44c369e0ee20ea886aeecd0ca23817",
+    "content-hash": "6848bcfc359bbba0641f774362008859",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -46,16 +46,16 @@
         },
         {
             "name": "vosiz/php-utils",
-            "version": "v1.4.6",
+            "version": "v1.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/php-utils.git",
-                "reference": "0d6e4a81ccfe3cbd0430b5f95da09de24ad5c5da"
+                "reference": "19913bd56c5586a6413484e444217ef1aa646009"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/0d6e4a81ccfe3cbd0430b5f95da09de24ad5c5da",
-                "reference": "0d6e4a81ccfe3cbd0430b5f95da09de24ad5c5da",
+                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/19913bd56c5586a6413484e444217ef1aa646009",
+                "reference": "19913bd56c5586a6413484e444217ef1aa646009",
                 "shasum": ""
             },
             "require": {
@@ -82,9 +82,9 @@
             "description": "A PHP utilities library",
             "support": {
                 "issues": "https://github.com/vosiz/php-utils/issues",
-                "source": "https://github.com/vosiz/php-utils/tree/v1.4.6"
+                "source": "https://github.com/vosiz/php-utils/tree/v1.5.0"
             },
-            "time": "2025-05-13T00:04:41+00:00"
+            "time": "2025-05-18T23:16:37+00:00"
         },
         {
             "name": "vosiz/va-tools",

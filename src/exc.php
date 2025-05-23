@@ -35,13 +35,24 @@ class UrlException extends \Exceptionf {
     }
 }
 
-// class Fakup extends \AppException {
+class FakupException extends \Exceptionf {
 
-//     /**
-//      * Constructor - string based
-//      */
-//     public function __construct(string $msg) {
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $fmt, ...$args) {
 
-//         return parent::__construct("FAKUP!!!: ".$msg);
-//     }
-// }
+        return parent::__construct($fmt, ...$args);
+    }
+}
+
+class FatalErrorException extends \Exceptionf {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}

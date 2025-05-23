@@ -122,12 +122,32 @@ class Engine {
             $this->Status = EngineStatusEnum::GetEnum('done');
             return $output;
 
-        } catch (\Exception $exc) {
+        } 
+        catch(FakupException $exc) {
+
+            $this->Status = EngineStatusEnum::GetEnum('broken');
+            $this->Errors->Add("EngineWorkFK: ".$exc->getMessage());
+            $response = Response\Response::Create(\Apikor\Response\Message::CreateRetval(retval_fakup($exc->ToString())));
+            $output = $this->Format($response);
+            // debug($fup_response);
+            return $output;
+        }
+        catch(FatalErrorException $exc) {
+
+            $this->Status = EngineStatusEnum::GetEnum('broken');
+            $this->Errors->Add("EngineWorkFE: ".$exc->getMessage());
+            $response = Response\Response::Create(\Apikor\Response\Message::CreateRetval(retval_fatal($exc->ToString())));
+            $output = $this->Format($response);
+            // debug($fup_response);
+            return $output;
+        }
+        catch (\Exception $exc) {
 
             $this->Status = EngineStatusEnum::GetEnum('broken');
             $this->Errors->Add("EngineWork: ".$exc->getMessage());
             throw $exc;
-        }
+        } 
+
         
     }
 
@@ -237,17 +257,17 @@ class Engine {
 
         try {
 
+            // TODO: own controllers
             // controllers path
-            if($this->Configurator->GetConfig('paths', 'controllers') === NULL) {
+            // if($this->Configurator->GetConfig('paths', 'controllers') === NULL) {
 
-                Diag::Error("Controllers paths not configured");
-            }
+            //     Diag::Error("Controllers paths not configured");
+            // }
 
         } catch (\Exception $exc) {
 
             $errs[] = sprintf("Config issue: %s", $exc->getMessage());
         }
-
 
         if(!empty($errs)) {
 
@@ -316,7 +336,15 @@ class Engine {
             // response creation (wrapping)
             return Response\Response::Create($message);
 
-        } catch (\Exception $exc) {
+        } catch (\Apikor\FakupException $exc) { // dev fakup
+
+            throw $exc;
+
+        } catch (\Apikor\FatalErrorException $exc) {
+
+            throw $exc;
+
+        } catch (\Exception $exc) { // others
 
             throw new EngineWorkException("Response failed: %s", $exc->getMessage());
         }

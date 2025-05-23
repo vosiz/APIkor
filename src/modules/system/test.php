@@ -15,6 +15,10 @@ class TestController extends \Apikor\Controller {
             \Apikor\FunctionDefinitionRule::Required('type'),
             \Apikor\FunctionDefinitionRule::Default('msg', "Undefined message")
         ]);
+        $this->AddFuncDefRules('Fakup');
+        $this->AddFuncDefRules('Fatal', [
+            \Apikor\FunctionDefinitionRule::Default('msg', "Fatal error")
+        ]);
     }
 
     /**
@@ -29,6 +33,7 @@ class TestController extends \Apikor\Controller {
      * Retval test
      * - required Type
      * - default Message = ""
+     * TODO:
      */
     public function Retval() {
 
@@ -36,5 +41,45 @@ class TestController extends \Apikor\Controller {
         \extract($get);
 
         return CreateMsg::Retval($Type, $Msg);
+    }
+
+    /** 
+     * Fakup exception test
+     * TODO:
+     */
+    public function Fakup() {
+
+        try {
+
+            fakup("This is fakup %s test", "FK");
+
+        } catch (\Apikor\FakupException $exc) {
+
+            throw $exc;
+        }
+        catch (Exception $exc) {
+
+            throw $exc;
+        }
+    }
+
+    /**
+     * TODO:
+     */
+    public function Fatal() {
+
+        try {
+
+            $get = $this->GetParams();
+            fatal(htmlspecialchars($get['Msg']));
+
+        } catch (\Apikor\FatalErrorException $exc) {
+
+            throw $exc;
+        }
+        catch (Exception $exc) {
+
+            throw $exc;
+        }
     }
 }

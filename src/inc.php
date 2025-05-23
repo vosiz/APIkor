@@ -18,7 +18,5 @@ require_once(__DIR__.'/core/response/response.php');
 require_once(__DIR__.'/output/iformat.php');
 require_once(__DIR__.'/output/output.php');
 
-
 // Tools
 require_once(__DIR__.'/tools/tools.php');
-
