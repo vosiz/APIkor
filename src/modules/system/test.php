@@ -2,14 +2,84 @@
 
 namespace Apikor\SystemModule;
 
+use Vosiz\VaTools\Retval;
+use Apikor\Helpers\MessageCreator as CreateMsg;
 
 class TestController extends \Apikor\Controller {
+
+    // Abstract implementation
+    protected function _FunctionDefinitionsSetup() {
+
+        $this->AddFuncDefRules('Aloha');
+        $this->AddFuncDefRules('Retval', [
+            \Apikor\FunctionDefinitionRule::Required('type'),
+            \Apikor\FunctionDefinitionRule::Default('msg', "Undefined message")
+        ]);
+        $this->AddFuncDefRules('Fakup');
+        $this->AddFuncDefRules('Fatal', [
+            \Apikor\FunctionDefinitionRule::Default('msg', "Fatal error")
+        ]);
+    }
 
     /**
      * Aloha function
      */
-    public function Aloha($pars = array()) {
+    public function Aloha() {
 
-        return "Aloha";
+        return CreateMsg::PlainText("Aloha!");
+    }
+
+    /**
+     * Retval test
+     * - required Type
+     * - default Message = ""
+     * TODO:
+     */
+    public function Retval() {
+
+        $get = $this->GetParams();
+        \extract($get);
+
+        return CreateMsg::Retval($Type, $Msg);
+    }
+
+    /** 
+     * Fakup exception test
+     * TODO:
+     */
+    public function Fakup() {
+
+        try {
+
+            fakup("This is fakup %s test", "FK");
+
+        } catch (\Apikor\FakupException $exc) {
+
+            throw $exc;
+        }
+        catch (Exception $exc) {
+
+            throw $exc;
+        }
+    }
+
+    /**
+     * TODO:
+     */
+    public function Fatal() {
+
+        try {
+
+            $get = $this->GetParams();
+            fatal(htmlspecialchars($get['Msg']));
+
+        } catch (\Apikor\FatalErrorException $exc) {
+
+            throw $exc;
+        }
+        catch (Exception $exc) {
+
+            throw $exc;
+        }
     }
 }

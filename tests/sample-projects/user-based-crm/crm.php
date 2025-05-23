@@ -41,6 +41,8 @@ $engine->SetupConfig(EngineConfig::ToConfig('level', DiagLevelEnum::GetEnum('deb
 try {
 
     $output = $engine->Work();
+
+    // test
     $engine ->Diagnose();
 
 } catch(\Exception $exc) {

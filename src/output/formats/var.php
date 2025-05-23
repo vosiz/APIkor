@@ -2,7 +2,7 @@
 
 namespace Apikor\Output;
 
-class VarFormat extends Output {
+class VarFormat extends Formatter {
 
     public function Format($data) {
 
