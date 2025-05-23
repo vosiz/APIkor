@@ -20,14 +20,14 @@ Version 0.x.y are not supposed to be used. Wait for 1+.x.y
 - [x] Diagnostics - modes
 - [x] URL parsing and processing
 - [x] Action call
-- [ ] Action call - api version
-- [ ] Response - basics
-- [ ] Response - encapsulate
+- [x] Action call - api version
+- [x] Response - basics
+- [x] Response - encapsulate
 - [ ] Response - output nodes 
 - [ ] Response - output xml
 - [ ] Response - output json
 - [ ] Response - output html
-- [ ] Response - output dump
+- [x] Response - output dump
 - [ ] Logging
 - [ ] Model
 - [ ] Database connection
