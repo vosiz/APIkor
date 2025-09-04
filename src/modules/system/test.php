@@ -23,6 +23,7 @@ class TestController extends \Apikor\Controller {
 
     /**
      * Aloha function
+     * @return Response\Message (Text)
      */
     public function Aloha() {
 
@@ -31,9 +32,9 @@ class TestController extends \Apikor\Controller {
 
     /**
      * Retval test
-     * - required Type
-     * - default Message = ""
-     * TODO:
+     * - required: type
+     * - default: msg
+     * @return Response\Message (retval)
      */
     public function Retval() {
 
@@ -45,7 +46,7 @@ class TestController extends \Apikor\Controller {
 
     /** 
      * Fakup exception test
-     * TODO:
+     * @return Response\Message
      */
     public function Fakup() {
 
@@ -64,7 +65,8 @@ class TestController extends \Apikor\Controller {
     }
 
     /**
-     * TODO:
+     * Fatal error test
+     * - default: msg
      */
     public function Fatal() {
 
