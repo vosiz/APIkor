@@ -6,12 +6,14 @@ require_once(__DIR__.'/inc.php');
 
 use Apikor\EngineConfigurator as Configurator;
 use Apikor\EngineDiagnostics as Diag;
+use Apikor\Response;
+use Apikor\Output\Formatter;
+use Apikor\Db\DbConMySql;
 use Apikor\Tools\UrlParser;
 use Apikor\Tools as Tools;
 use Vosiz\Enums\Enum;
 use Vosiz\Utils\Collections\Collection;
-use Apikor\Response;
-use Apikor\Output\Formatter;
+
 
 class EngineStatusEnum extends Enum {
 
@@ -48,16 +50,65 @@ class EngineRunModeEnum extends Enum {
     } 
 }
 
+class EngineDataProvider {
+
+    private $Engine;
+
+    public function __construct($engine) {
+
+        $this->Engine = $engine;
+    }
+
+    public function GetData(string $section, $key = null) {
+
+
+        switch($section) {
+
+            case 'db':
+                if(is_null($key)) {
+
+                    return $this->Engine->GetDbConns();
+
+                } else {
+
+                }
+                break;
+
+            default:
+                throw new \UnimplementedStateException($section);
+        }
+    }
+}
 
 class Engine {
 
-    private $Configurator;  public function GetConfigurator() { return $this->Configurator; }
+    private static $Singleton;
+
+    private $Configurator;  public function GetConfigurator()   { return $this->Configurator;   }
     private $Diags;
     private $Parser;
+    private $DbConns = [];  public function GetDbConns()        { return $this->DbConns;        }
 
+    private $DataProvider;
     private $Mode;
     private $Errors;
     private $Status;
+
+
+    public static function ProvideData($section, $key = null) {
+
+        try {
+
+            return self::$Singleton->DataProvider->GetData($section, $key);
+
+        } catch(\Exception $exc) {
+
+            $msg = sprintf("Engine.DataProvide failure (%s), section=%s%s", $exc->getMessage(), $section, is_null($key) ? '' : '.'.$key);
+            throw new EngineWorkException($msg);
+        }
+
+    }
+    
 
     /**
      * Constructor
@@ -77,6 +128,11 @@ class Engine {
             $this->DefaultConfig();   
             
             $this->Mode = $mode;
+
+            if(self::$Singleton == null)
+                self::$Singleton = $this;
+
+            $this->DataProvider = new EngineDataProvider($this);
 
         } catch (\Exception $exc) {
 
@@ -148,7 +204,6 @@ class Engine {
             throw $exc;
         } 
 
-        
     }
 
     /**
@@ -172,7 +227,33 @@ class Engine {
         
     }
 
-    /**
+    /** 
+     * Connect to Database (note you can connect to multiple databases) 
+     * @param string $connection_string Connection string
+     * @param string $user Username
+     * @param string $pass Password
+     * @param string $key Connection ID
+    */
+    public function DbConnect(string $connection_string, string $user, string $pass, $key = 'main') {
+
+        try {
+
+            $this->DbConns[$key] = new DbConMySql($connection_string, $user, $pass);
+            Diag::Info("Connected to DB as ".$key);
+
+        } catch(DbException $exc) {
+
+            throw $exc;
+        }
+        catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
+    }
+
+
+    /** 
      * Default configurations 
     */
     private function DefaultConfig() {
@@ -196,7 +277,7 @@ class Engine {
         }
     }
 
-    /**
+    /** 
      * Check engine status
      * @return array[EngineStatusEnum, string, array] data
      */
@@ -246,8 +327,8 @@ class Engine {
         return [$this->Status, $desc, $data];
     }
 
-    /**
-     * Check configuration
+
+    /** Check configuration
      * @return false
      * @throws EngineWorkException
      */
@@ -316,14 +397,36 @@ class Engine {
             $version            = $this->Parser->GetVersion();
             $pars               = $this->Parser->GetParameters();
 
+
+            $user_module_path = Tools\FILEOPS_PathCombine($this->Configurator->GetConfig('paths', 'modules'));
+            if(empty($user_module_path) || !\file_exists($user_module_path)) {
+                
+                throw new ConfigException("User path to Modules is not setup");
+            }
+            $full_user_module_path = Tools\FILEOPS_PathCombine($user_module_path, $module_name);
+
             // module/controller
-            $controller_path = Tools\FILEOPS_Exists(
-                Tools\FILEOPS_PathCombine($this->Configurator->GetConfig('paths', 'modules'), $module_name),
+            list($type, $controller_path) = Tools\FILEOPS_Exists(
+                $full_user_module_path,
                 Tools\FILEOPS_PathCombine(Configurator::MODULES_PATH, $module_name), 
                 $controller_name);
+
+            if($type == 'user') {
+
+                $appns = $this->Configurator->GetConfig('ns', 'app');
+                $cls = sprintf("%s\%sModule\%sController", $appns, ucfirst($module_name), ucfirst($controller_name));
+
+            } else if($type == 'master') {
+                
+                $cls = sprintf("Apikor\%sModule\%sController", ucfirst($module_name), ucfirst($controller_name));
+
+            } else {
+
+                throw new ConfigException("Unknown Module path return type: %s", $type);
+            }
+
+            $this->Require($controller_path);
             Diag::Debug('Controller path at \'%s\'', $controller_path);
-            require_once($controller_path);
-            $cls = sprintf("Apikor\%sModule\%sController", ucfirst($module_name), ucfirst($controller_name));
             $controller = new $cls($pars);
 
             // action call - get message
@@ -372,7 +475,6 @@ class Engine {
 
     }
 
-
     /**
      * Finds and call action
      * @param Controller $controller Controller
@@ -398,5 +500,19 @@ class Engine {
             throw $exc;            
         }
         
+    }
+
+    /**
+     * Require once - safe
+     * @param string $path Path to file to require
+     * @throws FileException
+     */
+    private function Require(string $path) {
+
+        if (!file_exists($path)) {
+            throw new FileException($path);
+        }
+
+        require_once($path);
     }
 }

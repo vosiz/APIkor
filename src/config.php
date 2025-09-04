@@ -25,8 +25,10 @@ class EngineConfigEnum extends Enum {
     public static function Init(): void {
 
         $vals = [
-            'diagnostics'   => 0,
-            'paths'         => 1,
+            'general'       => 0x00,
+            'diagnostics'   => 0x10,
+            'paths'         => 0x20,
+            'ns'            => 0x21,
         ];
         self::AddValues($vals);
     } 
@@ -42,7 +44,7 @@ class EngineConfig extends \Keyvalps {
      * @param mixed $value Value
      * @param string $category Category
      */
-    public function __construct(string $key, $value, string $category) {
+    public function __construct(string $key, $value, string $category = 'general') {
 
         if(is_bool($value))
             $value = b2int($value);
@@ -73,7 +75,7 @@ class EngineConfig extends \Keyvalps {
      * @param string $category Category
      * @return EngineConfig
      */
-    public static function ToConfig(string $key, $value, string $category) {
+    public static function ToConfig(string $key, $value, string $category = 'general') {
 
         return new EngineConfig($key, $value, $category);
     }

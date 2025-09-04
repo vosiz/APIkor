@@ -2,16 +2,6 @@
 
 namespace Apikor;
 
-class EngineWorkException extends \Exceptionf {
-
-    /**
-     * Contructor - format based
-     */
-    public function __construct(string $fmt, ...$args) {
-
-        return parent::__construct($fmt, ...$args);
-    }
-}
 
 class ConfigException extends \Exceptionf {
 
@@ -24,7 +14,18 @@ class ConfigException extends \Exceptionf {
     }
 }
 
-class UrlException extends \Exceptionf {
+class DbException extends \Exceptionf {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}
+
+class EngineWorkException extends \Exceptionf {
 
     /**
      * Contructor - format based
@@ -47,6 +48,37 @@ class FakupException extends \Exceptionf {
 }
 
 class FatalErrorException extends \Exceptionf {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}
+
+class FileException extends \Exceptionf {
+
+    /**
+     * File not found - static constructor
+     * @param string $path
+     */
+    public static function FileNotFound(string $path) {
+
+        return new FileException("File not found on path: %s", $path);
+    }
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+
+}
+class UrlException extends \Exceptionf {
 
     /**
      * Contructor - format based

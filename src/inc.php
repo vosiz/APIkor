@@ -14,6 +14,7 @@ require_once(__DIR__.'/core/cls/helpers/msgcreator.php');
 require_once(__DIR__.'/core/cls/controller.php');
 require_once(__DIR__.'/core/response/message.php');
 require_once(__DIR__.'/core/response/response.php');
+require_once(__DIR__.'/core/db/db_mysql.php');
 
 require_once(__DIR__.'/output/iformat.php');
 require_once(__DIR__.'/output/output.php');

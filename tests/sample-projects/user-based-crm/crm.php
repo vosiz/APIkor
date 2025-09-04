@@ -2,6 +2,11 @@
 
 //echo "CRM.PHP";
 
+// TODO LIST
+// - number of registered users
+// - list of roles
+// - list of user with roles
+
 namespace SampleProject\UBC\CRM;
 
 define('ROOT', __DIR__.'/../../..');
@@ -29,6 +34,7 @@ $engine = new Engine($engine_mode);
 
 // mandatory configuration
 $engine->SetupConfig(EngineConfig::ToConfig('modules', __DIR__.'/crm/modules', 'paths'));
+$engine->SetupConfig(EngineConfig::ToConfig('app', 'SampleProject\UBC\CRM', 'ns'));
 
 // optional, configuration
 $engine->SetupConfig(EngineConfig::ToConfig('print_messages', true, 'diagnostics'));
@@ -36,6 +42,7 @@ $engine->SetupConfig(EngineConfig::ToConfig('print_configs', true, 'diagnostics'
 $engine->SetupConfig(EngineConfig::ToConfig('print_urlparser', true, 'diagnostics'));
 $engine->SetupConfig(EngineConfig::ToConfig('level', DiagLevelEnum::GetEnum('debug'), 'diagnostics'));
 
+$engine->DbConnect(DB_CONNECT_STRING, DB_CONNECT_USER, DB_CONNECT_PASS, DB_CONNECT_DBKEY);
 
 // let it work
 try {
@@ -43,7 +50,7 @@ try {
     $output = $engine->Work();
 
     // test
-    $engine ->Diagnose();
+    //$engine ->Diagnose();
 
 } catch(\Exception $exc) {
 

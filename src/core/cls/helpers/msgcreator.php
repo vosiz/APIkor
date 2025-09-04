@@ -14,9 +14,23 @@ class MessageCreator {
 
             return Response\Message::CreatePlain($text);
 
-        } catch (Exception $exc) {
+        } catch (\Exception $exc) {
 
+            throw $exc;
             //Fakup("PlainText message creation failure: ".$exc->getMessage());
+        }
+    }
+
+    /** TODO: */
+    public static function TextArray(array $a = array()) {
+
+        try {
+
+            return Response\Message::CreateArray($a);
+
+        } catch (\Exception $exc) {
+
+            throw $exc;
         }
     }
 
@@ -28,8 +42,9 @@ class MessageCreator {
             $retval = Retval::Create($type, $fmt, ...$args);
             return Response\Message::CreateRetval($retval);
 
-        } catch (Exception $exc) {
+        } catch (\Exception $exc) {
 
+            throw $exc;
             //Fakup("Retval message creation failure: ".$exc->getMessage());
         }
     }

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6848bcfc359bbba0641f774362008859",
+    "content-hash": "ada64102514b5740cf30de9068398236",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -88,28 +88,30 @@
         },
         {
             "name": "vosiz/va-tools",
-            "version": "v1.6.2",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/va-tools.git",
-                "reference": "4458d4987ad2be4ffcaacd709a65ec522ea7b3d7"
+                "reference": "e44dda2c9efd3d8448c25efe2f2479e0b80fd0f6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/4458d4987ad2be4ffcaacd709a65ec522ea7b3d7",
-                "reference": "4458d4987ad2be4ffcaacd709a65ec522ea7b3d7",
+                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/e44dda2c9efd3d8448c25efe2f2479e0b80fd0f6",
+                "reference": "e44dda2c9efd3d8448c25efe2f2479e0b80fd0f6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.4",
                 "vosiz/php-enum": ">=2.2.0",
-                "vosiz/php-utils": ">=1.4.4"
+                "vosiz/php-utils": ">=1.5.0"
             },
             "type": "library",
             "autoload": {
                 "files": [
+                    "src/db/dbcon.php",
                     "src/filter/strfilter.php",
                     "src/parser/url.php",
+                    "src/struct/cred.php",
                     "src/struct/flag.php",
                     "src/struct/nodeh.php",
                     "src/shorty.php"
@@ -122,12 +124,12 @@
             "license": [
                 "MIT"
             ],
-            "description": "PHP tools (from Varaible Arts)",
+            "description": "PHP tools (from Variable Arts)",
             "support": {
                 "issues": "https://github.com/vosiz/va-tools/issues",
-                "source": "https://github.com/vosiz/va-tools/tree/v1.6.2"
+                "source": "https://github.com/vosiz/va-tools/tree/v1.7.0"
             },
-            "time": "2025-05-11T20:15:58+00:00"
+            "time": "2025-09-03T22:03:06+00:00"
         }
     ],
     "packages-dev": [],
