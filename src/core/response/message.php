@@ -43,6 +43,11 @@ class Message {
         return self::Create(MessageTypeEnum::GetEnum('plain'), $plain);
     }
 
+    /** TODO: */
+    public static function CreateArray(array $arr = array()) {
+
+        return self::Create(MessageTypeEnum::GetEnum('array'), $arr);
+    }
 
     /** TODO: */
     public static function Create(MessageTypeEnum $type, $data = NULL) {
@@ -57,6 +62,7 @@ class Message {
         $this->Type = $type;
         $this->Data = $data;
 
+        // TODO: ?
         if($data === NULL) {
 
             switch($type) {
