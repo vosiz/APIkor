@@ -19,6 +19,7 @@ class TestController extends \Apikor\Controller {
         $this->AddFuncDefRules('Fatal', [
             \Apikor\FunctionDefinitionRule::Default('msg', "Fatal error")
         ]);
+        $this->AddFuncDefRules('TextArray');
     }
 
     /**
@@ -83,5 +84,22 @@ class TestController extends \Apikor\Controller {
 
             throw $exc;
         }
+    }
+
+    /**
+     * Text array test
+     */
+    public function TextArray() {
+
+        try {
+
+            $a = [123, 1.2, "string", true, new \StdClass()];
+            return CreateMsg::TextArray($a);
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+
     }
 }

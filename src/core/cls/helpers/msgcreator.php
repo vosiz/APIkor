@@ -7,7 +7,12 @@ use Apikor\Response;
 
 class MessageCreator {
 
-    /** TODO: */
+    /** 
+     * Plain text message
+     * @param string $text Text to show
+     * @return Response\Message (text)
+     * @throws FakupException
+     */
     public static function PlainText(string $text) {
 
         try {
@@ -16,25 +21,36 @@ class MessageCreator {
 
         } catch (\Exception $exc) {
 
-            throw $exc;
-            //Fakup("PlainText message creation failure: ".$exc->getMessage());
+            fakup("PlainText message creation failure: ".$exc->getMessage());
         }
     }
 
-    /** TODO: */
+    /**
+     * Text array message 
+     * @param array $a Array (values will be represented as text)
+     * @return Response\Message (text array)
+     * @throws FakupException
+     */
     public static function TextArray(array $a = array()) {
 
         try {
 
+            $a = tostr($a, true);
             return Response\Message::CreateArray($a);
 
         } catch (\Exception $exc) {
 
-            throw $exc;
+            fakup("TextArray message creation failure: ".$exc->getMessage());
         }
     }
 
-    /** TODO: */
+    /** 
+     * Retval 
+     * @param string $type Retval type (enum name)
+     * @param string $fmt Format with arguments
+     * @return Response\Message (Retval)
+     * @throws FakupException
+    */
     public static function Retval(string $type, string $fmt, ...$args) {
 
         try {
@@ -44,11 +60,9 @@ class MessageCreator {
 
         } catch (\Exception $exc) {
 
-            throw $exc;
-            //Fakup("Retval message creation failure: ".$exc->getMessage());
+            fakup("Retval message creation failure: ".$exc->getMessage());
         }
     }
 
-    
     
 }

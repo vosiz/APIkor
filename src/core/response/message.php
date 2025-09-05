@@ -31,19 +31,31 @@ class Message {
     private $Type;  public function GetType()   { return $this->Type;   }
     private $Data;  public function GetData()   { return $this->Data;   }
 
-    /** TODO: */
+    /** 
+     * Creates Message - retval
+     * @param Retval $retval Retval
+     * @return Message
+    */
     public static function CreateRetval(Retval $retval) { 
 
         return self::Create(MessageTypeEnum::GetEnum('retval'), $retval);    
     }
 
-    /** TODO: */
-    public static function CreatePlain($plain) {
+    /**
+     * Creates Message - plain
+     * @param string $plain Plain text
+     * @return Message
+     */
+    public static function CreatePlain(string $plain) {
 
         return self::Create(MessageTypeEnum::GetEnum('plain'), $plain);
     }
 
-    /** TODO: */
+    /** 
+     * Creates Message - array
+     * @param array $arr Text array
+     * 
+    */
     public static function CreateArray(array $arr = array()) {
 
         return self::Create(MessageTypeEnum::GetEnum('array'), $arr);
@@ -55,6 +67,7 @@ class Message {
         $msg = new self($type, $data);
         return $msg;
     }
+
 
     /** TODO: */
     protected function __construct(MessageTypeEnum $type, $data = NULL) {
