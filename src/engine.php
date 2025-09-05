@@ -430,7 +430,7 @@ class Engine {
             $controller = new $cls($pars);
 
             // action call - get message
-            $message = $this->CallAction($controller, ucfirst($action_name), intval($version));
+            $message = $this->CallAction($controller, camel($action_name), intval($version));
             if($message === null || !$message || !($message instanceof Response\Message)) {
 
                 throw new \Exception("Message is null, empty or not Message");

@@ -100,6 +100,7 @@ abstract class Controller {
     */
     public function FindAction(string $action, int $version = null) {
 
+        $action = camel_str($action); // action is always UPPER camle case, deifnition can be snake_case
         $functions = get_class_methods($this);
         if ($version !== null) {
 
@@ -129,14 +130,15 @@ abstract class Controller {
 
         try {
 
+            $action_index = snake($action_name);
             if(is_noe($this->FuncDefs)) 
                 throw new EngineWorkException("Functions defitions are not defined/setup");
             
             $c = Collection::ToCollection($this->FuncDefs);
             if(!$c->HasKey($action_name)) 
-                throw new EngineWorkException("Definition for $action_name is not found");
-
-            $rules = $this->FuncDefs[$action_name];
+                throw new EngineWorkException("Definition for $action_index is not found");
+                
+            $rules = $this->FuncDefs[$action_index];
             return $rules;
             
         } catch(\Exception $exc) {
@@ -149,7 +151,7 @@ abstract class Controller {
     /**
      * Apply and check if requirements of rules are met
      * @param FunctionDefinitionRule[] $rules
-     * @throws Exception
+     * @throws Exception|Exceptionf
      */
     public function ApplyActionRules(array $rules = array()) {
 
@@ -224,6 +226,7 @@ abstract class Controller {
 
         try  {
 
+            $action = snake($action);
             $this->FuncDefs[$action] = [];
             foreach($rules as $r) {
     
