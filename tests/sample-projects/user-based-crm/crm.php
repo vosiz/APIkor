@@ -4,8 +4,8 @@
 
 // TODO LIST
 // - number of registered users
-// - list of roles
-// - list of user with roles
+// - list of roles + permissions
+// - list of user with roles (auth)
 
 namespace SampleProject\UBC\CRM;
 

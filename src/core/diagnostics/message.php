@@ -4,9 +4,9 @@ namespace Apikor;
 
 class Message {
 
-    private $Timestamp; public function GetTimestamp() {    return $this->Timestamp;    }
-    private $Message;   public function GetMessage() {      return $this->Message;      }
-    private $LevelEnum; public function GetLevel() {        return $this->LevelEnum;    }
+    private $Timestamp; public function GetTimestamp()  { return $this->Timestamp;  }
+    private $Message;   public function GetMessage()    { return $this->Message;    }
+    private $LevelEnum; public function GetLevel()      { return $this->LevelEnum;  }
 
     /**
      * Constructor

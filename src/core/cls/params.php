@@ -6,7 +6,7 @@ use Vosiz\Utils\Collections\Collection;
 
 class UrlParameters {
 
-    private $Pars;  public function GetParams()     { return $this->Pars;   }
+    private $Pars;  public function GetParams() { return $this->Pars;   }
 
     /**
      * Constructor - params setup

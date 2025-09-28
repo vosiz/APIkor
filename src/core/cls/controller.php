@@ -2,8 +2,6 @@
 
 namespace Apikor;
 
-require_once(__DIR__.'/params.php');
-
 use Apikor\UrlParameters;
 use Vosiz\Utils\Collections\Collection;
 use Vosiz\Enums\Enum;

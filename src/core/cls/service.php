@@ -1,6 +1,8 @@
 <?php
 
-class BaseService {
+namespace Apikor;
+
+abstract class Service {
 
 
 }

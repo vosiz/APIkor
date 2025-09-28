@@ -14,6 +14,17 @@ class ConfigException extends \Exceptionf {
     }
 }
 
+class ContainerException extends \Exceptionf {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}
+
 class DbException extends \Exceptionf {
 
     /**
@@ -78,6 +89,18 @@ class FileException extends \Exceptionf {
     }
 
 }
+
+class NotImplementedYet extends \Exceptionf {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $msg = '') {
+
+        return parent::__construct("Functionality is not implemented yet (contact dev team) %s", $msg);
+    }
+}
+
 class UrlException extends \Exceptionf {
 
     /**

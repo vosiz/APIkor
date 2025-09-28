@@ -50,56 +50,53 @@ class EngineRunModeEnum extends Enum {
     } 
 }
 
-class EngineDataProvider {
-
-    private $Engine;
-
-    public function __construct($engine) {
-
-        $this->Engine = $engine;
-    }
-
-    public function GetData(string $section, $key = null) {
-
-
-        switch($section) {
-
-            case 'db':
-                if(is_null($key)) {
-
-                    return $this->Engine->GetDbConns();
-
-                } else {
-
-                }
-                break;
-
-            default:
-                throw new \UnimplementedStateException($section);
-        }
-    }
-}
 
 class Engine {
 
-    private static $Singleton;
+    private static $Singleton = null;
 
     private $Configurator;  public function GetConfigurator()   { return $this->Configurator;   }
     private $Diags;
     private $Parser;
-    private $DbConns = [];  public function GetDbConns()        { return $this->DbConns;        }
-
-    private $DataProvider;
+    private $DataProvider;  // provides data from container
+    private $DataContainer; // stores engine data
     private $Mode;
     private $Errors;
     private $Status;
 
 
-    public static function ProvideData($section, $key = null) {
+    /** 
+     * Return singleton instance
+     * @return \Apikor\Engine
+     * @throws \Exception
+     */
+    public static function GetSingleton() {
 
         try {
 
-            return self::$Singleton->DataProvider->GetData($section, $key);
+            if(self::$Singleton == null)
+                throw new FakupException("Get singleton was called before engine inst. Applogic!");
+
+            return self::$Singleton;
+
+        } catch(\FakupException $exc) {
+
+            throw new \Exception($exc);
+        }
+    }
+
+    /** 
+     * Provides data stored in container
+     * @param string $section From which section (section key) - returns all
+     * @param string $key From which assoc. part of section
+     * @return mixed
+     * @throws \Apikor\EngineWorkException
+    */
+    public static function ProvideData(string $section, string $key = null) {
+
+        try {
+
+            return self::GetSingleton()->DataProvider->GetData($section, $key);
 
         } catch(\Exception $exc) {
 
@@ -120,9 +117,11 @@ class Engine {
             $this->Status = EngineStatusEnum::GetEnum('cold');
             $this->Errors = new Collection();
 
-            $this->Configurator = new Configurator();
-            $this->Diags        = new Diag($this);
-            $this->Parser       = UrlParser::Create();
+            $this->Configurator     = new Configurator();
+            $this->Diags            = new Diag($this);
+            $this->Parser           = UrlParser::Create();
+            $this->DataContainer    = new EngineDataContainer();
+            $this->DataProvider     = new EngineDataProvider($this->DataContainer);
             
             // default config
             $this->DefaultConfig();   
@@ -131,8 +130,6 @@ class Engine {
 
             if(self::$Singleton == null)
                 self::$Singleton = $this;
-
-            $this->DataProvider = new EngineDataProvider($this);
 
         } catch (\Exception $exc) {
 
@@ -238,8 +235,10 @@ class Engine {
 
         try {
 
-            $this->DbConns[$key] = new DbConMySql($connection_string, $user, $pass);
-            Diag::Info("Connected to DB as ".$key);
+            $conn = new DbConMySql($connection_string, $user, $pass);
+            $this->DbConns[$key] = $conn;
+            $this->DataProvider->SetData(\Apikor\EngineDataContainer::SECTION_KEY_DB, $key, $conn);
+            Diag::Info("Connected to DB as '$key'");
 
         } catch(DbException $exc) {
 
@@ -250,31 +249,6 @@ class Engine {
             throw $exc;
         }
         
-    }
-
-
-    /** 
-     * Default configurations 
-    */
-    private function DefaultConfig() {
-
-        $defcfg = [
-
-            // diagnostics
-            'diagnostics' => [
-                'level'             => EngineDiagnosticsLevelEnum::GetEnum('error'),
-                'print_messages'    => false,
-                'print_configs'     => false,
-                'print_urlparser'   => false,
-            ],
-
-        ];
-
-        $configs = EngineConfig::ToConfigBulk($defcfg);
-        foreach($configs as $cfg) {
-
-            $this->SetupConfig($cfg);
-        }
     }
 
     /** 
@@ -328,7 +302,33 @@ class Engine {
     }
 
 
-    /** Check configuration
+    /** 
+     * Default configurations 
+    */
+    private function DefaultConfig() {
+
+        $defcfg = [
+
+            // diagnostics
+            'diagnostics' => [
+                'level'             => EngineDiagnosticsLevelEnum::GetEnum('error'),
+                'print_messages'    => false,
+                'print_configs'     => false,
+                'print_urlparser'   => false,
+            ],
+
+        ];
+
+        $configs = EngineConfig::ToConfigBulk($defcfg);
+        foreach($configs as $cfg) {
+
+            $this->SetupConfig($cfg);
+        }
+    }
+
+
+    /** 
+     * Check configuration
      * @return false
      * @throws EngineWorkException
      */
