@@ -1,14 +1,12 @@
 <?php 
 
-namespace SampleProject\UBC\CRM\StatsModule;
+namespace Apikor\StatsModule;
 
 // use Vosiz\VaTools\Retval;
 use Apikor\Helpers\MessageCreator as CreateMsg;
 
 
 class EntityController extends \Apikor\Controller {
-
-    
 
     // Abstract implementation
     protected function _FunctionDefinitionsSetup() {

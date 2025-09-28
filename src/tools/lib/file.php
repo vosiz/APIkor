@@ -12,22 +12,31 @@ namespace Apikor\Tools;
  */
 function FILEOPS_Exists(string $user_space, string $apikor_space, string $file, string $ext = 'php') {
 
-    $file .= '.'.$ext;
-    $user_file = sprintf("%s/%s", $user_space, $file);
-    $apikor_file = sprintf("%s/%s", $apikor_space, $file);
+    try {
 
-    if(file_exists($user_file)) { // user based - overrides master
+        $file .= '.'.$ext;
+        $user_file = sprintf("%s/%s", $user_space, $file);
+        $apikor_file = sprintf("%s/%s", $apikor_space, $file);
 
-        return ['user', $user_file];
+        if(file_exists($user_file)) { // user based - overrides master
 
-    } else if(file_exists($apikor_file)) { // master based
+            return ['user', $user_file];
 
-        return ['master', $apikor_file];
+        } else if(file_exists($apikor_file)) { // master based
 
-    } else {
+            return ['master', $apikor_file];
 
-        throw new \Exceptionf("'$file' not found");
+        } else {
+
+            throw new \Exceptionf("'$file' not found");
+        }
+
+    } catch (\Exception $exc) {
+
+        throw $exc;
     }
+
+    
 
 }
 

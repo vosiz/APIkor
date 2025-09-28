@@ -462,7 +462,6 @@ class Engine {
         try {
 
             $format = $this->Parser->GetFormat();
-            require_once(__DIR__.'/output/formats/'.$format.'.php');
             Diag::Debug("Will format to '$format'");
             $formatter = Formatter::Translate($format);
 
@@ -510,7 +509,7 @@ class Engine {
     private function Require(string $path) {
 
         if (!file_exists($path)) {
-            throw new FileException($path);
+            throw FileException::FileNotFound($path);
         }
 
         require_once($path);

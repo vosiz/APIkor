@@ -22,27 +22,33 @@ abstract class Formatter implements IFormat{
 
             case self::FORMATTER_KEY_VAR:
             case self::FORMATTER_KEY_VARDUMP:
+                require_once(__DIR__.'/formats/vard.php');
                 return new VarDumpFormat();
                 break;
 
             case self::FORMATTER_KEY_VAR_BROSWER:
             case self::FORMATTER_KEY_VAR_PRE:
+                require_once(__DIR__.'/formats/varb.php');
                 return new VarBroswerFormat();
                 break;
 
             case self::FORMATTER_KEY_NODEH:
+                require_once(__DIR__.'/formats/node.php');
                 return new NodehFormat();
                 break;
             
             case self::FORMATTER_KEY_JSON:
+                require_once(__DIR__.'/formats/json.php');
                 return new JsonFormat();
                 break;
 
             case self::FORMATTER_KEY_XML:
+                require_once(__DIR__.'/formats/xml.php');
                 return new XmlFormat();
                 break;
 
             case self::FORMATTER_KEY_HTML:
+                require_once(__DIR__.'/formats/html.php');
                 return new HtmlFormat();
                 break;
 
