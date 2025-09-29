@@ -23,43 +23,69 @@ class EngineDataProvider {
      */
     public function GetData(string $section, string $key = null) {
 
-        switch($section) {
+        try {
 
-            // allowed
-            case \Apikor\EngineDataContainer::SECTION_KEY_DB:
-                return $this->Provide(\Apikor\EngineDataContainer::SECTION_KEY_DB, $key);
+            if($this->IsAllowed($section)) {
 
-            // case 'model':
-            //     break;
+                return $this->Provide($section, $key);
+            }
 
-            // case 'mapper':
-            //     break;
+        } catch (\Exception $exc) {
 
-            // case 'service':
-            //     break;
-
-            default:
-                throw new \UnimplementedStateException($section);
+            throw $exc;
         }
+
     }
 
-    /** TODO: */
+    /** 
+     * Sets data to container
+     * @param string $section Section key
+     * @param string $key In section key
+     * @param mixed $value Value
+     * @throws \Exception
+     */
     public function SetData(string $section, string $key, $value) {
 
-        switch($section) {
+        try {
 
-            // allowed
-            case \Apikor\EngineDataContainer::SECTION_KEY_DB:
+            if($this->IsAllowed($section)) {
+
                 return $this->Inject($section, $key, $value);
+            }
+
+        } catch (\Exception $exc) {
+
+            throw $exc;
+        }
+
+    }
+
+    /** 
+     * Check if provision is allowed
+     * @param string $name Section name
+     * @return bool true if allowed
+     * @throws \UnimplementedStateException
+    */
+    private function IsAllowed(string $name) {
+
+        switch($name) {
+
+            case \Apikor\EngineDataContainer::SECTION_KEY_DB:
+            case \Apikor\EngineDataContainer::SECTION_KEY_SERVICE:
+                return true;
 
             default:
-                throw new \UnimplementedStateException($section);
+                throw new \UnimplementedStateException($name);
         }
     }
 
-
-    /** TODO: */
-    private function GetProvider($id) {
+    /**
+     * Gets data provider by key
+     * @param string $id Data provider registration key
+     * @return \Apikor\DataProvider
+     * @throws \Exception
+     */
+    private function GetProvider(string $id) {
 
         try {
 
@@ -71,8 +97,14 @@ class EngineDataProvider {
         }
     }
 
-    /** TODO: */
-    private function Provide($section, $key = NULL) {
+    /** 
+     * Provides data
+     * @param $section Data provider key
+     * @param $key Data part key
+     * @return mixed
+     * @throws BadMethodCallException
+     */
+    private function Provide(string $section, $key = NULL) {
 
         try {
 
@@ -87,8 +119,13 @@ class EngineDataProvider {
         }
     }
 
-    /** TODO: */
-    private function Inject($section, $key, $value) {
+    /** 
+     * Adds data to data provider
+     * @param string $section Section id
+     * @param string $key Key
+     * @param mixed $value Value
+    */
+    private function Inject(string $section, string $key, $value) {
 
         $provider = $this->GetProvider($section);
         $provider->Inject($key, $value);

@@ -14,6 +14,7 @@ require_once(__DIR__.'/dataprovider.php');
 // - providers
 require_once(__DIR__.'/providers/base/data.php');
 require_once(__DIR__.'/providers/db.php');
+require_once(__DIR__.'/providers/service.php');
 
 // Core
 require_once(__DIR__.'/diagnose.php');

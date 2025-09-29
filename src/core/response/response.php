@@ -16,7 +16,10 @@ class ResponseHeader {
     private $Request;
     private $Client;
 
-    /** TODO: */
+    /** 
+     * Constructor
+     * @param Message $msg Message
+    */
     public function __construct(Message $msg) {
 
         $this->Type = $msg->GetType();
@@ -29,7 +32,10 @@ class ResponseBody {
     private $Payload;
     private $Debug;
 
-    /** TODO: */
+    /** 
+     * Constructor
+     * @param Message $msg Message
+     */
     public function __construct(Message $msg) {
         
         $this->Debug = new ResponseDebug();
@@ -42,13 +48,19 @@ class Response {
     private $Header;
     private $Body;
 
-    /** TODO: */
+    /** 
+     * Instantiate
+     * @param Message $msg Message
+    */
     public static function Create(Message $msg) {   
 
         return new self($msg);
     }
 
-    /** TODO: */
+    /** 
+     * Constructor
+     * @param Message $msg Message
+     */
     protected function __construct(Message $msg) {
 
         $this->Header   = new ResponseHeader($msg);

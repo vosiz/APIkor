@@ -54,14 +54,19 @@ class Message {
     /** 
      * Creates Message - array
      * @param array $arr Text array
-     * 
+     * @return Message
     */
     public static function CreateArray(array $arr = array()) {
 
         return self::Create(MessageTypeEnum::GetEnum('array'), $arr);
     }
 
-    /** TODO: */
+    /** 
+     * Creates Message
+     * @param MessageTypeEnum $type Message type
+     * @param mixed $data Data
+     * @return Message
+    */
     public static function Create(MessageTypeEnum $type, $data = NULL) {
 
         $msg = new self($type, $data);
@@ -69,7 +74,11 @@ class Message {
     }
 
 
-    /** TODO: */
+    /** 
+     * Consturctor
+     * @param MessageTypeEnum $type Message type
+     * @param mixed $data Data
+    */
     protected function __construct(MessageTypeEnum $type, $data = NULL) {
 
         $this->Type = $type;

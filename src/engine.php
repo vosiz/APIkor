@@ -120,7 +120,7 @@ class Engine {
             $this->Configurator     = new Configurator();
             $this->Diags            = new Diag($this);
             $this->Parser           = UrlParser::Create();
-            $this->DataContainer    = new EngineDataContainer();
+            $this->DataContainer    = new EngineDataContainer(); // je potreba pridat services classy apod TODO:
             $this->DataProvider     = new EngineDataProvider($this->DataContainer);
             
             // default config

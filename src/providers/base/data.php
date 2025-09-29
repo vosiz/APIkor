@@ -8,13 +8,22 @@ abstract class DataProvider  {
 
     abstract public function Init(array $data);
     
-    /** TODO: */
+    /** 
+     * List of data
+     * @return mixed|array
+    */
     public function List() {
 
         return $this->Data;
     }
 
-    /** TODO: */
+    /** 
+     * Data by key
+     * @param string $key Key
+     * @param bool If true and not defined throws Excpetion
+     * @return mixed data
+     * @throws \Exception
+     */
     public function ByKey(string $key, bool $strict = false) {
 
         try {
@@ -31,7 +40,11 @@ abstract class DataProvider  {
         }
     }
 
-    /** TODO: */
+    /** 
+     * Injects data
+     * @param string $key Id
+     * @param mixed $value Value
+     */
     public function Inject(string $key, $value) {
 
         $this->Data[$key] = $value;

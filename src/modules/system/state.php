@@ -13,7 +13,10 @@ class StateController extends \Apikor\Controller {
         $this->AddFuncDefRules('Db');
     }
 
-    /** TODO: */
+    /** 
+     * Database connection state
+     * @return array
+    */
     public function Db() {
 
         try {

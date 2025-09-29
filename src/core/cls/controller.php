@@ -66,9 +66,9 @@ abstract class Controller {
 
     protected $UrlGetParameters;
     protected $FuncDefs = null;
-    // protected $MessageCreator;      public function GetMc() { return $this->MessageCreator;   }
 
     abstract protected function _FunctionDefinitionsSetup();
+    abstract protected function _Setup();
 
     /**
      * Constructor
@@ -76,10 +76,18 @@ abstract class Controller {
      */
     public function __construct(array $get = array()) {
 
-        $this->UrlGetParameters = new UrlParameters($get);
-        $this->FuncDefs = array();
-        $this->_FunctionDefinitionsSetup();
-        // $this->MessageCreator = new MessageCreator();
+        try {
+        
+            $this->UrlGetParameters = new UrlParameters($get);
+            $this->FuncDefs = array();
+            $this->_FunctionDefinitionsSetup();
+            $this->_Setup();
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
     }
 
     /**
@@ -232,6 +240,19 @@ abstract class Controller {
             }
 
         } catch (\Exception $exc) {
+
+            throw $exc;
+        }
+    }
+
+    /** TODO: */
+    protected function SetupService(string $service) {
+
+        try {
+
+            return \Apikor\Engine::ProvideData('service', $service);
+
+        } catch(\Exception $exc) {
 
             throw $exc;
         }

@@ -4,21 +4,39 @@ namespace Apikor;
 
 class EngineDataContainer {
 
-    const SECTION_KEY_DB = 'db';
+    const SECTION_KEY_DB        = 'db';
+    const SECTION_KEY_SERVICE   = 'service';
 
     private $Providers = array();
 
 
-    /** TODO: */
-    public function __construct($inject_data = array()) {
+    /**
+     * Constructor
+     * @param array $inject_data Initial setup data
+     * @throws \Exception
+     */
+    public function __construct(array $inject_data) {
 
-        // basic providers
-        //$this->AddProvider(self::SECTION_KEY_DB, new DbProvider());
-        $this->AddTrustedProvider(self::SECTION_KEY_DB, new DbProvider());
+        try {
+
+            // basic providers
+            //$this->AddProvider(self::SECTION_KEY_DB, new DbProvider());
+            $this->AddTrustedProvider(self::SECTION_KEY_DB, new DbProvider());
+            $this->AddTrustedProvider(self::SECTION_KEY_SERVICE, new ServiceProvider($inject_data[self::SECTION_KEY_SERVICE])); // TODO
+
+        } catch (\Exception $exc) {
+
+            throw $exc;
+        }
+        
     }
 
-
-    /** TODO: */
+    /** 
+     * Returns data provider by key
+     * @param string $key Id of provider
+     * @return \Apikor\DataProvider
+     * @throws \ContainerException
+     */
     public function GetProviderByKey(string $key) {
 
         try {
@@ -31,16 +49,25 @@ class EngineDataContainer {
         }
     }
     
-    /** TODO: */
+    /** Adds provider to pool 
+     * @param string $key Identification of provider
+     * @param DataProvider $provider DataProvider instance
+    */
     public function AddProvider(string $key, DataProvider $provider) {
 
         throw new NotImplementedYet("Custom data providers are not supported yet");
     }
 
-    /** TODO: */
+    /** 
+     * Adds data provider to pool - basic, controlled, trusted
+     * @param string $key Identification of DataProvider
+     * @param DataProvider $provider DataProvider instance
+     */
     private function AddTrustedProvider(string $key, DataProvider $provider) {
 
         $this->Providers[$key] = $provider;
     }
+
+    
 
 }
