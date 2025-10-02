@@ -2,9 +2,13 @@
 
 namespace Apikor;
 
+use \Apikor\Tools;
+
 class EngineDataProvider {
 
     private $Container;
+    private $Configurator;
+    
 
     /** 
      * Constructor
@@ -12,16 +16,24 @@ class EngineDataProvider {
     */
     public function __construct($container) {
 
-        $this->Container = $container;
+        try {
+
+            $this->Container = $container;
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
     }
 
     /** 
      * Gets data from container
-     * @param string $section Section key
+     * @param EngineContainerSectionEnum $section Section key
      * @param string $key In section key
-     * @throws \UnimplementedStateException
+     * @throws \Exception
      */
-    public function GetData(string $section, string $key = null) {
+    public function GetData(EngineContainerSectionEnum $section, string $key = null) {
 
         try {
 
@@ -39,12 +51,12 @@ class EngineDataProvider {
 
     /** 
      * Sets data to container
-     * @param string $section Section key
+     * @param EngineContainerSectionEnum $section Section key
      * @param string $key In section key
      * @param mixed $value Value
      * @throws \Exception
      */
-    public function SetData(string $section, string $key, $value) {
+    public function SetData(EngineContainerSectionEnum $section, string $key, $value) {
 
         try {
 
@@ -60,32 +72,55 @@ class EngineDataProvider {
 
     }
 
+
+    /**
+     * Loads basic entities instnaces
+     * @throws \Apikor\ContainerException
+     */
+    public function LoadEntities() {
+
+        try {
+
+            $this->Configurator = Engine::GetSingleton()->GetConfigurator();
+
+            foreach($this->Container->GetEntities() as $ent) {
+                
+                $provider = $this->GetProvider($ent->GetType());
+                $ent->Include($provider);
+            }
+
+        } catch(\Exception $exc) {
+
+            throw new ContainerException("Data provision failed: ".$exc->getMessage());
+        }
+
+    }
+
+
     /** 
      * Check if provision is allowed
-     * @param string $name Section name
+     * @param EngineContainerSectionEnum $name Section name
      * @return bool true if allowed
      * @throws \UnimplementedStateException
     */
-    private function IsAllowed(string $name) {
+    private function IsAllowed(EngineContainerSectionEnum $section) {
 
-        switch($name) {
+        $internals = EngineContainerSectionEnum::GetAll();
+        if($internals->HasValue($section))
+            return true;
 
-            case \Apikor\EngineDataContainer::SECTION_KEY_DB:
-            case \Apikor\EngineDataContainer::SECTION_KEY_SERVICE:
-                return true;
+        // TODO: externals
 
-            default:
-                throw new \UnimplementedStateException($name);
-        }
+        throw new \UnimplementedStateException($name);
     }
 
     /**
      * Gets data provider by key
-     * @param string $id Data provider registration key
+     * @param EngineContainerSectionEnum $id Data provider registration key
      * @return \Apikor\DataProvider
      * @throws \Exception
      */
-    private function GetProvider(string $id) {
+    private function GetProvider(EngineContainerSectionEnum $id) {
 
         try {
 
@@ -99,33 +134,33 @@ class EngineDataProvider {
 
     /** 
      * Provides data
-     * @param $section Data provider key
-     * @param $key Data part key
+     * @param EngineContainerSectionEnum $section Data provider key
+     * @param string $key Data part key
      * @return mixed
      * @throws BadMethodCallException
      */
-    private function Provide(string $section, $key = NULL) {
+    private function Provide(EngineContainerSectionEnum $section, string $key = NULL) {
 
         try {
 
             $provider = $this->GetProvider($section);
 
             return $key === NULL ? 
-                $provider->List() : $provider->ByKey($key);
+                $provider->List() : $provider->ByKey($key, true);
 
         } catch(\Exception $exc) {
 
-            throw new BadMethodCallException("No method found for section: $section; ".$exc->getMessage());
+            throw new \BadMethodCallException("No method found for section: $section; ".$exc->getMessage());
         }
     }
 
     /** 
      * Adds data to data provider
-     * @param string $section Section id
+     * @param EngineContainerSectionEnum $section Section id
      * @param string $key Key
      * @param mixed $value Value
     */
-    private function Inject(string $section, string $key, $value) {
+    private function Inject(EngineContainerSectionEnum $section, string $key, $value) {
 
         $provider = $this->GetProvider($section);
         $provider->Inject($key, $value);

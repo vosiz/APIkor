@@ -11,6 +11,7 @@ use Apikor\Output\Formatter;
 use Apikor\Db\DbConMySql;
 use Apikor\Tools\UrlParser;
 use Apikor\Tools as Tools;
+use Apikor\Commons;
 use Vosiz\Enums\Enum;
 use Vosiz\Utils\Collections\Collection;
 
@@ -55,11 +56,11 @@ class Engine {
 
     private static $Singleton = null;
 
-    private $Configurator;  public function GetConfigurator()   { return $this->Configurator;   }
+    private $Configurator;      public function GetConfigurator()   { return $this->Configurator;   }
     private $Diags;
     private $Parser;
-    private $DataProvider;  // provides data from container
-    private $DataContainer; // stores engine data
+    private $DataProvider;      public function GetDataProvider()   { return $this->DataProvider;   }
+    private $DataContainer; 
     private $Mode;
     private $Errors;
     private $Status;
@@ -87,16 +88,16 @@ class Engine {
 
     /** 
      * Provides data stored in container
-     * @param string $section From which section (section key) - returns all
+     * @param EngineContainerSectionEnum $section From which section (section key) - returns all
      * @param string $key From which assoc. part of section
      * @return mixed
      * @throws \Apikor\EngineWorkException
     */
-    public static function ProvideData(string $section, string $key = null) {
+    public static function ProvideData(EngineContainerSectionEnum $section, string $key = null) {
 
         try {
-
-            return self::GetSingleton()->DataProvider->GetData($section, $key);
+            
+            return self::GetSingleton()->GetDataProvider()->GetData($section, $key);
 
         } catch(\Exception $exc) {
 
@@ -114,22 +115,22 @@ class Engine {
 
         try {
 
+            if(self::$Singleton == null)
+            self::$Singleton = $this;
+
             $this->Status = EngineStatusEnum::GetEnum('cold');
             $this->Errors = new Collection();
 
             $this->Configurator     = new Configurator();
             $this->Diags            = new Diag($this);
             $this->Parser           = UrlParser::Create();
-            $this->DataContainer    = new EngineDataContainer(); // je potreba pridat services classy apod TODO:
+            $this->DataContainer    = new EngineDataContainer();
             $this->DataProvider     = new EngineDataProvider($this->DataContainer);
             
             // default config
             $this->DefaultConfig();   
             
             $this->Mode = $mode;
-
-            if(self::$Singleton == null)
-                self::$Singleton = $this;
 
         } catch (\Exception $exc) {
 
@@ -162,6 +163,7 @@ class Engine {
 
             Diag::Info("Working...");
             $this->Status = EngineStatusEnum::GetEnum('cold');
+            $this->DataProvider->LoadEntities();
 
             // config check
             $this->ConfigCheck();
@@ -237,7 +239,7 @@ class Engine {
 
             $conn = new DbConMySql($connection_string, $user, $pass);
             $this->DbConns[$key] = $conn;
-            $this->DataProvider->SetData(\Apikor\EngineDataContainer::SECTION_KEY_DB, $key, $conn);
+            $this->DataProvider->SetData(EngineContainerSectionEnum::GetEnum('db'), $key, $conn);
             Diag::Info("Connected to DB as '$key'");
 
         } catch(DbException $exc) {
@@ -397,37 +399,38 @@ class Engine {
             $version            = $this->Parser->GetVersion();
             $pars               = $this->Parser->GetParameters();
 
-
+            // figure module
             $user_module_path = Tools\FILEOPS_PathCombine($this->Configurator->GetConfig('paths', 'modules'));
             if(empty($user_module_path) || !\file_exists($user_module_path)) {
                 
+                // TODO: is custom module path needed?
                 throw new ConfigException("User path to Modules is not setup");
             }
             $full_user_module_path = Tools\FILEOPS_PathCombine($user_module_path, $module_name);
 
-            // module/controller
-            list($type, $controller_path) = Tools\FILEOPS_Exists(
-                $full_user_module_path,
-                Tools\FILEOPS_PathCombine(Configurator::MODULES_PATH, $module_name), 
-                $controller_name);
+            // // module/controller
+            // list($type, $controller_path) = Tools\FILEOPS_Exists(
+            //     $full_user_module_path,
+            //     Tools\FILEOPS_PathCombine(Configurator::MODULES_PATH, $module_name), 
+            //     $controller_name);
 
-            if($type == 'user') {
+            // if($type == 'user') {
 
-                $appns = $this->Configurator->GetConfig('ns', 'app');
-                $cls = sprintf("%s\%sModule\%sController", $appns, ucfirst($module_name), ucfirst($controller_name));
+            //     $appns = $this->Configurator->GetConfig('ns', 'app');
+            //     $cls = sprintf("%s\%sModule\%sController", $appns, ucfirst($module_name), ucfirst($controller_name));
 
-            } else if($type == 'master') {
+            // } else if($type == 'master') {
                 
-                $cls = sprintf("Apikor\%sModule\%sController", ucfirst($module_name), ucfirst($controller_name));
+            //     $cls = sprintf("Apikor\%sModule\%sController", ucfirst($module_name), ucfirst($controller_name));
 
-            } else {
+            // } else {
 
-                throw new ConfigException("Unknown Module path return type: %s", $type);
-            }
-
-            $this->Require($controller_path);
-            Diag::Debug('Controller path at \'%s\'', $controller_path);
-            $controller = new $cls($pars);
+            //     throw new ConfigException("Unknown Module path return type: %s", $type);
+            // }
+            // Commons::Require($controller_path);
+            // Diag::Debug('Controller path at \'%s\'', $controller_path);
+            // $controller = new $cls($pars);
+            $controller = self::ProvideData(EngineContainerSectionEnum::GetEnum('controller'), $controller_name);
 
             // action call - get message
             $message = $this->CallAction($controller, camel($action_name), intval($version));
@@ -501,17 +504,4 @@ class Engine {
         
     }
 
-    /**
-     * Require once - safe
-     * @param string $path Path to file to require
-     * @throws FileException
-     */
-    private function Require(string $path) {
-
-        if (!file_exists($path)) {
-            throw FileException::FileNotFound($path);
-        }
-
-        require_once($path);
-    }
 }

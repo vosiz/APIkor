@@ -22,6 +22,9 @@ class TestController extends \Apikor\Controller {
         $this->AddFuncDefRules('TextArray');
     }
 
+    // Abstract implementation
+    protected function _Setup() { }
+
     /**
      * Aloha function
      * @return Response\Message (Text)

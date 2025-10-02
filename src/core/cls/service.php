@@ -2,7 +2,7 @@
 
 namespace Apikor;
 
-abstract class Service {
+abstract class Service extends Entity {
 
 
 }

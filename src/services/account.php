@@ -13,5 +13,7 @@ class AccountService extends \Apikor\DbDataService  {
     // user list -> parametrized
 
 
-    
+    public function GetStats() {
+        
+    }
 }

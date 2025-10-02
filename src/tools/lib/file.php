@@ -2,6 +2,23 @@
 
 namespace Apikor\Tools;
 
+use \Vosiz\Enums\Enum;
+
+class SpaceEnum extends Enum {
+
+    /**
+     * Abstract implementation
+     */
+    public static function Init(): void {
+
+        $vals = [
+            'master'    => 0x10,
+            'user'      => 0x20,
+        ];
+        self::AddValues($vals);
+    } 
+}
+
 /**
  * Check Apikor file existance
  * @param string $user_space path to user space dir (dir)
@@ -20,11 +37,11 @@ function FILEOPS_Exists(string $user_space, string $apikor_space, string $file, 
 
         if(file_exists($user_file)) { // user based - overrides master
 
-            return ['user', $user_file];
+            return [SpaceEnum::GetEnum('user'), $user_file];
 
         } else if(file_exists($apikor_file)) { // master based
 
-            return ['master', $apikor_file];
+            return [SpaceEnum::GetEnum('master'), $apikor_file];
 
         } else {
 

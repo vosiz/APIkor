@@ -13,6 +13,9 @@ class StateController extends \Apikor\Controller {
         $this->AddFuncDefRules('Db');
     }
 
+    // Abstract implementation
+    protected function _Setup() { }
+
     /** 
      * Database connection state
      * @return array
@@ -23,7 +26,7 @@ class StateController extends \Apikor\Controller {
 
             // db connection info
             $con_data = [];
-            foreach(\Apikor\Engine::ProvideData(\Apikor\EngineDataContainer::SECTION_KEY_DB) as $key => $conn) {
+            foreach(\Apikor\Engine::ProvideData(\Apikor\EngineContainerSectionEnum::GetEnum('db')) as $key => $conn) {
 
                 $a = array();
                 $info = $conn->ConnInfo();

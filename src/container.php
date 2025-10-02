@@ -2,27 +2,49 @@
 
 namespace Apikor;
 
+use Vosiz\Enums\Enum;
+
+class EngineContainerSectionEnum extends Enum {
+
+    /**
+     * Abstract implementation
+     */
+    public static function Init(): void {
+
+        $vals = [
+            'uncategorized' => 0x00,
+            'db'            => 0x10,
+            'module'        => 0x20,
+        ];
+
+        foreach(EntityTypeEnum::GetAll()->AsArray() as $k => $enum) {
+            $vals[$enum->GetName()] = $enum->GetValue();
+        }
+        self::AddValues($vals);
+    } 
+}
+
 class EngineDataContainer {
 
-    const SECTION_KEY_DB        = 'db';
-    const SECTION_KEY_SERVICE   = 'service';
-
     private $Providers = array();
-
+    private $Entities;  public function GetEntities() { return $this->Entities; }
 
     /**
      * Constructor
-     * @param array $inject_data Initial setup data
      * @throws \Exception
      */
-    public function __construct(array $inject_data) {
+    public function __construct() {
 
         try {
 
             // basic providers
-            //$this->AddProvider(self::SECTION_KEY_DB, new DbProvider());
-            $this->AddTrustedProvider(self::SECTION_KEY_DB, new DbProvider());
-            $this->AddTrustedProvider(self::SECTION_KEY_SERVICE, new ServiceProvider($inject_data[self::SECTION_KEY_SERVICE])); // TODO
+            $this->AddTrustedProvider(EngineContainerSectionEnum::GetEnum('db'), new DbProvider());
+            $this->AddTrustedProvider(EngineContainerSectionEnum::GetEnum('controller'), new ControllerProvider());
+            $this->AddTrustedProvider(EngineContainerSectionEnum::GetEnum('service'), new ServiceProvider());
+            $this->AddTrustedProvider(EngineContainerSectionEnum::GetEnum('model'), new ModelProvider());
+            $this->AddTrustedProvider(EngineContainerSectionEnum::GetEnum('mapper'), new MapperProvider());
+
+            $this->Entities = INC_Entities();
 
         } catch (\Exception $exc) {
 
@@ -57,6 +79,7 @@ class EngineDataContainer {
 
         throw new NotImplementedYet("Custom data providers are not supported yet");
     }
+
 
     /** 
      * Adds data provider to pool - basic, controlled, trusted

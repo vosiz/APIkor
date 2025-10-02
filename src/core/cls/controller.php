@@ -62,7 +62,7 @@ class FunctionDefinitionRule {
 }
 
 
-abstract class Controller {
+abstract class Controller extends Entity {
 
     protected $UrlGetParameters;
     protected $FuncDefs = null;
@@ -81,7 +81,6 @@ abstract class Controller {
             $this->UrlGetParameters = new UrlParameters($get);
             $this->FuncDefs = array();
             $this->_FunctionDefinitionsSetup();
-            $this->_Setup();
 
         } catch(\Exception $exc) {
 
@@ -106,7 +105,9 @@ abstract class Controller {
     */
     public function FindAction(string $action, int $version = null) {
 
-        $action = camel_str($action); // action is always UPPER camle case, deifnition can be snake_case
+        $this->_Setup();
+
+        $action = camel_str($action); // action is always UPPER camel case, deifnition can be snake_case
         $functions = get_class_methods($this);
         if ($version !== null) {
 
@@ -219,7 +220,6 @@ abstract class Controller {
             throw $exc;
         }
 
-        
     }
     
     /**
@@ -245,12 +245,17 @@ abstract class Controller {
         }
     }
 
-    /** TODO: */
+    /**
+     * Returns service instance
+     * @param string $service Service name/id
+     * @return \Apikor\Service
+     * @throws \Exception
+     */
     protected function SetupService(string $service) {
 
         try {
 
-            return \Apikor\Engine::ProvideData('service', $service);
+            return \Apikor\Engine::ProvideData(EngineContainerSectionEnum::GetEnum('service'), $service);
 
         } catch(\Exception $exc) {
 
