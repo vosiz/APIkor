@@ -255,7 +255,7 @@ abstract class Controller extends Entity {
 
         try {
 
-            return \Apikor\Engine::ProvideData(EngineContainerSectionEnum::GetEnum('service'), $service);
+            return Engine::ProvideData(EngineContainerSectionEnum::GetEnum('service'), $service)->_Setup();
 
         } catch(\Exception $exc) {
 

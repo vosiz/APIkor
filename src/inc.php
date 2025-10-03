@@ -54,7 +54,7 @@ function INC_Entities() {
     // services
     require_once(__DIR__.'/services/base/data.php');
     require_once(__DIR__.'/services/base/db.php');
-    $e[] = Entity::CreateService('account', '\Apikor');
+    $e[] = Entity::CreateService('account', '\Apikor', Entity::TableName('users'));
     // controllers
     require_once(__DIR__.'/models/base/dbmodel.php');
     $e[] = Entity::CreateController('system', 'test', '\Apikor');

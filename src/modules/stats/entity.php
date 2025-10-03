@@ -28,7 +28,7 @@ class EntityController extends \Apikor\Controller {
     public function Users() {
 
         // get count of users
-        $this->AccountService->GetStats();
+        $this->AccountService->All();
 
         fakup("Not done yet");
     }

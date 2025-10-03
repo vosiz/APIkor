@@ -54,6 +54,8 @@ class EngineRunModeEnum extends Enum {
 
 class Engine {
 
+    const DB_DEF_KEY = 'main';
+
     private static $Singleton = null;
 
     private $Configurator;      public function GetConfigurator()   { return $this->Configurator;   }
@@ -90,7 +92,7 @@ class Engine {
      * Provides data stored in container
      * @param EngineContainerSectionEnum $section From which section (section key) - returns all
      * @param string $key From which assoc. part of section
-     * @return mixed
+     * @return \Apikor\DataProvider
      * @throws \Apikor\EngineWorkException
     */
     public static function ProvideData(EngineContainerSectionEnum $section, string $key = null) {
@@ -106,6 +108,24 @@ class Engine {
         }
 
     }
+
+    /**
+     * Gets main database connection
+     * @return \Apikor\DbProvider
+     * @throws \Exception
+     */
+    public static function GetMainDbConn() {
+
+        try {
+
+            return self::ProvideData(EngineContainerSectionEnum::GetEnum('db'), self::DB_DEF_KEY);
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
+    }
     
 
     /**
@@ -116,7 +136,7 @@ class Engine {
         try {
 
             if(self::$Singleton == null)
-            self::$Singleton = $this;
+                self::$Singleton = $this;
 
             $this->Status = EngineStatusEnum::GetEnum('cold');
             $this->Errors = new Collection();
@@ -233,7 +253,7 @@ class Engine {
      * @param string $pass Password
      * @param string $key Connection ID
     */
-    public function DbConnect(string $connection_string, string $user, string $pass, $key = 'main') {
+    public function DbConnect(string $connection_string, string $user, string $pass, $key = 'main', bool $is_main = true) {
 
         try {
 
@@ -241,6 +261,14 @@ class Engine {
             $this->DbConns[$key] = $conn;
             $this->DataProvider->SetData(EngineContainerSectionEnum::GetEnum('db'), $key, $conn);
             Diag::Info("Connected to DB as '$key'");
+            if($is_main) {
+
+                // sets duplicate to 'main'
+                if($key !== self::DB_DEF_KEY) {
+                    $this->DataProvider->SetData(EngineContainerSectionEnum::GetEnum('db'), self::DB_DEF_KEY, $conn);
+                }
+                Diag::Info("Is MAIN connection");
+            }
 
         } catch(DbException $exc) {
 

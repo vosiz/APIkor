@@ -8,6 +8,7 @@ use Vosiz\VaTools\Structure\Credentials as Credentials;
 
 class DbCon extends VaDb {
 
+    // TODO:
     public function __construct(string $constr, string $user, string $pass) {
 
         try {
@@ -23,4 +24,20 @@ class DbCon extends VaDb {
         }
         
     }
+
+    // TODO:
+    public function All(string $table) {
+
+        try {
+
+            $query = $this->Query($table);
+            $query->Select();
+            return $query->Execute();
+
+        } catch(\Exception $exc) {
+
+            throw new \Apikor\DbException("DB.All failed:".$exc->getMessage());
+        }
+    }
+
 }

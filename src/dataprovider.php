@@ -144,7 +144,6 @@ class EngineDataProvider {
         try {
 
             $provider = $this->GetProvider($section);
-
             return $key === NULL ? 
                 $provider->List() : $provider->ByKey($key, true);
 

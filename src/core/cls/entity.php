@@ -24,10 +24,18 @@ class EntityTypeEnum extends Enum {
 // APIKOR entity
 abstract class Entity {
 
+    const APP_ENTITY_PREFIX = "apikor_app";
+
     private $Name;      public function GetName()       { return $this->Name;       }
     private $Filepath;  public function GetFilepath()   { return $this->Filepath;   }
     private $Type;      public function GetType()       { return $this->Type;       } 
 
+
+    // TODO:
+    public static function TableName(string $table_name) {
+
+        return sprintf("%s_%s", self::APP_ENTITY_PREFIX, $table_name);
+    }
 
     /**
      * Creates controller entity
@@ -62,7 +70,7 @@ abstract class Entity {
     public static function CreateService(string $service, string $namespace, ...$args) {
 
         $filepath = sprintf(__DIR__.'/../../services/'.$service.'.php');
-        return self::Create('service', $filepath, $service, $namespace, $args);
+        return self::Create('service', $filepath, $service, $namespace, ...$args);
     }
 
     // TODO
@@ -72,7 +80,7 @@ abstract class Entity {
         $cls_type = ucfirst($type);
         $cls = sprintf("%s\%ss\%s%s", $namespace, $cls_type, ucfirst($key), $cls_type);
 
-        $inst = new $cls($args);
+        $inst = new $cls(...$args);
         $inst->Filepath = $filepath;
         $inst->Type = EngineContainerSectionEnum::GetEnum($type);
         $inst->Name = $key;
@@ -110,8 +118,7 @@ abstract class Entity {
         try {
 
             Commons::Require($this->Filepath);
-            $provider->Inject($this->Name, $this);
-            
+            $provider->Inject($this->Name, $this);            
 
         } catch(\Exception $exc) {
 

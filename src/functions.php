@@ -15,3 +15,17 @@ if(!function_exists('fakup')) {
         throw new \Apikor\FakupException("[FAKUP] ".$fmt, ...$args);
     }
 }
+
+if(!function_exists('dump')) {
+
+    function dump(...$args) {
+
+        foreach($args as $a) {
+
+            echo '<pre>';
+            print_r($a);
+            echo '</pre>';
+        }
+        
+    }
+}
