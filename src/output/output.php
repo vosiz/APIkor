@@ -14,6 +14,7 @@ abstract class Formatter implements IFormat{
     // alts
     const FORMATTER_KEY_VAR         = 'var';
     const FORMATTER_KEY_VAR_PRE     = 'pre';
+    const FORMATTER_KEY_DUMP        = 'dump';
 
 
     public static function Translate(string $format) {
@@ -28,6 +29,7 @@ abstract class Formatter implements IFormat{
 
             case self::FORMATTER_KEY_VAR_BROSWER:
             case self::FORMATTER_KEY_VAR_PRE:
+            case self::FORMATTER_KEY_DUMP:
                 require_once(__DIR__.'/formats/varb.php');
                 return new VarBroswerFormat();
                 break;
