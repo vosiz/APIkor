@@ -67,6 +67,20 @@ abstract class Entity {
     }
 
     // TODO:
+    public static function CreateModel(string $model, string $namespace, ...$args) {
+
+        $filepath = sprintf(__DIR__.'/../../models/'.$model.'.php');
+        return self::Create('model', $filepath, $model, $namespace, ...$args);
+    }
+
+    // TODO:
+    public static function CreateMapper(string $mapper, string $namespace, ...$args) {
+
+        $filepath = sprintf(__DIR__.'/../../mappers/'.$mapper.'.php');
+        return self::Create('mapper', $filepath, $mapper, $namespace, ...$args);
+    }
+
+    // TODO:
     public static function CreateService(string $service, string $namespace, ...$args) {
 
         $filepath = sprintf(__DIR__.'/../../services/'.$service.'.php');

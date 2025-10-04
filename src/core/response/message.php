@@ -31,6 +31,16 @@ class Message {
     private $Type;  public function GetType()   { return $this->Type;   }
     private $Data;  public function GetData()   { return $this->Data;   }
 
+    /**
+     * Creates Message - data/model array
+     * @param Model[] $models array of models
+     * @return Message
+     */
+    public static function CreateData(array $models) {
+
+        return self::Create(MessageTypeEnum::GetEnum('data'), $models);
+    }
+
     /** 
      * Creates Message - retval
      * @param Retval $retval Retval

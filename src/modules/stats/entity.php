@@ -8,6 +8,7 @@ use Apikor\Helpers\MessageCreator as CreateMsg;
 class EntityController extends \Apikor\Controller {
 
     private $AccountService;
+    private $UserService;
 
     // Abstract implementation
     protected function _FunctionDefinitionsSetup() {
@@ -18,6 +19,7 @@ class EntityController extends \Apikor\Controller {
     // Abstract implementation
     protected function _Setup() {
 
+        $this->UserService = $this->SetupService('user');
         $this->AccountService = $this->SetupService('account');
     }
 
@@ -28,8 +30,8 @@ class EntityController extends \Apikor\Controller {
     public function Users() {
 
         // get count of users
-        $this->AccountService->All();
+        $users = $this->UserService->All();
 
-        fakup("Not done yet");
+        return CreateMsg::Models($users);
     }
 }

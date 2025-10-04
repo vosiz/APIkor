@@ -64,5 +64,31 @@ class MessageCreator {
         }
     }
 
+    /**
+     * Data/Models
+     * @param Model[array] $models Array of models
+     * @return Response\Message (Data|)
+     * @throws FakupException
+     */
+    public static function Models(array $models = array()) {
+
+        try {
+
+            if(empty($models)) {
+
+                // TODO: what to return? retval? text?
+                throw new FakupException("Model array is empty");
+
+            } else {
+
+                return Response\Message::CreateData($models);
+            }
+
+        } catch (\Exception $exc) {
+
+            throw new FakupException("Data message creation failure: ".$exc->getMessage());
+        }
+        
+    }
     
 }

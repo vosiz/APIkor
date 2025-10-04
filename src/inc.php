@@ -51,10 +51,17 @@ require_once(__DIR__.'/tools/tools.php');
 function INC_Entities() {
 
     $e = []; // basic entities
+    // models
+    require_once(__DIR__.'/models/base/dbmodel.php');
+    $e[] = Entity::CreateModel('user', '\Apikor');
+    // mappers
+    require_once(__DIR__.'/mappers/db.php');
+    $e[] = Entity::CreateMapper('db', '\Apikor');
     // services
     require_once(__DIR__.'/services/base/data.php');
     require_once(__DIR__.'/services/base/db.php');
-    $e[] = Entity::CreateService('account', '\Apikor', Entity::TableName('users'));
+    $e[] = Entity::CreateService('user', '\Apikor', Entity::TableName('users'));
+    $e[] = Entity::CreateService('account', '\Apikor', Entity::TableName('accounts'));
     // controllers
     require_once(__DIR__.'/models/base/dbmodel.php');
     $e[] = Entity::CreateController('system', 'test', '\Apikor');

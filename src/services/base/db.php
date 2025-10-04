@@ -9,6 +9,10 @@ abstract class DbDataService extends DataService {
     protected DbCon $Db;
     protected string $DbId;
     protected string $DbTable;
+    protected $DbModelName;
+
+    private $DbTableMapper;
+    private $DbModel;
 
     // TODO:
     // ========================
@@ -28,8 +32,6 @@ abstract class DbDataService extends DataService {
         parent::__construct();
         $this->DbId = $dbconn_id;
         $this->DbTable = $table;
-        //$this->Db = \Apikor\Engine::ProvideData(EngineContainerSectionEnum::GetEnum('db'), $dbconn_id);
-        //debug($this->Db);
     }
 
     // TODO:
@@ -38,7 +40,9 @@ abstract class DbDataService extends DataService {
         try {
 
             parent::_Setup();
-            $this->Db = \Apikor\Engine::ProvideData(EngineContainerSectionEnum::GetEnum('db'), $this->DbId);
+            $this->Db = Engine::ProvideData(EngineContainerSectionEnum::GetEnum('db'), $this->DbId);
+            $this->DbTableMapper = Engine::ProvideData(EngineContainerSectionEnum::GetEnum('mapper'), 'db');
+            $this->DbModel = Engine::ProvideData(EngineContainerSectionEnum::GetEnum('model'), $this->DbModelName);
             return $this;
 
         } catch(\Exception $exc) {
@@ -54,10 +58,11 @@ abstract class DbDataService extends DataService {
         try {
 
             $rows = $this->Db->All($this->DbTable);
+            return $this->DbTableMapper->ToModel($this->DbModel, $rows);
 
         } catch(\Exception $exc) {
 
-            throw new DbException("Cannot fetch All (Db.All): ".$exc->getMessage());
+            throw new DbException("Cannot fetch All: ".$exc->getMessage());
         }
 
     }

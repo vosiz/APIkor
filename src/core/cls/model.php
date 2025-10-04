@@ -2,6 +2,6 @@
 
 namespace Apikor;
 
-abstract class Model { 
+abstract class Model extends Entity { 
 
 }
