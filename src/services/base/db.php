@@ -57,7 +57,7 @@ abstract class DbDataService extends DataService {
 
         try {
 
-            $rows = $this->Db->All($this->DbTable);
+            $rows = $this->Db->Any($this->DbTable);
             return $this->DbTableMapper->ToModel($this->DbModel, $rows);
 
         } catch(\Exception $exc) {
@@ -66,5 +66,22 @@ abstract class DbDataService extends DataService {
         }
 
     }
+
+    // TODO:
+    public function AllActive() {
+
+        try {
+
+            $rows = $this->Db->Any($this->DbTable, ['active' => true]);
+            return $this->DbTableMapper->ToModel($this->DbModel, $rows);
+
+        } catch(\Exception $exc) {
+
+            throw new DbException("Cannot fetch All: ".$exc->getMessage());
+        }
+
+    }
+
+
 
 }

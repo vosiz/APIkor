@@ -26,12 +26,19 @@ class DbCon extends VaDb {
     }
 
     // TODO:
-    public function All(string $table) {
+    public function Any(string $table, array $where = []) {
 
         try {
 
             $query = $this->Query($table);
+            // basic select
             $query->Select();
+            // where clause
+            if(!empty($where)) {
+                foreach($where as $k => $v) {
+                    $query->Where($k, asarray($v));
+                }
+            }
             return $query->Execute();
 
         } catch(\Exception $exc) {

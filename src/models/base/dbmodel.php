@@ -2,7 +2,7 @@
 
 namespace Apikor;
 
-class DbModel extends \Apikor\Model {
+class DbModel extends \Apikor\MapModel {
 
     protected $Id;          public function GetId()         { return $this->Id;         }
     protected $Active;      public function IsActive()      { return $this->Active;     }

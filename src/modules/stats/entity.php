@@ -29,9 +29,9 @@ class EntityController extends \Apikor\Controller {
      */
     public function Users() {
 
-        // get count of users
-        $users = $this->UserService->All();
+        //$users = $this->UserService->All();
+        $stats = $this->UserService->Stats();
 
-        return CreateMsg::Models($users);
+        return CreateMsg::Models($stats);
     }
 }

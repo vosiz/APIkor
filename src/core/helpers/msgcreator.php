@@ -66,22 +66,28 @@ class MessageCreator {
 
     /**
      * Data/Models
-     * @param Model[array] $models Array of models
-     * @return Response\Message (Data|)
+     * @param Model[array]|Model $data Array of models or single (makes it to array)
+     * @return Response\Message (Data)
      * @throws FakupException
      */
-    public static function Models(array $models = array()) {
+    public static function Models($data = []) {
 
         try {
 
-            if(empty($models)) {
+            // accepts single Model aswell
+            if(!is_array($data)) {
+
+                $data = \asarray($data);
+            }
+
+            if(empty($data)) {
 
                 // TODO: what to return? retval? text?
                 throw new FakupException("Model array is empty");
 
             } else {
 
-                return Response\Message::CreateData($models);
+                return Response\Message::CreateData($data);
             }
 
         } catch (\Exception $exc) {

@@ -52,6 +52,7 @@ function INC_Entities() {
 
     $e = []; // basic entities
     // models
+    require_once(__DIR__.'/models/base/mapmodel.php');
     require_once(__DIR__.'/models/base/dbmodel.php');
     $e[] = Entity::CreateModel('user', '\Apikor');
     // mappers
