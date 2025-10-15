@@ -5,7 +5,7 @@ namespace Apikor;
 require_once(__DIR__.'/core/diagnostics/enums.php');
 require_once(__DIR__.'/core/diagnostics/message.php');
 
-use Vosiz\Utils\Collections\Collection as Collection;
+use Vosiz\Utils\Collections\Dictionary;
 use Vosiz\Enums\Enum as Enum;
 
 class EngineDiagnostics {
@@ -22,7 +22,7 @@ class EngineDiagnostics {
     public function __construct(Engine $engine) {
 
         self::$Engine = $engine;
-        self::$Messages = new Collection();
+        self::$Messages = new Dictionary();
 
         self::$DefaultLevel = EngineDiagnosticsLevelEnum::GetEnum('error');
     }   

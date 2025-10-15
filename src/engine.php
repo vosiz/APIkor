@@ -13,7 +13,7 @@ use Apikor\Tools\UrlParser;
 use Apikor\Tools as Tools;
 use Apikor\Commons;
 use Vosiz\Enums\Enum;
-use Vosiz\Utils\Collections\Collection;
+use Vosiz\Utils\Collections\Dictionary;
 
 
 class EngineStatusEnum extends Enum {
@@ -139,7 +139,7 @@ class Engine {
                 self::$Singleton = $this;
 
             $this->Status = EngineStatusEnum::GetEnum('cold');
-            $this->Errors = new Collection();
+            $this->Errors = new Dictionary();
 
             $this->Configurator     = new Configurator();
             $this->Diags            = new Diag($this);

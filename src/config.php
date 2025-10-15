@@ -4,7 +4,7 @@ namespace Apikor;
 
 use Vosiz\Enums\Enum as Enum;
 use Vosiz\Structure\Flagword as Fword;
-use Vosiz\Utils\Collections\Collection as Collection;
+use Vosiz\Utils\Collections\Dictionary;
 
 class EngineConfigException extends \Exceptionf {
 
@@ -112,10 +112,10 @@ class EngineConfigurator {
     */
     public function __construct() {
 
-        $this->Configs = new Collection();
+        $this->Configs = new Dictionary();
         foreach(EngineConfigEnum::GetAll()->ToArray() as $enum) {
 
-            $this->Configs->Add(new Collection(), $enum->GetKey());
+            $this->Configs->Add(new Dictionary(), $enum->GetKey());
         }
     }
 
