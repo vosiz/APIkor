@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9b3a39e5ae0996c35e9813bd2f681428",
+    "content-hash": "29365dfe6ecda4b8b776b2a7725d4a87",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -90,16 +90,16 @@
         },
         {
             "name": "vosiz/va-tools",
-            "version": "v1.8.1",
+            "version": "v1.8.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/va-tools.git",
-                "reference": "76f6eac76e407aec74ab15e4a7cdc9549e2065cd"
+                "reference": "470952e8bf8f4a8ea181b00198f098317c0fbe4b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/76f6eac76e407aec74ab15e4a7cdc9549e2065cd",
-                "reference": "76f6eac76e407aec74ab15e4a7cdc9549e2065cd",
+                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/470952e8bf8f4a8ea181b00198f098317c0fbe4b",
+                "reference": "470952e8bf8f4a8ea181b00198f098317c0fbe4b",
                 "shasum": ""
             },
             "require": {
@@ -130,9 +130,9 @@
             "description": "PHP tools (from Variable Arts)",
             "support": {
                 "issues": "https://github.com/vosiz/va-tools/issues",
-                "source": "https://github.com/vosiz/va-tools/tree/v1.8.1"
+                "source": "https://github.com/vosiz/va-tools/tree/v1.8.2"
             },
-            "time": "2025-10-15T22:00:39+00:00"
+            "time": "2025-10-24T20:36:09+00:00"
         }
     ],
     "packages-dev": [],
