@@ -101,6 +101,17 @@ class NotImplementedYet extends \Exceptionf {
     }
 }
 
+class OutputFormatterException extends \Exceptionf {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $formatter, string $msg) {
+
+        return parent::__construct("Output formatter ($formatter) error: ".$msg);
+    }
+}
+
 class UrlException extends \Exceptionf {
 
     /**
