@@ -2,6 +2,25 @@
 
 namespace Apikor;
 
+use Vosiz\Enums\Enum as Enum;
+
+class EngineExceptionCodeEnum extends Enum {
+
+    /**
+     * Abstract implementation
+     */
+    public static function Init(): void {
+
+        $vals = [
+            'general'                       => 0x0000,
+            // setup                        => 0x1###
+            // -install                     => 0x11##
+            'setup-install-redirect-loop'   => 0x1100
+        ];
+        self::AddValues($vals);
+    } 
+}
+
 
 class ConfigException extends \Exceptionf {
 
@@ -90,14 +109,25 @@ class FileException extends \Exceptionf {
 
 }
 
-class NotImplementedYet extends \Exceptionf {
+class NotImplementedYetException extends \Exceptionf {
 
     /**
      * Contructor - format based
      */
-    public function __construct(string $msg = '') {
+    public function __construct(string $msg, ...$args) {
 
-        return parent::__construct("Functionality is not implemented yet (contact dev team) %s", $msg);
+        return parent::__construct("Functionality is not implemented yet (contact dev team) ".$msg, ...$args);
+    }
+}
+
+class RedirectException extends \Exception {
+
+    /**
+     * Contructor - format based
+     */
+    public function __construct(string $msg = 'not found', int $code) {
+
+        return parent::__construct("Redirection exception detected: ".$msg, $code);
     }
 }
 

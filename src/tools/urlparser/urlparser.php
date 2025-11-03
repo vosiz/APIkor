@@ -62,13 +62,48 @@ class UrlParser extends VaUrlParser {
 
     /**
      * Returns last request
+     * @param string
      */
     public function GetLastRequest() {
 
         return $this->FullUrl;
     }
 
+    /**
+     * Returns URL
+     * @param bool $inc_custom Include custom part
+     * @return string
+     */
+    public function GetUrl(bool $inc_custom = true) {
 
+        if($inc_custom)
+            return $this->GetLastRequest();
+        else
+            return 
+                sprintf("%s/v%s/%s", 
+                    SUBDOMAIN_NAME.'/'.API_URL_KEYWORD,
+                    $this->GetVersion(),
+                    $this->GetFormat()
+                );
+    }
+
+    /**
+     * Returns redirect URL part
+     * @param string $redirect Custom part
+     * @return string
+     */
+    public function GetRedirectUrl(string $redirect) {
+
+        // base/apikor/vX/format/redirect...
+        // returns /apikor
+        return 
+            sprintf("/%s/v%s/%s/%s",
+                API_URL_KEYWORD,
+                $this->GetVersion(),
+                $this->GetFormat(),
+                $redirect
+            );
+    }
 
     /**
      * Checks if all requested parts are ok

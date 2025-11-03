@@ -53,8 +53,6 @@ function FILEOPS_Exists(string $user_space, string $apikor_space, string $file, 
         throw $exc;
     }
 
-    
-
 }
 
 /**
@@ -65,3 +63,20 @@ function FILEOPS_Exists(string $user_space, string $apikor_space, string $file, 
 function FILEOPS_PathCombine(...$paths) {
     return preg_replace('~[/\\\\]+~', DIRECTORY_SEPARATOR, join(DIRECTORY_SEPARATOR, array_map(fn($p) => trim($p, "/\\"), $paths)));
 }
+
+/**
+ * Get all files on path
+ * @param string $dir_path Directory path
+ * @return array|false false if nothing to return
+ */
+function FILEOPS_GetFiles(string $dir_path, string $ext = '*') {
+
+    $dir_path = rtrim($dir_path, '/\\');
+    $dir_path = ltrim($dir_path, '/\\');
+
+    $allowed = '/*';
+    if($ext !== '*')
+        $allowed = '/*.'.$ext;
+
+    return glob($dir_path.$allowed);
+} 
