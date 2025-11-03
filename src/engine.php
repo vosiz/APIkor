@@ -6,6 +6,7 @@ require_once(__DIR__.'/inc.php');
 
 use Apikor\EngineConfigurator as Configurator;
 use Apikor\EngineDiagnostics as Diag;
+use Apikor\EngineInstall;
 use Apikor\Response;
 use Apikor\Output\Formatter;
 use Apikor\Db\DbConMySql;
@@ -56,13 +57,17 @@ class Engine {
 
     const DB_DEF_KEY = 'main';
 
+    const REDIRECT_INSTALL = 'system/install/base';
+
     private static $Singleton = null;
 
     private $Configurator;      public function GetConfigurator()   { return $this->Configurator;   }
     private $Diags;
-    private $Parser;
     private $DataProvider;      public function GetDataProvider()   { return $this->DataProvider;   }
     private $DataContainer; 
+    private $Parser;
+    private $Install;
+    private $LocalConfig;       public function GetLocalConfig()    { return $this->LocalConfig;    }
     private $Mode;
     private $Errors;
     private $Status;
@@ -140,26 +145,46 @@ class Engine {
 
             $this->Status = EngineStatusEnum::GetEnum('cold');
             $this->Errors = new Dictionary();
+            
+            $this->Mode = $mode;
+
+        } catch (\Exception $exc) {
+
+            $this->Errors->Add("Creation failed: ".$exc->getMessage());
+            throw new \Exceptionf("Cannot create Apikor/Engine instance: ".$exc->getMessage());
+        }
+    
+    }
+
+
+    /**
+     * Starts Engine - init basically
+     * @throws \Exception
+     */
+    public function Start() {
+
+        try {
 
             $this->Configurator     = new Configurator();
             $this->Diags            = new Diag($this);
             $this->Parser           = UrlParser::Create();
             $this->DataContainer    = new EngineDataContainer();
             $this->DataProvider     = new EngineDataProvider($this->DataContainer);
-            
+            $this->Install          = new EngineInstall();
+            $this->LocalConfig      = new LocalConfig();
+
             // default config
             $this->DefaultConfig();   
-            
-            $this->Mode = $mode;
 
-        } catch (\Exception $exc) {
+            Diag::Info("Engine started...");
+            $this->Status = EngineStatusEnum::GetEnum('started');
+
+        } catch(\Exception $exc) {
 
             $this->Errors->Add("Starts failed: ".$exc->getMessage());
-            throw new \Exceptionf("Cannot create Apikor/Engine instance: ".$exc->getMessage());
+            throw new \Exceptionf("Cannot start Apikor/Engine: %s", $exc->getMessage());
         }
-        
-        Diag::Info("Engine started...");
-        $this->Status = EngineStatusEnum::GetEnum('started');
+
     }
 
     /**
@@ -171,6 +196,25 @@ class Engine {
         $this->Configurator->AddConfig($cfg);
 
         Diag::Debug("Added config: %s", $cfg->__toString());
+    }
+
+    /**
+     * Loads local config file at path
+     * @param string $path If '' use configurator
+     * @throws \ConfigException
+     */
+    public function LoadLocalConfig(string $path = '') {
+
+        try {
+
+            $this->LocalConfig->SetPath($path);
+            $this->LocalConfig->Parse();
+
+        } catch(\Exception $exc) {
+
+            throw new ConfigException("Cannot load config: %s", $exc->getMessage());
+        }
+        
     }
 
     /**
@@ -331,6 +375,107 @@ class Engine {
         return [$this->Status, $desc, $data];
     }
 
+    /**
+     * Exception handle
+     * @param \Exception $exc
+     * @param bool $production
+     * @throws \Exception
+     */
+    public function Exception(\Exception $exc, bool $production = false) {
+
+        $this->Log('exc', $exc->getMessage());
+        try {
+
+            if($this->TryResolveException($exc))
+                return;
+
+        } catch(RedirectException $exc) {
+
+            if($exc->getCode() == EngineExceptionCodeEnum::GetEnum('setup-install-redirect-loop')->GetValue()) {
+
+                $this->Install->MainDatabase();
+                return;
+            }
+
+            throw new \UnimplementedStateException($exc->getCode());
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
+        // proper exception handling
+        if(!$production) {
+
+            [$status, $desc, $data] = $this->CheckStatus();
+            echo sprintf("Engine state '%s' (%s)", $status->GetKey(), $desc);
+            echo sprintf("<br>Data (%d): <br>", count($data));
+            foreach($data as $str) {
+    
+                echo "- [ERROR] ".$str."<br>";
+            }
+            echo sprintf("[Exception] (%s): %s", typeof($exc), $exc->getMessage());
+    
+            $this->Diagnose();
+
+        } else {
+
+            $this->Diagnose->Exc();
+        }
+    }
+
+    /**
+     * Logs message
+     * @param string $level
+     * @param string $fmt formatted string
+     * @throws \Exception
+     */
+    public function Log(string $level, string $fmt, ...$args) {
+
+        try {
+
+            // enum by level
+            $enum = EngineDiagnosticsLevelEnum::GetEnum($level);
+        
+            // TODO: logger
+
+            $this->Diags->CreateMessage($enum, $fmt, ...$args);
+
+        } catch(\Exception $exc) {
+            
+            $this->Exception($exc, defined(PRODUCTION));
+        }
+        
+    }
+
+    /**
+     * Logs multiple messages
+     * @param array $msgs Messages, key is level
+     */
+    public function Logm(array $msgs = []) {
+
+        foreach($msgs as $level => $msg) {
+
+            $this->Log($level, $msg);
+        }
+    }
+
+    /**
+     * Redirects to url
+     * @param string $custom_url application part
+     * @return false|true if true cyclic redirection
+     */
+    public function Redirect(string $custom_url) {
+
+        $apikor_url = $this->Parser->GetRedirectUrl($custom_url);
+
+        if ($_SERVER['REQUEST_URI'] === $apikor_url)
+            return true;
+        
+        header("Location: $apikor_url", true, 302);
+        exit;
+    }
+
 
     /** 
      * Default configurations 
@@ -355,7 +500,6 @@ class Engine {
             $this->SetupConfig($cfg);
         }
     }
-
 
     /** 
      * Check configuration
@@ -530,6 +674,36 @@ class Engine {
             throw $exc;            
         }
         
+    }
+
+    /**
+     * Try resolve if true exception
+     * @param \Exception $exc
+     * @throws RedirectException
+     * @throws \Exception
+     */
+    private function TryResolveException(\Exception $exc) {
+
+        try {
+
+            if($exc instanceof \Vosiz\VaTools\Db\DbNotFoundException) {
+
+                if($exc->getCode() == 1049) {
+    
+                    // redirect to install
+                    if($this->Redirect(self::REDIRECT_INSTALL))
+                        throw 
+                            new RedirectException(
+                                "Multiple redirections to ".self::REDIRECT_INSTALL, 
+                                EngineExceptionCodeEnum::GetEnum('setup-install-redirect-loop')->GetValue());
+                }
+            }
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+
     }
 
 }
