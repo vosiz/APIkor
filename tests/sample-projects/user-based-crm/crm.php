@@ -17,7 +17,6 @@ use Apikor\Engine as Engine;
 use Apikor\EngineDiagnostics as Diag;
 use Apikor\EngineConfig;
 use Apikor\EngineDiagnosticsLevelEnum as DiagLevelEnum;
-
 use Apikor\EngineRunModeEnum as ErmEnum;
 
 // engine configs
@@ -28,43 +27,39 @@ if(!PRODUCTION) {
     $engine_mode = ErmEnum::GetEnum('diagnose');
 }
 
-
-// instantiate engine
-$engine = new Engine($engine_mode);
-
-// mandatory configuration
-$engine->SetupConfig(EngineConfig::ToConfig('modules', __DIR__.'/crm/modules', 'paths'));
-$engine->SetupConfig(EngineConfig::ToConfig('app', 'SampleProject\UBC\CRM', 'ns'));
-
-// optional, configuration
-$engine->SetupConfig(EngineConfig::ToConfig('print_messages', true, 'diagnostics'));
-$engine->SetupConfig(EngineConfig::ToConfig('print_configs', true, 'diagnostics'));
-$engine->SetupConfig(EngineConfig::ToConfig('print_urlparser', true, 'diagnostics'));
-$engine->SetupConfig(EngineConfig::ToConfig('level', DiagLevelEnum::GetEnum('debug'), 'diagnostics'));
-
-$engine->DbConnect(DB_CONNECT_STRING, DB_CONNECT_USER, DB_CONNECT_PASS, DB_CONNECT_DBKEY);
-
 // let it work
 try {
 
-    $output = $engine->Work();
+    // instantiate engine
+    $engine = new Engine($engine_mode);
+    $engine->Start();
 
-    // test
-    //$engine ->Diagnose();
+    // mandatory configuration
+    $engine->SetupConfig(EngineConfig::ToConfig('modules', __DIR__.'/crm/modules', 'paths'));
+    $engine->SetupConfig(EngineConfig::ToConfig('local-config', __DIR__.'/local.cfg', 'paths'));
+    $engine->SetupConfig(EngineConfig::ToConfig('app', 'SampleProject\UBC\CRM', 'ns'));
+
+    // optional, configuration
+    $engine->SetupConfig(EngineConfig::ToConfig('print_messages', true, 'diagnostics'));
+    $engine->SetupConfig(EngineConfig::ToConfig('print_configs', true, 'diagnostics'));
+    $engine->SetupConfig(EngineConfig::ToConfig('print_urlparser', true, 'diagnostics'));
+    $engine->SetupConfig(EngineConfig::ToConfig('level', DiagLevelEnum::GetEnum('debug'), 'diagnostics'));
+
+    $engine->LoadLocalConfig();
+    $engine->DbConnect(DB_CONNECT_STRING, DB_CONNECT_USER, DB_CONNECT_PASS, DB_CONNECT_DBKEY);
+
+    $output = $engine->Work();
 
 } catch(\Exception $exc) {
 
-    if(!PRODUCTION) {
+    try {
 
-        [$status, $desc, $data] = $engine->CheckStatus();
-        echo sprintf("Engine state '%s' (%s)", $status->GetKey(), $desc);
-        echo sprintf("<br>Data (%d): <br>", count($data));
-        foreach($data as $str) {
+        $engine->Exception($exc, PRODUCTION);
 
-            echo "- [ERROR] ".$str."<br>";
-        }
+    } catch(\Exception $exc) {
+
+        echo "Well done, exception in exception handling... ".$exc->getMessage();
     }
     
-    $engine->Diagnose();
 }
 
