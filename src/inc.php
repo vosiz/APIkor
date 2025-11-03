@@ -26,6 +26,9 @@ require_once(__DIR__.'/core/cls/controller.php');
 require_once(__DIR__.'/core/response/message.php');
 require_once(__DIR__.'/core/response/response.php');
 
+// Installation
+require_once(__DIR__.'/install.php');
+
 // Db
 require_once(__DIR__.'/core/db/db_mysql.php');
 
