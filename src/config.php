@@ -185,3 +185,103 @@ class EngineConfigurator {
         }
     }
 }
+
+class LocalConfig {
+
+    // .../src/local.cfg
+    const DEFAULT_PATH = __DIR__."/local.cfg";
+
+    private $Path;
+    private $Data;
+
+    /**
+     * Constructor
+     */
+    public function __construct() {
+
+        $this->Data = new Dictionary();
+        $this->SetPath(self::DEFAULT_PATH);
+    }
+
+
+    /**
+     * Sets path to file
+     * @param string $path File path (when '' use configurator)
+     */
+    public function SetPath(string $path = '') {
+
+        $engine = Engine::GetSingleton();
+        if($path === '') {
+
+            // try get main configurator - user custom path
+            $path = $engine->GetConfigurator()->GetConfig('paths', 'local-config', '');
+            $engine->Log('debug', "Trying using local config file path (%s)", $path);
+        } 
+
+        $this->Path = $path;
+        $engine->Log('info', "Using local config file path (%s)", $this->Path);
+    }
+
+    /**
+     * Parse config file
+     * @throws \Exception
+     */
+    public function Parse() {
+
+        $msgs = [];
+        $engine = Engine::GetSingleton();
+        try {
+
+            $file = $this->Path;
+            if ($handle = fopen($file, "r")) {
+
+                $n = 0;
+                while (($line = fgets($handle)) !== false) {
+
+                    $n++;
+                    $line = trim($line);
+                    if ($line === '' || strpos($line, '=') === false || strpos($line, ';') === 0) {
+
+                        $engine->Log('debug', 'Skipping line: "%s"', $line);
+                        continue;
+                    }
+            
+                    list($key, $value) = explode('=', $line, 2);
+                    $this->Data->Add(trim($value), strtolower(trim($key)));
+                }
+            
+                fclose($handle);
+
+            } else {
+                
+                throw new \Exception("Cannot open file");
+            }
+
+        } catch (\Exception $exc) {
+
+            throw new ConfigException("Parsing local config file ends up with error: %s", $exc->getMessage());
+
+        } finally {
+
+            $engine->Logm($msgs);
+        }
+    }
+
+    /**
+     * Gets Data value
+     * @param string $key
+     * @return string value
+     * @throws ConfigException
+     */
+    public function GetDataValue(string $key) {
+
+        try {
+
+            return $this->Data->{$key};
+
+        } catch(\Exception $exc) {
+
+            throw new ConfigException("Cannot find key $key");
+        }
+    }
+}
