@@ -2,3 +2,5 @@
 
 /index.php
 /src/local.cfg
+/export.cfg
+/export_init_db.bat
