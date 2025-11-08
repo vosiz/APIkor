@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1907daafc0388576c461a66ab9cee892",
+    "content-hash": "304be5e56b65f108712e6a46e0660c4d",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -46,16 +46,16 @@
         },
         {
             "name": "vosiz/php-utils",
-            "version": "v1.8.0",
+            "version": "v1.10.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/php-utils.git",
-                "reference": "c40d2b93f50a160197a108fe65393d3d5d3c6b32"
+                "reference": "06b10b76b93a87289be0c3a72223adaafef2c916"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/c40d2b93f50a160197a108fe65393d3d5d3c6b32",
-                "reference": "c40d2b93f50a160197a108fe65393d3d5d3c6b32",
+                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/06b10b76b93a87289be0c3a72223adaafef2c916",
+                "reference": "06b10b76b93a87289be0c3a72223adaafef2c916",
                 "shasum": ""
             },
             "require": {
@@ -71,7 +71,9 @@
                     "src/collections/collection.php",
                     "src/collections/dic.php",
                     "src/singleton.php",
-                    "src/compare.php"
+                    "src/compare.php",
+                    "src/crypto/pass.php",
+                    "src/time.php"
                 ],
                 "psr-4": {
                     "Vosiz\\Utils\\": "src/"
@@ -84,9 +86,9 @@
             "description": "A PHP utilities library",
             "support": {
                 "issues": "https://github.com/vosiz/php-utils/issues",
-                "source": "https://github.com/vosiz/php-utils/tree/v1.8.0"
+                "source": "https://github.com/vosiz/php-utils/tree/v1.10.0"
             },
-            "time": "2025-10-15T21:48:01+00:00"
+            "time": "2025-11-07T23:25:32+00:00"
         },
         {
             "name": "vosiz/va-tools",
