@@ -2,6 +2,9 @@
 
 namespace Apikor;
 
+use \Vosiz\Utils\Crypto\PasswordHasher as Passh;
+use \Vosiz\Utils\TimeFormat;
+
 class EngineInstall {
 
     private $Engine;
@@ -25,6 +28,9 @@ class EngineInstall {
         try {
 
             $cfg = $this->Engine->GetLocalConfig();
+            // general
+            $seed = $cfg->GetDataValue("Seed");
+            // db things
             $server = $cfg->GetDataValue("MysqlHost");
             $port = $cfg->GetDataValue("MysqlPort");
             $user = $cfg->GetDataValue("MysqlUser");
@@ -61,7 +67,18 @@ class EngineInstall {
 
                 $this->RunMigration($conn, $file);
             }
-            print_r("Import done");
+            print_r("Import done\n");
+
+            // create superadmin
+            $sa_name = $cfg->GetDataValue("SuperAdmin");
+            $sa_pass = $cfg->GetDataValue("SuperAdminPass");
+            $sa_email = $cfg->GetDataValue("SuperAdminMail");
+            $ph = new Passh($seed);
+            $hashedp = $ph->Hash($sa_pass);
+            $now = TimeFormat::Timestamp();
+            $sql = "INSERT INTO `apikor_app_users` (`id`, `active`, `timestamp`, `updated`, `apiv`, `manual`, `nick`, `email`, `password`) "
+            ."VALUES (2, 1, '$now', '$now', 1, 1, '$sa_name', '$sa_email', '$hashedp')";
+            $this->QueryMySql($conn, $sql);
 
         } catch(\Exception $exc) {
 
@@ -74,6 +91,10 @@ class EngineInstall {
         }
         
     }
+
+    /**
+     * TODO: install custom database
+     */
 
 
     /**
