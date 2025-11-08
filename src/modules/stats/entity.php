@@ -20,7 +20,7 @@ class EntityController extends \Apikor\Controller {
     protected function _Setup() {
 
         $this->UserService = $this->SetupService('user');
-        $this->AccountService = $this->SetupService('account');
+        //$this->AccountService = $this->SetupService('account');
     }
 
     /**
