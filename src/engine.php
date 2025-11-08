@@ -414,7 +414,10 @@ class Engine {
     
                 echo "- [ERROR] ".$str."<br>";
             }
-            echo sprintf("[Exception] (%s): %s", typeof($exc), $exc->getMessage());
+            echo sprintf("[Exception] (%s): %s<br>", typeof($exc), $exc->getMessage());
+            echo "<pre>";
+            echo sprintf("Stack: %s", $exc->getTraceAsString());
+            echo "</pre>";
     
             $this->Diagnose();
 
