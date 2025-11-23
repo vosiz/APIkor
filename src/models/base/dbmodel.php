@@ -1,10 +1,16 @@
 <?php
 
-namespace Apikor;
+namespace Apikor\Models;
 
-class DbModel extends \Apikor\MapModel {
+// Class for stdClass-based (raw) db model
+class DbRawModel extends \Apikor\Model {
 
     protected $Id;          public function GetId()         { return $this->Id;         }
+}
+
+// Class for APP db table representation
+class DbModel extends DbRawModel {
+
     protected $Active;      public function IsActive()      { return $this->Active;     }
     protected $Timestamp;   public function GetTimestamp()  { return $this->Timestamp;  }
     protected $Update;      public function GetUpdate()     { return $this->Update;     }
@@ -16,5 +22,4 @@ class DbModel extends \Apikor\MapModel {
     protected function Updated()    { return $this->GetUpdate();        }
     protected function Apiv()       { return $this->GetApiVersion();    }
 
-    // TODO: magic methods
 }

@@ -66,6 +66,7 @@ abstract class Controller extends Entity {
 
     protected $UrlGetParameters;
     protected $FuncDefs = null;
+    protected $Engine;
 
     abstract protected function _FunctionDefinitionsSetup();
     abstract protected function _Setup();
@@ -78,6 +79,7 @@ abstract class Controller extends Entity {
 
         try {
         
+            $this->Engine = \Apikor\Engine::GetSingleton();
             $this->UrlGetParameters = new UrlParameters($get);
             $this->FuncDefs = array();
             $this->_FunctionDefinitionsSetup();

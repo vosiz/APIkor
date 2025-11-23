@@ -479,6 +479,26 @@ class Engine {
         exit;
     }
 
+    /**
+     * Installs apikor
+     * @return bool true if installed successfully
+     * @throws \Exception
+     */
+    public function Install() {
+
+        try {
+
+            if(!$this->Install->MainDatabase())
+                return false;
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+
+        return true;
+    }
+
 
     /** 
      * Default configurations 

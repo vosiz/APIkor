@@ -22,6 +22,7 @@ class EngineInstall {
      * @throws DbException
      * @throws ConfigException
      * @throws \Exception
+     * @return bool false if installed already
      */
     public function MainDatabase() {
 
@@ -52,22 +53,25 @@ class EngineInstall {
             // create database first
             $sql = "CREATE DATABASE IF NOT EXISTS `$main_db` CHARACTER SET utf8 COLLATE utf8_general_ci";
             $this->QueryMySql($conn, $sql);
-            print_r("Database $main_db installed\n");
 
             $sql = "USE `$main_db`";
             $this->QueryMySql($conn, $sql);
 
+            // check if empty first
+            $result = $conn->query("SHOW TABLES");
+            if($result) {
+
+                if($result->num_rows > 0)
+                    return false;
+
+            } else {
+
+                throw new DbException("DB check failed: ".$conn->error);
+            }
+
             // add tables and data - migrations
             $db_path = __DIR__.'/'.$cfg->GetDataValue("DbMigdirPath");
-            $files = Tools\FILEOPS_GetFiles($db_path, 'sql');
-            if(!$files)
-                throw new ConfigException("No files on path $db_path");
-            
-            foreach($files as $file) {
-
-                $this->RunMigration($conn, $file);
-            }
-            print_r("Import done\n");
+            $this->LoadAndRunScripts($conn, $db_path);
 
             // create superadmin
             $sa_name = $cfg->GetDataValue("SuperAdmin");
@@ -79,6 +83,18 @@ class EngineInstall {
             $sql = "INSERT INTO `apikor_app_users` (`id`, `active`, `timestamp`, `updated`, `apiv`, `manual`, `nick`, `email`, `password`) "
             ."VALUES (2, 1, '$now', '$now', 1, 1, '$sa_name', '$sa_email', '$hashedp')";
             $this->QueryMySql($conn, $sql);
+
+            // final adjustments to main db
+            $this->FinalAdj($conn);
+
+            // custom database data (basics to basic db)
+            $db_path = APP_ROOT_PATH.'/'.$cfg->GetDataValue("DbData");
+            if(!is_noe($db_path)) {
+
+                $this->CustomMainBase($conn, $db_path);
+            }
+
+            return true;
 
         } catch(\Exception $exc) {
 
@@ -93,23 +109,86 @@ class EngineInstall {
     }
 
     /**
-     * TODO: install custom database
+     * install custom database - data
+     * @param \mysqli $conn Instance of mysqli
+     * @param string $db_path Path to sql files
+     * @throws \Exception
      */
+    protected function CustomMainBase(\mysqli $conn, string $db_path) {
+
+        try {
+
+            $this->LoadAndRunScripts($conn, $db_path);
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
+    }
 
 
     /**
+     * Adjustments to main DB
+     * @param \mysqli $conn Instance of mysqli
+     * @throws \Exception
+     */
+    private function FinalAdj(\mysqli $conn) {
+
+        try {
+
+            // production settings
+            if(PRODUCTION != FALSE) {
+
+                $sql = "UPDATE apikor_settings SET value = 1 WHERE apikor_settings.name = 'production'";
+                $this->QueryMySql($conn, $sql);
+            }
+
+        } catch (\Exception $exc) {
+
+            throw $exc;
+        }
+
+    }
+
+    /**
      * Executes MySQL query
-     * @param \mysqli $mysqli Instance of mysqli
+     * @param \mysqli $conn Instance of mysqli
      * @param string $sql Sql query
      * @throws \Exception
      */
-    private function QueryMySql(\mysqli $mysqli, string $sql) {
+    private function QueryMySql(\mysqli $conn, string $sql) {
 
-        $result = $mysqli->query($sql);
+        $result = $conn->query($sql);
         if($result === FALSE) {
 
-            throw new \Exception("Query failed: '$sql', [$mysqli->errno] $mysqli->error");
+            throw new \Exception("Query failed: '$sql', [$conn->errno] $conn->error");
         }
+    }
+
+    /**
+     * Run scripts in location
+     * @param \mysqli $conn Instance of mysqli
+     * @param string $db_path Path to sql files
+     */
+    private function LoadAndRunScripts(\mysqli $conn, string $db_path) {
+
+        try {
+
+            $files = Tools\FILEOPS_GetFiles($db_path, 'sql');
+            if(!$files)
+                throw new ConfigException("No files on path $db_path");
+            
+            foreach($files as $file) {
+
+                $this->RunMigration($conn, $file);
+            }
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+        
     }
 
     /**
@@ -150,7 +229,6 @@ class EngineInstall {
             }
     
             $mysqli->commit();
-            print_r("Migration done");
     
         } catch (\Exception $exc) {
             

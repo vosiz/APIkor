@@ -8,7 +8,6 @@ class UserService extends \Apikor\DbDataService  {
 
     protected $DbModelName = 'user';
 
-    // http://localhost/apikor/v1/xml/stats/entity/users
     public function Stats() {
 
         try {

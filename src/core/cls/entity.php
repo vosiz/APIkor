@@ -24,18 +24,10 @@ class EntityTypeEnum extends Enum {
 // APIKOR entity
 abstract class Entity {
 
-    const APP_ENTITY_PREFIX = "apikor_app";
-
     private $Name;      public function GetName()       { return $this->Name;       }
     private $Filepath;  public function GetFilepath()   { return $this->Filepath;   }
     private $Type;      public function GetType()       { return $this->Type;       } 
-
-
-    // TODO:
-    public static function TableName(string $table_name) {
-
-        return sprintf("%s_%s", self::APP_ENTITY_PREFIX, $table_name);
-    }
+    private $Engine;
 
     /**
      * Creates controller entity
@@ -66,67 +58,82 @@ abstract class Entity {
         
     }
 
-    // TODO:
-    public static function CreateModel(string $model, string $namespace, ...$args) {
+    /**
+     * Creates model reference
+     * @param string $path Relative path to directory (without filename)
+     * @param string $model Model name
+     * @param string $namespace Namespace
+     */
+    public static function CreateModel(string $path, string $model, string $namespace, ...$args) {
 
-        $filepath = sprintf(__DIR__.'/../../models/'.$model.'.php');
+        $filepath = sprintf(__DIR__.'/../../models/%s/%s.php', $path, $model);
         return self::Create('model', $filepath, $model, $namespace, ...$args);
     }
 
-    // TODO:
-    public static function CreateMapper(string $mapper, string $namespace, ...$args) {
+    /**
+     * Creates mapper reference
+     * @param string $path Relative path to directory (without filename)
+     * @param string $mapper Mapper name
+     * @param string $namespace Namespace
+     */
+    public static function CreateMapper(string $path, string $mapper, string $namespace, ...$args) {
 
-        $filepath = sprintf(__DIR__.'/../../mappers/'.$mapper.'.php');
+        $filepath = sprintf(__DIR__.'/../../mappers/%s/%s.php', $path, $mapper);
         return self::Create('mapper', $filepath, $mapper, $namespace, ...$args);
     }
 
-    // TODO:
-    public static function CreateService(string $service, string $namespace, ...$args) {
+    /**
+     * Creates service reference
+     * @param string $path Relative path to directory (without filename)
+     * @param string $service Name of service (also filename - snake_case)
+     * @param string $namespace Namespace
+     */
+    public static function CreateService(string $path, string $service, string $namespace = 'Apikor', ...$args) {
 
-        $filepath = sprintf(__DIR__.'/../../services/'.$service.'.php');
+        $filepath = sprintf(__DIR__.'/../../services/%s/%s.php', $path, $service);
         return self::Create('service', $filepath, $service, $namespace, ...$args);
     }
 
-    // TODO
-    public static function Create(string $type, string $filepath, string $key, string $namespace, ...$args) {
+    /**
+     * Creates apikor entity
+     * @param string $type Type of entity
+     * @param string $path Full path to entity
+     * @param string $key Key using it (snake_case)
+     * @param string $namespace Namespace (without '\')
+     * @throws \Exception
+     */
+    public static function Create(string $type, string $filepath, string $key, string $namespace = 'Apikor', ...$args) {
 
-        Commons::Require($filepath);
-        $cls_type = ucfirst($type);
-        $cls = sprintf("%s\%ss\%s%s", $namespace, $cls_type, ucfirst($key), $cls_type);
+        try {
 
-        $inst = new $cls(...$args);
-        $inst->Filepath = $filepath;
-        $inst->Type = EngineContainerSectionEnum::GetEnum($type);
-        $inst->Name = $key;
+            Commons::Require($filepath);
+            
+            // class: <\Namespace>\<Type>s\<KeyName><Type>
+            $ucf_type = ucfirst($type); // first char in upper
+            $cls_type = \camel_str($key); // camel cased 
+            $cls = sprintf("\\%s\\%ss\\%s%s", $namespace, $ucf_type, $cls_type, $ucf_type);
 
-        return $inst;
+            $inst = new $cls(...$args);
+            $inst->Filepath = $filepath;
+            $inst->Type = EngineContainerSectionEnum::GetEnum($type);
+            $inst->Name = $key;
+            $inst->Engine = $inst->GetEngine();
+
+            return $inst;
+
+        } catch (\Exception $exc) {
+
+            throw $exc;
+        }
+
     }
 
-    // TODO:
-    // public static function Create(EntityTypeEnum $type, string $key, string $namespace, string $cls_name = null, string $filename = null) {
 
-    //     if($cls_name == null)
-    //         $cls_name = $key;
-
-    //     if($filename == null)
-    //         $filename = $key;
-        
-    //     try {
-
-    //        // new instance
-
-
-
-    //        return null;
-
-    //     } catch(\Exception $exc) {
-
-    //         throw new \Exception("Entity.Create failed, ".$exc->getMessage());
-    //     }
-    // }
-
-
-    // TODO:
+    /**
+     * Include and injects entity to data provider
+     * @param \Apikor\DataProvider $provider To what provider to inject
+     * @throws \Exception
+     */
     public function Include(DataProvider $provider) {
 
         try {
@@ -141,5 +148,14 @@ abstract class Entity {
         
     }
 
+
+    /**
+     * Gets engine
+     * @return \Apikor/Engine
+     */
+    protected function GetEngine() {
+
+        return Engine::GetSingleton();
+    }
 
 }

@@ -16,11 +16,24 @@ class InstallController extends \Apikor\Controller {
     protected function _Setup() { }
 
     /**
-     * Installation o base things - is already done
+     * Installation o base things - is already done?
      * @return Response\Message
      */
     public function Base() {
 
-        return CreateMsg::PlainText("Base installation already done");
+        try {
+
+            $engine = \Apikor\Engine::GetSingleton();
+            $ins_result = $engine->Install();
+
+            return $ins_result ? 
+                CreateMsg::PlainText("Installation done") :
+                CreateMsg::PlainText("Base installation already done");
+
+        } catch(\Exception $exc) {
+
+            throw $exc;
+        }
+
     }
 }

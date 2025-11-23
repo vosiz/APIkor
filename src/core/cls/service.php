@@ -2,6 +2,7 @@
 
 namespace Apikor;
 
+// Class which services something
 abstract class Service extends Entity {
 
     public function _Setup() {
