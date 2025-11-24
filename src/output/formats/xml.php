@@ -86,6 +86,7 @@ class ToXml extends XmlBuilder {
   
     }
 
+    
     /**
      * Process node to XML structure
      * @param XmlElement &$parent Parent node
@@ -152,13 +153,11 @@ class ToXml extends XmlBuilder {
 
                 foreach($value as $v) {
 
-                    //var_dump($v);
                     $this->ProcessNode($el, $v, false);
                 }
 
             } else { // scalar
 
-                //var_dump($value);
                 if(!\is_noe($value)) {
 
                     if('public' == $type || 'scalar' == $type) {
@@ -180,9 +179,6 @@ class ToXml extends XmlBuilder {
         }
 
     }
-
-
-    
 
 }
 

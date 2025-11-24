@@ -94,7 +94,6 @@ class Message {
         $this->Type = $type;
         $this->Data = $data;
 
-        // TODO: ?
         if($data === NULL) {
 
             switch($type) {
