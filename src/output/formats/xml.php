@@ -112,6 +112,7 @@ class ToXml extends XmlBuilder {
                 $namespace = typeof($object) !== "NULL" ? typeof($object) : null;
             }
 
+            $name = camel($name);
             $el = new XmlElement($name);
             if(!is_noe($namespace))
                 $el->AddAtts(['ns' => $namespace]);
@@ -125,6 +126,20 @@ class ToXml extends XmlBuilder {
                     $el->SetText($v);
                     $el->AddAtts(['key' => $k]);
 
+                } else if ($value instanceof \stdClass) { // stdClass
+
+                    foreach ((array)$value as $pname => $pvalue) {
+                
+                        $this->ProcessNode($el, [
+                            'name'  => camel($pname),
+                            'value' => $pvalue,
+                            'type'  => 'scalar'
+                        ]);
+                    }
+                
+                    $el->SetParent($parent);
+                    return;
+
                 } else { // others
 
                     foreach(getprops($value) as $prop) {
@@ -137,7 +152,7 @@ class ToXml extends XmlBuilder {
 
                 foreach($value as $v) {
 
-                    var_dump($v);
+                    //var_dump($v);
                     $this->ProcessNode($el, $v, false);
                 }
 
@@ -165,6 +180,9 @@ class ToXml extends XmlBuilder {
         }
 
     }
+
+
+    
 
 }
 
