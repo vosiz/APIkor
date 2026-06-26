@@ -1,79 +1,41 @@
 <?php
 
-namespace Apikor;
+try {
 
-// Crucial parts
-require_once(__DIR__.'/exc.php');
+    // Essentials
+    require_once(__DIR__.'/functions.php');
+    require_once(__DIR__.'/exc.php');
+    require_once(__DIR__.'/singleton.php');
+    require_once(__DIR__.'/logger.php');
 
-// Configurations
-require_once(__DIR__.'/config.php');
+    // tools
+    require_once(__DIR__.'/tools/tools.php');
 
-// Core
-require_once(__DIR__.'/diagnose.php');
-// - commons (inc)
-require_once(__DIR__.'/core/commons.php');
-// - helpers
-require_once(__DIR__.'/core/helpers/msgcreator.php');
-// - api (cls)
-require_once(__DIR__.'/core/cls/params.php');
-require_once(__DIR__.'/core/cls/entity.php');
-// - api entities
-require_once(__DIR__.'/core/cls/model.php');
-require_once(__DIR__.'/core/cls/mapper.php');
-require_once(__DIR__.'/core/cls/service.php');
-require_once(__DIR__.'/core/cls/controller.php');
-// - response
-require_once(__DIR__.'/core/response/message.php');
-require_once(__DIR__.'/core/response/response.php');
+    // Engine
+    IncludeFolder('engine', [
+        'exc', 
+        'status', 
+        'mode', 
+        'diagnose'
+    ]);
 
-// Installation
-require_once(__DIR__.'/install.php');
+} catch(\Exception $exc) {
 
-// Db
-require_once(__DIR__.'/core/db/db_mysql.php');
-
-// Data provision
-require_once(__DIR__.'/container.php');
-require_once(__DIR__.'/dataprovider.php');
-// - providers
-require_once(__DIR__.'/providers/base/data.php');
-require_once(__DIR__.'/providers/db.php');
-require_once(__DIR__.'/providers/service.php');
-require_once(__DIR__.'/providers/controller.php');
-require_once(__DIR__.'/providers/mapper.php');
-require_once(__DIR__.'/providers/model.php');
-
-// Output
-require_once(__DIR__.'/output/iformat.php');
-require_once(__DIR__.'/output/output.php');
-
-// Tools
-require_once(__DIR__.'/tools/tools.php');
+    dump($exc->ToString());
+}
 
 
-function INC_Entities() {
 
-    $e = []; // basic entities
-    // models
-    require_once(__DIR__.'/models/base/mapmodel.php');
-    require_once(__DIR__.'/models/base/dbmodel.php');
-    $e[] = Entity::CreateModel('./', 'settings', 'Apikor');
-    // mappers
-    require_once(__DIR__.'/mappers/db.php');
-    $e[] = Entity::CreateMapper('./', 'db', 'Apikor');
-    // services
-    require_once(__DIR__.'/services/base/data.php');
-    require_once(__DIR__.'/services/base/db.php');
-    $e[] = Entity::CreateService('./db_data',    'settings', 'Apikor',  DbDataService::RawTableName('settings'));
-    // $e[] = Entity::CreateService('./db_data',    'user',     'Apikor',  Entity::AppTableName('users'));
-    // $e[] = Entity::CreateService('./db_data',    'user',     'Apikor',  Entity::AppTableName('users'));
-    // controllers
-    // require_once(__DIR__.'/models/base/dbmodel.php');
-    // $e[] = Entity::CreateController('stats',    'entity',   '\Apikor');
-    $e[] = Entity::CreateController('system',   'info',     'Apikor');
-    // $e[] = Entity::CreateController('system',   'install',  '\Apikor');
-    // $e[] = Entity::CreateController('system',   'state',    '\Apikor');
-    // $e[] = Entity::CreateController('system',   'test',     '\Apikor');
-    
-    return $e;
+/**
+ * Includes folder to APIkor
+ * @param string $path Path to folder (no leading or trailing '/')
+ * @param array $files List of files (only names)
+ */
+function IncludeFolder(string $path, array $files = []) {
+
+    $base = __DIR__;
+    foreach($files as $f) {
+
+        require_once(sprintf("%s/%s/%s.php", __DIR__, $path, $f));
+    }
 }

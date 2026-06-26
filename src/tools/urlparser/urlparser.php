@@ -6,10 +6,10 @@ use Vosiz\VaTools\Parser\UrlParser      as VaUrlParser;
 use Vosiz\VaTools\Parser\UrlStructure   as VaUrlStruct;
 
 if(!defined('SUBDOMAIN_NAME'))
-    throw new \Apikor\ConfigException("Missing configuration: Define SUBDOMAIN_NAME constant!");
+    throw new \Exceptionf("Missing configuration: Define SUBDOMAIN_NAME constant!");
 
 if(!defined('API_URL_KEYWORD'))
-    throw new ApikorConfigException("Missing configuration: Define API_URL_KEYWORD constant!");
+    throw new \Exceptionf("Missing configuration: Define API_URL_KEYWORD constant!");
 
 class UrlParser extends VaUrlParser {
 

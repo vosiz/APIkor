@@ -1,0 +1,25 @@
+<?php
+
+namespace Apikor\Engine;
+
+class ConfigException extends \Exceptionf {
+
+    /**
+     * Constructor, parent-based
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        parent::__construct($fmt, ...$args);
+    }
+}
+
+class EngineException extends \Exceptionf {
+
+    /**
+     * Constructor
+     */
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}
