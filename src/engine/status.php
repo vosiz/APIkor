@@ -48,7 +48,6 @@ class EngineStatus {
     public function __construct() {
 
         $this->Logger = \Apikor\Logger::GetInstance();
-        debug($this->Logger);
         $this->StatusChange('cold');
     }
 

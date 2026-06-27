@@ -16,7 +16,8 @@ try {
         'exc',
         'status',
         'mode',
-        'diagnose'
+        'diagnose',
+        'container'
     ]);
 
     // Core
@@ -27,6 +28,7 @@ try {
         'model',
         'dbmodel'
     ]);
+    IncludeFolder('core/models', ['user']);
 
     // Services
     IncludeFolder('core/services/base', [
@@ -34,13 +36,19 @@ try {
         'dataservice',
         'dbservice'
     ]);
+    IncludeFolder('core/services', ['users']);
+
+    // Output
+    IncludeFolder('output', ['formatter']);
+    IncludeFolder('output/formats', ['var', 'xml']);
 
     // Response
     IncludeFolder('response', [
         'header',
         'payload',
         'types',
-        'response'
+        'response',
+        'factory'
     ]);
 
     // Mappers

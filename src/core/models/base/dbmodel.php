@@ -4,6 +4,8 @@ namespace Apikor\Core\Models;
 
 abstract class DbRawModel extends DataModel {
 
+    protected static $MapperType = 'entity';
+
     protected $Id;  public function GetId() { return $this->Id; }
 
     /**
@@ -35,13 +37,13 @@ abstract class DbRawModel extends DataModel {
 abstract class DbModel extends DbRawModel {
 
     protected $Active;      public function IsActive()      { return $this->Active;     }
-    protected $Timestamp;   public function GetTimestamp()  { return $this->Timestamp;  }
-    protected $Update;      public function GetUpdate()     { return $this->Update;     }
+    protected $CreatedAt;   public function GetCreatedAt()  { return $this->CreatedAt;  }
+    protected $UpdatedAt;   public function GetUpdatedAt()  { return $this->UpdatedAt;  }
     protected $Apiv;        public function GetApiVersion() { return $this->Apiv;       }
     protected $Manual;      public function IsManual()      { return $this->Manual;     }
 
-    protected function Created()    { return $this->GetTimestamp();  }
-    protected function Updated()    { return $this->GetUpdate();     }
+    protected function Created()    { return $this->GetCreatedAt();  }
+    protected function Updated()    { return $this->GetUpdatedAt();  }
     protected function Version()    { return $this->GetApiVersion(); }
 
 }

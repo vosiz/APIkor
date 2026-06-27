@@ -2,6 +2,6 @@
 
 namespace Apikor\Core\Mappers;
 
-abstract class EnumDbMapper extends DbMapper {
+class EnumDbMapper extends DbMapper {
 
 }

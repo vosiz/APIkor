@@ -92,16 +92,16 @@
         },
         {
             "name": "vosiz/va-tools",
-            "version": "v1.8.4",
+            "version": "v1.8.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/va-tools.git",
-                "reference": "28ca31c96bae82b10ae2ab16fe28f9007f6bc4ee"
+                "reference": "a38173a438eb50d58a4648cb441a50190e1ec5b5"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/28ca31c96bae82b10ae2ab16fe28f9007f6bc4ee",
-                "reference": "28ca31c96bae82b10ae2ab16fe28f9007f6bc4ee",
+                "url": "https://api.github.com/repos/vosiz/va-tools/zipball/a38173a438eb50d58a4648cb441a50190e1ec5b5",
+                "reference": "a38173a438eb50d58a4648cb441a50190e1ec5b5",
                 "shasum": ""
             },
             "require": {
@@ -132,9 +132,9 @@
             "description": "PHP tools (from Variable Arts)",
             "support": {
                 "issues": "https://github.com/vosiz/va-tools/issues",
-                "source": "https://github.com/vosiz/va-tools/tree/v1.8.4"
+                "source": "https://github.com/vosiz/va-tools/tree/v1.8.5"
             },
-            "time": "2026-06-27T16:01:49+00:00"
+            "time": "2026-06-27T22:32:29+00:00"
         }
     ],
     "packages-dev": [],

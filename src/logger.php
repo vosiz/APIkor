@@ -6,7 +6,7 @@ use Vosiz\Enums\Enum;
 use Vosiz\Utils\Collections\Collection;
 use Vosiz\Utils\TimeFormat;
 
-class LoggerException extends \Exception {
+class LoggerException extends \Exceptionf {
 
     /**
      * Constructor
@@ -98,7 +98,7 @@ final class Logger extends Singleton {
 
         $this->Messages = new Collection();
         $this->Level = LogLevelEnum::GetEnum('info');
-        $this->SetupFileLog('./Logs');
+        $this->SetupFileLog(__DIR__.'/../logs');
     }
 
     // Aliases
@@ -142,12 +142,16 @@ final class Logger extends Singleton {
 
         try {
 
-            @\mkdir($path);
+            if(!\is_dir($path) && !@\mkdir($path, 0755, true)) {
+
+                $this->FileLogAllowed = false;
+                return;
+            }
 
             $filename = sprintf("%s.log", \now('Y-m-d'));
 
-            $this->BaseFilePath = $path;
-            $this->Filename = $filename;
+            $this->BaseFilePath   = $path;
+            $this->Filename       = $filename;
             $this->FileLogAllowed = true;
 
             $this->Log(LogLevelEnum::GetEnum('info'), 'Logger.FileLog ready');
@@ -196,9 +200,13 @@ final class Logger extends Singleton {
 
         try {
 
-            $msg = $entry->ToString();
+            $msg      = $entry->ToString();
             $filepath = sprintf("%s/%s", $this->BaseFilePath, $this->Filename);
-            $fhandle = \fopen($filepath, "a");
+            $fhandle  = \fopen($filepath, "a");
+
+            if($fhandle === false)
+                throw new LoggerException("Cannot open log file: %s", $filepath);
+
             \fwrite($fhandle, $msg);
             \fclose($fhandle);
 

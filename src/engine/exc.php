@@ -23,3 +23,27 @@ class EngineException extends \Exceptionf {
         return parent::__construct($fmt, ...$args);
     }
 }
+
+class NotFoundException extends \Exceptionf {
+
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}
+
+class BadRequestException extends \Exceptionf {
+
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}
+
+class ForbiddenException extends \Exceptionf {
+
+    public function __construct(string $fmt, ...$args) {
+
+        return parent::__construct($fmt, ...$args);
+    }
+}

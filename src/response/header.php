@@ -29,6 +29,15 @@ class Header {
 
     const VERSION = 1; // initial
 
+    const HTTP_OK          = 200;
+    const HTTP_CREATED     = 201;
+    const HTTP_REDIRECT    = 302;
+    const HTTP_BAD_REQUEST = 400;
+    const HTTP_FORBIDDEN   = 403;
+    const HTTP_NOT_FOUND   = 404;
+    const HTTP_ERROR       = 500;
+
+    private $Guid;      public function GetGuid()      { return $this->Guid;      }
     private $Version;   public function GetVersion()   { return $this->Version;   }
     private $Type;      public function GetType()      { return $this->Type;      }
     private $Timestamp; public function GetTimestamp() { return $this->Timestamp; }
@@ -46,6 +55,7 @@ class Header {
      */
     public function __construct(PayloadTypeEnum $type, int $code, ?\Apikor\Tools\UrlParser $parser = null, int $uid = 0) {
 
+        $this->Guid      = \guid();
         $this->Version   = self::VERSION;
         $this->Type      = $type;
         $this->Timestamp = \now('Y-m-d H:i:s');

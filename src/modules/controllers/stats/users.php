@@ -3,6 +3,7 @@
 namespace Apikor\Modules\StatisticsModule;
 
 use Apikor\Core\Controller;
+use Apikor\Core\Services\UsersService;
 
 class UsersController extends Controller {
 
@@ -12,10 +13,8 @@ class UsersController extends Controller {
      */
     public function Count() {
 
-        return [
-            'registered' => 0,
-            'valid'      => 0
-        ];
+        $service = new UsersService();
+        return $service->CountStats();
     }
 
 }
