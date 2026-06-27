@@ -1,0 +1,17 @@
+CREATE TABLE `_app_template` (
+    `id`         INT UNSIGNED     NOT NULL AUTO_INCREMENT,
+    `active`     TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    `created_at` TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` TIMESTAMP        NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    `apiv`       TINYINT UNSIGNED NOT NULL DEFAULT 1,
+    `manual`     TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `_enum_template` (
+    `id`          INT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `name`        VARCHAR(32)  NOT NULL,
+    `value`       VARCHAR(64)  NOT NULL,
+    `description` VARCHAR(128)     NULL,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

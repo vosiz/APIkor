@@ -79,8 +79,6 @@ class LogEntry {
 
 final class Logger extends Singleton {
 
-    private $Engine;
-
     private $Level;
     private $FileLogAllowed = false;
     private $DbLogAllowed = false;
@@ -100,7 +98,6 @@ final class Logger extends Singleton {
 
         $this->Messages = new Collection();
         $this->Level = LogLevelEnum::GetEnum('info');
-        $this->Engine = Engine::GetInstance();
         $this->SetupFileLog('./Logs');
     }
 
@@ -132,7 +129,7 @@ final class Logger extends Singleton {
 
         } catch (\Exception $exc) {
 
-            $this->Engine->Exception("Log failed", $exc, "Log error");
+            throw $exc;
         }
 
     }
@@ -158,7 +155,7 @@ final class Logger extends Singleton {
 
         } catch (\Exception $exc) {
 
-            $this->Engine->Exception("Logger.FileSetup", $exc, "File setup failed for path: $path");
+            throw $exc;
         }
     }
 
@@ -201,7 +198,7 @@ final class Logger extends Singleton {
 
             $msg = $entry->ToString();
             $filepath = sprintf("%s/%s", $this->BaseFilePath, $this->Filename);
-            $fhandle = \fopen($filepath, "w");
+            $fhandle = \fopen($filepath, "a");
             \fwrite($fhandle, $msg);
             \fclose($fhandle);
 

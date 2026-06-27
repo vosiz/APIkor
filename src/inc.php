@@ -13,10 +13,44 @@ try {
 
     // Engine
     IncludeFolder('engine', [
-        'exc', 
-        'status', 
-        'mode', 
+        'exc',
+        'status',
+        'mode',
         'diagnose'
+    ]);
+
+    // Core
+    IncludeFolder('core', ['controller']);
+
+    // Models
+    IncludeFolder('core/models/base', [
+        'model',
+        'dbmodel'
+    ]);
+
+    // Services
+    IncludeFolder('core/services/base', [
+        'service',
+        'dataservice',
+        'dbservice'
+    ]);
+
+    // Response
+    IncludeFolder('response', [
+        'header',
+        'payload',
+        'types',
+        'response'
+    ]);
+
+    // Mappers
+    IncludeFolder('core/mappers/base', [
+        'mapper',
+        'dbmapper'
+    ]);
+    IncludeFolder('core/mappers/base/db', [
+        'entity_dbmapper',
+        'enum_dbmapper'
     ]);
 
 } catch(\Exception $exc) {

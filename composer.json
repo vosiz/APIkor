@@ -16,6 +16,6 @@
         "php": ">=7.4",
         "vosiz/php-utils": ">=1.10.0",
         "vosiz/php-enum": ">=2.2.1",
-        "vosiz/va-tools": ">=1.8.3"
+        "vosiz/va-tools": ">=1.8.4"
     }
 }

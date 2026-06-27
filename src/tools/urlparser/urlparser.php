@@ -19,6 +19,8 @@ class UrlParser extends VaUrlParser {
     private $Controller;        public function GetController() { return $this->Controller; }
     private $Action;            public function GetAction()     { return $this->Action;     }
     private $Parameters;        public function GetParameters() { return $this->Parameters; }
+    private $Method;            public function GetMethod()     { return $this->Method;     }
+    private $Client;            public function GetClient()     { return $this->Client;     }
 
 
     /**
@@ -36,6 +38,8 @@ class UrlParser extends VaUrlParser {
             $parser->Controller = $parser->GetPartByKey('controller');
             $parser->Action     = $parser->GetPartByKey('action');
             $parser->Parameters = $parser->Pars;
+            $parser->Method     = $_SERVER['REQUEST_METHOD'] ?? '';
+            $parser->Client     = $_SERVER['HTTP_USER_AGENT'] ?? '';
 
             return $parser;
 
