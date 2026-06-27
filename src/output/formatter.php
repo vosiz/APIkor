@@ -32,6 +32,9 @@ abstract class Formatter implements IFormat {
             case 'var':
                 return new VarFormat();
 
+            case 'pre':
+                return new PreFormat();
+
             default:
                 throw new \Exceptionf("Unknown output format: %s", $format);
         }

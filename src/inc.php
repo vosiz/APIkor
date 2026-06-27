@@ -17,7 +17,8 @@ try {
         'status',
         'mode',
         'diagnose',
-        'container'
+        'container',
+        'config'
     ]);
 
     // Core
@@ -40,7 +41,7 @@ try {
 
     // Output
     IncludeFolder('output', ['formatter']);
-    IncludeFolder('output/formats', ['var', 'xml']);
+    IncludeFolder('output/formats', ['var', 'pre', 'xml']);
 
     // Response
     IncludeFolder('response', [

@@ -11,6 +11,7 @@ use Apikor\Engine\EngineModeEnum;
 use Apikor\Engine\Diagnostics;
 use Apikor\Engine\EngineStatus;
 use Apikor\Engine\Container;
+use Apikor\Engine\Config;
 
 use Apikor\Tools\UrlParser;
 use Apikor\Tools\DbConnection;
@@ -31,6 +32,8 @@ final class Engine extends Singleton {
     private $Logger;
     private $Diags;
     private $Container;  public function GetContainer() { return $this->Container; }
+    private $Config;     public function GetConfig()    { return $this->Config;    }
+    private $Problems = [];
 
     private $Initialized = false;
     private EngineModeEnum $Mode;
@@ -47,8 +50,9 @@ final class Engine extends Singleton {
             $this->Status    = new EngineStatus();
             $this->Diags     = new Diagnostics();
             $this->Container = new Container();
+            $this->Config    = new Config();
 
-            // basic config
+            // engine defaults
             $this->DefaultConfig();
             if(!$prod) {
 
@@ -68,6 +72,18 @@ final class Engine extends Singleton {
      * @throws ApikorException
      */
     public function Start() {
+
+        try {
+
+            $this->Config->Validate();
+
+        } catch (Engine\ConfigException $exc) {
+
+            // invalid user config — reset to defaults, continue as leak
+            $this->DefaultConfig();
+            $this->Problems[] = sprintf("Config reset to defaults: %s", $exc->getMessage());
+            $this->Logger->Warn("Engine.Start: %s", end($this->Problems));
+        }
 
         try {
 
@@ -129,7 +145,7 @@ final class Engine extends Singleton {
 
             $this->Status->Work();
 
-            $formatter = Formatter::Resolve('xml'); // default fallback before URL is parsed
+            $formatter = Formatter::Resolve($this->Config->Get('format.default', 'xml')); // fallback before URL is parsed
 
             // parse URL
             $parser = UrlParser::Create();
@@ -163,7 +179,7 @@ final class Engine extends Singleton {
             $result   = $ctrl_instance->$action();
             $response = ResponseFactory::Ok($result, $parser);
 
-            $this->Status->Finish();
+            $this->Status->Finish($this->Problems);
 
             echo $formatter->Format($response);
 
@@ -215,19 +231,31 @@ final class Engine extends Singleton {
 
 
     /**
-     * Sets default engine configuration
+     * Configures engine with user settings
+     * @param array $cfg [key => value]
+     * @return Engine
+     */
+    public function Setup(array $cfg) {
+
+        $this->Config->SetBulk($cfg);
+        return $this;
+    }
+
+    /**
+     * Sets engine defaults
      */
     private function DefaultConfig() {
 
         try {
 
             $this->Mode = EngineModeEnum::GetEnum('prod');
+            $this->Config->Set('format.default', 'xml');
 
         } catch(\Exception $exc) {
 
             $this->Exception("Engine.DefaultConfig", $exc, "Default config setup failed");
         }
-        
+
     }
     
 
