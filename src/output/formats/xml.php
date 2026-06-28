@@ -12,7 +12,7 @@ class XmlFormat extends Formatter {
      * @param Response $response
      * @return string
      */
-    public function Format(Response $response): string {
+    public function Format(Response $response) {
 
         $root    = XmlBuilder::CreateRoot('response');
         $header  = XmlBuilder::CreateElement('header');

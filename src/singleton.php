@@ -15,8 +15,7 @@ abstract class Singleton
     }
 
 
-    final protected function RegisterInstance(): void
-    {
+    final protected function RegisterInstance()     {
         if (self::$Instances === null)
             self::$Instances = new Dictionary();
 

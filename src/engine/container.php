@@ -43,7 +43,7 @@ class Container {
      * @param string $key
      * @return bool
      */
-    public function Has(string $key): bool {
+    public function Has(string $key) {
 
         return isset($this->Instances[$key]);
     }

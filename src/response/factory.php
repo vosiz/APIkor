@@ -15,7 +15,7 @@ class ResponseFactory {
      * @param int $uid Authenticated user ID
      * @return Response
      */
-    public static function Ok($data, ?UrlParser $parser = null, int $uid = 0): Response {
+    public static function Ok($data, ?UrlParser $parser = null, int $uid = 0) {
 
         $payload = self::ResolvePayload($data);
         $header  = new Header($payload->GetType(), Header::HTTP_OK, $parser, $uid);
@@ -28,7 +28,7 @@ class ResponseFactory {
      * @param UrlParser|null $parser
      * @return Response
      */
-    public static function BadRequest(\Exception $exc, ?UrlParser $parser = null): Response {
+    public static function BadRequest(\Exception $exc, ?UrlParser $parser = null) {
 
         $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_BAD_REQUEST, $parser);
@@ -41,7 +41,7 @@ class ResponseFactory {
      * @param UrlParser|null $parser
      * @return Response
      */
-    public static function NotFound(\Exception $exc, ?UrlParser $parser = null): Response {
+    public static function NotFound(\Exception $exc, ?UrlParser $parser = null) {
 
         $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_NOT_FOUND, $parser);
@@ -55,7 +55,7 @@ class ResponseFactory {
      * @param int $uid
      * @return Response
      */
-    public static function Forbidden(\Exception $exc, ?UrlParser $parser = null, int $uid = 0): Response {
+    public static function Forbidden(\Exception $exc, ?UrlParser $parser = null, int $uid = 0) {
 
         $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_FORBIDDEN, $parser, $uid);
@@ -68,7 +68,7 @@ class ResponseFactory {
      * @param UrlParser|null $parser
      * @return Response
      */
-    public static function Error(\Exception $exc, ?UrlParser $parser = null): Response {
+    public static function Error(\Exception $exc, ?UrlParser $parser = null) {
 
         $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_ERROR, $parser);
@@ -80,7 +80,7 @@ class ResponseFactory {
      * @param mixed $data
      * @return Payload
      */
-    public static function ResolvePayload($data): Payload {
+    public static function ResolvePayload($data) {
 
         if($data instanceof Payload)
             return $data;
@@ -111,11 +111,11 @@ class ResponseFactory {
      * @param \Exception $exc
      * @return array
      */
-    private static function ExcToArray(\Exception $exc): array {
+    private static function ExcToArray(\Exception $exc) {
 
         $data = ['message' => $exc->getMessage()];
 
-        $inner = method_exists($exc, 'GetInner') ? $exc->GetInner() : null;
+        $inner = method_exists($exc, 'GetInner') ? $exc->GetInner();
         if($inner !== null)
             $data['inner'] = self::ExcToArray($inner);
 

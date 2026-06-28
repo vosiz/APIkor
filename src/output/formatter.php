@@ -11,7 +11,7 @@ interface IFormat {
      * @param Response $response
      * @return string
      */
-    public function Format(Response $response): string;
+    public function Format(Response $response);
 }
 
 abstract class Formatter implements IFormat {

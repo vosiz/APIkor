@@ -84,7 +84,7 @@ class UrlParser extends VaUrlParser {
      * Returns parsed URL parts — overrides VaUrlParser which uses broken HTTP_HOST-based parsing
      * @return array
      */
-    public function GetParts(): array {
+    public function GetParts() {
 
         return [
             'version'    => $this->Version,

@@ -11,7 +11,7 @@ class VarFormat extends Formatter {
      * @param Response $response
      * @return string
      */
-    public function Format(Response $response): string {
+    public function Format(Response $response) {
 
         ob_start();
         var_dump($response);

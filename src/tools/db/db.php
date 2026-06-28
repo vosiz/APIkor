@@ -20,7 +20,7 @@ class DbConnection extends VaDbConnection {
      * Returns last inserted ID
      * @return int
      */
-    public function LastInsertId(): int {
+    public function LastInsertId() {
 
         return (int)$this->pdo->lastInsertId();
     }

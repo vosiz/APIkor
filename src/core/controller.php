@@ -13,7 +13,7 @@ abstract class Controller {
      * @return string Resolved method name
      * @throws \Apikor\Engine\NotFoundException
      */
-    public function FindAction(string $action, int $version): string {
+    public function FindAction(string $action, int $version) {
 
         for($v = $version; $v >= 2; $v--) {
 

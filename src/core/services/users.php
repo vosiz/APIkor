@@ -13,12 +13,27 @@ class UsersService extends DbService {
      * Returns count of registered and valid users
      * @return array ['registered' => int, 'valid' => int]
      */
-    public function CountStats(): array {
+    public function CountStats() {
 
         return [
-            'registered' => $this->Count(false),
-            'valid'      => $this->Count(true)
+            'registered' => $this->Count(true),
+            'valid'      => $this->ValidCount()
         ];
+    }
+
+    /**
+     * Returns count of validated users (valid = 1, active = 1)
+     * @return int
+     */
+    public function ValidCount() {
+
+        $result = $this->Db->Query(static::$Table)
+            ->Select(['COUNT(*) AS count'])
+            ->Where('active = ?', [1])
+            ->AndWhere('valid = ?', [1])
+            ->Execute();
+
+        return $result ? (int)$result[0]->count : 0;
     }
 
     /**
@@ -26,7 +41,7 @@ class UsersService extends DbService {
      * @param int $role_id
      * @return UserModel[]
      */
-    public function ByRole(int $role_id): array {
+    public function ByRole(int $role_id) {
 
         return $this->Find(['role_id' => $role_id]);
     }

@@ -47,7 +47,7 @@ class Config {
      * @param string $key
      * @return bool
      */
-    public function Has(string $key): bool {
+    public function Has(string $key) {
 
         return isset($this->Data[$key]);
     }
@@ -82,7 +82,7 @@ class Config {
     /**
      * @return string|null Error message or null on success
      */
-    private function ValidateFormatDefault(): ?string {
+    private function ValidateFormatDefault() {
 
         $valid = ['xml', 'var', 'pre'];
         $value = $this->Get('format.default');

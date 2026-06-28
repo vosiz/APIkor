@@ -6,7 +6,7 @@
  * @return array
  * @throws \Exceptionf
  */
-function read_cfg(string $path): array {
+function read_cfg(string $path) {
 
     if(!file_exists($path))
         throw new \Exceptionf("Config file not found: %s", $path);

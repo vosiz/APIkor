@@ -23,7 +23,7 @@ class LogLevelEnum extends Enum {
     /**
      * Abstract implementation
      */
-    public static function Init(): void {
+    public static function Init() {
 
         /**
          * [SSxx IxDF]b

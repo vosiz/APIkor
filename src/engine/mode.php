@@ -9,7 +9,7 @@ class EngineModeEnum extends Enum {
     /**
      * Abstract implementation
      */
-    public static function Init(): void {
+    public static function Init() {
 
         /**
          * [Pxxx xxDL]b

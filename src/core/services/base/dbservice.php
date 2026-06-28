@@ -22,7 +22,7 @@ abstract class DbService extends DataService {
      * @param bool $active_only
      * @return array [id => Model]
      */
-    public function All(bool $active_only = true): array {
+    public function All(bool $active_only = true) {
 
         $qb = $this->Db->Query(static::$Table)->Select();
 
@@ -37,7 +37,7 @@ abstract class DbService extends DataService {
      * @param bool $active_only
      * @return int
      */
-    public function Count(bool $active_only = true): int {
+    public function Count(bool $active_only = true) {
 
         $qb = $this->Db->Query(static::$Table)->Select(['COUNT(*) AS count']);
 
@@ -55,7 +55,7 @@ abstract class DbService extends DataService {
      * @param int|null $limit
      * @return array [id => Model]
      */
-    public function Find(array $where, $order = null, ?int $limit = null): array {
+    public function Find(array $where, $order = null, ?int $limit = null) {
 
         $qb = $this->Db->Query(static::$Table)->Select();
         $this->ApplyWhere($qb, $where);
@@ -72,7 +72,7 @@ abstract class DbService extends DataService {
      * @param array $where [column => value]
      * @return bool
      */
-    public function Update(array $data, array $where): bool {
+    public function Update(array $data, array $where) {
 
         $qb = $this->Db->Query(static::$Table)->Update($data);
         $this->ApplyWhere($qb, $where);
@@ -85,7 +85,7 @@ abstract class DbService extends DataService {
      * @param array $where [column => value]
      * @return bool
      */
-    public function Delete(array $where): bool {
+    public function Delete(array $where) {
 
         return $this->Update(['active' => 0], $where);
     }
@@ -95,7 +95,7 @@ abstract class DbService extends DataService {
      * @param array $data [column => value]
      * @return int Inserted ID
      */
-    public function Insert(array $data): int {
+    public function Insert(array $data) {
 
         $this->Db->Query(static::$Table)->Insert($data)->Execute();
         return (int)$this->Db->LastInsertId();
@@ -110,11 +110,11 @@ abstract class DbService extends DataService {
     public function One(array $where, $order = null) {
 
         $results = $this->Find($where, $order, 1);
-        return !empty($results) ? reset($results) : null;
+        return !empty($results) ? reset($results);
     }
 
     // Aliases
-    public function Where(array $where, $order = null, ?int $limit = null): array { return $this->Find($where, $order, $limit); }
+    public function Where(array $where, $order = null, ?int $limit = null) { return $this->Find($where, $order, $limit); }
     public function By(string $column, $value)                                    { return $this->One([$column => $value]);      }
     public function ById(int $id)                                                  { return $this->One(['id' => $id]);            }
 
@@ -123,7 +123,7 @@ abstract class DbService extends DataService {
      * @param array $rows
      * @return array
      */
-    protected function ToModels(array $rows): array {
+    protected function ToModels(array $rows) {
 
         $models = [];
         foreach($rows as $row) {
