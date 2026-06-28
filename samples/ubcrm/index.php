@@ -2,9 +2,9 @@
 
 namespace UserBasedCRM;
 
-// Required constants - apikor subdomain name and API keyword
-// URL format: <host>/<SUBDOMAIN_NAME>/<API_URL_KEYWORD>/v<version>/<format>/<module>/<controller>/<action>
-define('SUBDOMAIN_NAME', 'apikor');
+// URL_BASE_PATH = path segments before the API keyword (empty on production at domain root)
+// URL format: <host>/<URL_BASE_PATH>/<API_URL_KEYWORD>/v<version>/<format>/<module>/<controller>/<action>
+define('URL_BASE_PATH', 'apikor');
 define('API_URL_KEYWORD', 'api');
 
 require_once(__DIR__.'/../../src/engine.php');

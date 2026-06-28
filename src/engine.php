@@ -153,12 +153,29 @@ final class Engine extends Singleton {
             if($errors !== null)
                 throw new BadRequestException("URL parsing failed: %s", implode(', ', $errors));
 
-            $formatter = Formatter::Resolve($parser->GetFormat());
+            try {
+                $formatter = Formatter::Resolve($parser->GetFormat());
+            } catch(\Exception $exc) {
+                $bad = new BadRequestException("Unknown format: '%s'", $parser->GetFormat());
+                $inner = new \Exceptionf("ignored: [%s] | format: %s",
+                    implode(', ', $parser->GetIgnored()),
+                    $parser->GetPattern()
+                );
+                $bad->SetInner($inner);
+                throw $bad;
+            }
 
             // load and instantiate controller
             $module     = $parser->GetModule();
             $controller = $parser->GetController();
             $action     = camel($parser->GetAction());
+
+            if(empty($module))
+                throw new NotFoundException("Module not specified in URL");
+            if(empty($controller))
+                throw new NotFoundException("Controller not specified in URL");
+            if(empty($action))
+                throw new NotFoundException("Action not specified in URL");
 
             $ctrl_path = sprintf('%s/modules/controllers/%s/%s.php', __DIR__, $module, $controller);
             if(!file_exists($ctrl_path))
@@ -172,11 +189,10 @@ final class Engine extends Singleton {
 
             $ctrl_instance = new $cls();
 
-            if(!method_exists($ctrl_instance, $action))
-                throw new NotFoundException("Action not found: %s::%s", $cls, $action);
+            $action = $ctrl_instance->FindAction($action, (int)$parser->GetVersion());
 
             // call action
-            $result   = $ctrl_instance->$action();
+            $result = $ctrl_instance->$action();
             $response = ResponseFactory::Ok($result, $parser);
 
             $this->Status->Finish($this->Problems);
@@ -185,15 +201,15 @@ final class Engine extends Singleton {
 
         } catch(BadRequestException $exc) {
 
-            echo $formatter->Format(ResponseFactory::BadRequest($exc->getMessage(), $parser ?? null));
+            echo $formatter->Format(ResponseFactory::BadRequest($exc, $parser ?? null));
 
         } catch(NotFoundException $exc) {
 
-            echo $formatter->Format(ResponseFactory::NotFound($exc->getMessage(), $parser ?? null));
+            echo $formatter->Format(ResponseFactory::NotFound($exc, $parser ?? null));
 
         } catch(ForbiddenException $exc) {
 
-            echo $formatter->Format(ResponseFactory::Forbidden($exc->getMessage(), $parser ?? null));
+            echo $formatter->Format(ResponseFactory::Forbidden($exc, $parser ?? null));
 
         } catch(\Exception $exc) {
 

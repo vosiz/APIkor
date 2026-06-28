@@ -24,40 +24,40 @@ class ResponseFactory {
 
     /**
      * Creates 400 Bad Request response
-     * @param string $msg
+     * @param \Exception $exc
      * @param UrlParser|null $parser
      * @return Response
      */
-    public static function BadRequest(string $msg, ?UrlParser $parser = null): Response {
+    public static function BadRequest(\Exception $exc, ?UrlParser $parser = null): Response {
 
-        $payload = Payload::CreateRetval(Retval::Fail($msg));
+        $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_BAD_REQUEST, $parser);
         return Response::Create($header, $payload);
     }
 
     /**
      * Creates 404 Not Found response
-     * @param string $msg
+     * @param \Exception $exc
      * @param UrlParser|null $parser
      * @return Response
      */
-    public static function NotFound(string $msg, ?UrlParser $parser = null): Response {
+    public static function NotFound(\Exception $exc, ?UrlParser $parser = null): Response {
 
-        $payload = Payload::CreateRetval(Retval::Fail($msg));
+        $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_NOT_FOUND, $parser);
         return Response::Create($header, $payload);
     }
 
     /**
      * Creates 403 Forbidden response
-     * @param string $msg
+     * @param \Exception $exc
      * @param UrlParser|null $parser
      * @param int $uid
      * @return Response
      */
-    public static function Forbidden(string $msg, ?UrlParser $parser = null, int $uid = 0): Response {
+    public static function Forbidden(\Exception $exc, ?UrlParser $parser = null, int $uid = 0): Response {
 
-        $payload = Payload::CreateRetval(Retval::Error($msg));
+        $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_FORBIDDEN, $parser, $uid);
         return Response::Create($header, $payload);
     }
@@ -70,7 +70,7 @@ class ResponseFactory {
      */
     public static function Error(\Exception $exc, ?UrlParser $parser = null): Response {
 
-        $payload = Payload::CreateRetval(Retval::Exception($exc->getMessage()));
+        $payload = Payload::CreateException(self::ExcToArray($exc));
         $header  = new Header($payload->GetType(), Header::HTTP_ERROR, $parser);
         return Response::Create($header, $payload);
     }
@@ -104,6 +104,22 @@ class ResponseFactory {
         }
 
         return Payload::CreateCustom($data);
+    }
+
+    /**
+     * Serializes exception chain to nested array
+     * @param \Exception $exc
+     * @return array
+     */
+    private static function ExcToArray(\Exception $exc): array {
+
+        $data = ['message' => $exc->getMessage()];
+
+        $inner = method_exists($exc, 'GetInner') ? $exc->GetInner() : null;
+        if($inner !== null)
+            $data['inner'] = self::ExcToArray($inner);
+
+        return $data;
     }
 
 }

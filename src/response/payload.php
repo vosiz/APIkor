@@ -60,6 +60,16 @@ class Payload {
     }
 
     /**
+     * Creates exception payload
+     * @param array $data Serialized exception chain
+     * @return ExceptionPayload
+     */
+    public static function CreateException(array $data) {
+
+        return new ExceptionPayload($data);
+    }
+
+    /**
      * Creates associative array payload
      * @param array $arr
      * @return ArrayPayload

@@ -18,8 +18,9 @@ class PayloadTypeEnum extends Enum {
             'retval'    => 0x70,    // Retval class
             'custom'    => 0xC0,    // custom data structure - own class
             'debug'     => 0xD0,    // debug info
-            'model'     => 0xE0,    // single Model
-            'models'    => 0xE1,    // collection of Models
+            'exception' => 0xE0,    // exception / error detail
+            'model'     => 0xF0,    // single Model
+            'models'    => 0xF1,    // collection of Models
         ];
         self::AddValues($vals);
     }

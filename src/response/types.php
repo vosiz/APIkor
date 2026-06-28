@@ -4,6 +4,19 @@ namespace Apikor\Response;
 
 use Vosiz\VaTools\Retval;
 
+class ExceptionPayload extends Payload {
+
+    /**
+     * Constructor
+     * @param array $data Serialized exception chain
+     */
+    public function __construct(array $data) {
+
+        parent::__construct(PayloadTypeEnum::GetEnum('exception'), $data);
+    }
+
+}
+
 class PlainPayload extends Payload {
 
     /**

@@ -1,6 +1,6 @@
 <?php
 
-namespace Apikor\Modules\StatisticsModule;
+namespace Apikor\Modules\StatsModule;
 
 use Apikor\Core\Controller;
 use Apikor\Core\Services\UsersService;
