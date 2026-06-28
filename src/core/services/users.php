@@ -2,23 +2,23 @@
 
 namespace Apikor\Core\Services;
 
-use Apikor\Core\Models\UserModel;
+use Apikor\Core\Models as Models;
 
 class UsersService extends DbService {
 
     protected static $Table      = 'users';
-    protected static $ModelClass = UserModel::class;
+    protected static $ModelClass = Models\UserModel::class;
 
     /**
-     * Returns count of registered and valid users
-     * @return array ['registered' => int, 'valid' => int]
+     * Returns registered and valid user counts as model
+     * @return Models\StatsUsersModel
      */
     public function CountStats() {
 
-        return [
-            'registered' => $this->Count(true),
-            'valid'      => $this->ValidCount()
-        ];
+        $model = new Models\StatsUsersModel();
+        $model->RegisteredCount = $this->Count(true);
+        $model->ValidCount      = $this->ValidCount();
+        return $model;
     }
 
     /**
@@ -39,7 +39,7 @@ class UsersService extends DbService {
     /**
      * Returns users by role
      * @param int $role_id
-     * @return UserModel[]
+     * @return Models\UserModel[]
      */
     public function ByRole(int $role_id) {
 
@@ -49,7 +49,7 @@ class UsersService extends DbService {
     /**
      * Returns single user by email
      * @param string $email
-     * @return UserModel|null
+     * @return Models\UserModel|null
      */
     public function ByEmail(string $email) {
 

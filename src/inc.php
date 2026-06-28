@@ -29,7 +29,7 @@ try {
         'model',
         'dbmodel'
     ]);
-    IncludeFolder('core/models', ['user']);
+    IncludeFolder('core/models', ['user', 'stats_users']);
 
     // Services
     IncludeFolder('core/services/base', [

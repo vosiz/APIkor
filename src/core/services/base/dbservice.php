@@ -110,7 +110,7 @@ abstract class DbService extends DataService {
     public function One(array $where, $order = null) {
 
         $results = $this->Find($where, $order, 1);
-        return !empty($results) ? reset($results);
+        return !empty($results) ? reset($results) : null;
     }
 
     // Aliases

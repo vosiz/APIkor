@@ -11,7 +11,7 @@ class UsersController extends Controller {
      * Returns count of registered and valid users
      * @return array
      */
-    public function Count() {
+    public function Counts() {
 
         $service = new UsersService();
         return $service->CountStats();

@@ -33,7 +33,7 @@ class ApikorException extends \Exceptionf {
 //     /**
 //      * Abstract implementation
 //      */
-//     public static function Init() {
+//     public static function Init(): void {
 
 //         $vals = [
 //             'general'                       => 0x0000,

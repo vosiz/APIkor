@@ -115,7 +115,7 @@ class ResponseFactory {
 
         $data = ['message' => $exc->getMessage()];
 
-        $inner = method_exists($exc, 'GetInner') ? $exc->GetInner();
+        $inner = method_exists($exc, 'GetInner') ? $exc->GetInner() : null;
         if($inner !== null)
             $data['inner'] = self::ExcToArray($inner);
 

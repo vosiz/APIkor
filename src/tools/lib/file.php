@@ -9,7 +9,7 @@ class SpaceEnum extends Enum {
     /**
      * Abstract implementation
      */
-    public static function Init() {
+    public static function Init(): void {
 
         $vals = [
             'master'    => 0x10,

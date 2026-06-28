@@ -9,7 +9,7 @@ class EngineStatusEnum extends Enum {
     /**
      * Abstract implementation
      */
-    public static function Init() {
+    public static function Init(): void {
 
         /**
          * [FEIS Dxxx]b

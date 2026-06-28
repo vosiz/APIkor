@@ -9,7 +9,7 @@ class PayloadTypeEnum extends Enum {
     /**
      * Abstract implementation
      */
-    public static function Init() {
+    public static function Init(): void {
 
         $vals = [
             'plain'     => 0x00,    // plain text
