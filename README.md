@@ -12,6 +12,7 @@ No commercial-like goals are "hard-planned" (read: "just a hobby")
 Version 0.x.y are not supposed to be used. Wait for 1+.x.y
 
 ## Roadmap
+- [x] Engine - status, workflow
 - [x] Configurator - basics
 - [x] Diagnostics - basics
 - [x] Simple inner-logging
@@ -24,23 +25,26 @@ Version 0.x.y are not supposed to be used. Wait for 1+.x.y
 - [x] Response - basics
 - [x] Response - encapsulate
 - [ ] Response - output nodes 
-- [ ] Response - output xml
+- [x] Response - output xml
 - [ ] Response - output json
 - [ ] Response - output html
 - [x] Response - output dump
-- [ ] Logging
-- [ ] Model
-- [ ] Database connection
-- [ ] Database - model reflection
-- [ ] Service - basics
-- [ ] Dataservice
-- [ ] Enumservice
-- [ ] Modules
+- [x] Response - output PRE
+- [x] Logging
+- [x] Model
+- [x] Mapper
+- [x] Database connection
+- [x] Database - model reflection (DB mapper)
+- [x] Service - basics
+- [x] Dataservice (+DbService)
+- [ ] EnumService
+- [x] Modules
 - [ ] Basic Modules (shared simple modules)
 - [ ] Samples
-- [ ] Sample CRM
+- [ ] Sample CRM (User-based)
 - [ ] Complete docs
-- [ ] Error/exc handler
+- [x] Error/exc handler
+- [x] Installer/deployment
 - [ ] Wiki?
 - [ ] Real usage proof (codename BZ.to)
 
