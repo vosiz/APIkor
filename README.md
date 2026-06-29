@@ -33,18 +33,24 @@ Version 0.x.y are not supposed to be used. Wait for 1+.x.y
 - [x] Logging
 - [x] Model
 - [x] Mapper
+- [x] Action routing and versioning
+- [ ] Roles + permissions
+- [ ] Settings
+- [ ] Tokens
+- [x] Apikor tables - info, comments, logs, settings
 - [x] Database connection
 - [x] Database - model reflection (DB mapper)
 - [x] Service - basics
 - [x] Dataservice (+DbService)
 - [ ] EnumService
 - [x] Modules
-- [ ] Basic Modules (shared simple modules)
+- [ ] Basic Modules (shared simple modules - system, stats, users,...)
 - [ ] Samples
 - [ ] Sample CRM (User-based)
 - [ ] Complete docs
 - [x] Error/exc handler
 - [x] Installer/deployment
+- [x] Database migration - updates
 - [ ] Wiki?
 - [ ] Real usage proof (codename BZ.to)
 
