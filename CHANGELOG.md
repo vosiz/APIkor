@@ -1,5 +1,12 @@
 # Change log
 ## Current version
+### 0.2.0 - Core DB tables
+- apikor_info: installation tracking (version, installed, updated)
+- apikor_logs: fatal error logging with guid, origin, message
+- apikor_comments: polymorphic comments (table_name + record_id)
+- apikor_settings: key-value app configuration with type and description
+
+## History
 ### 0.1.0 - Big refactor
 - engine routing: module/controller/action + versioned actions
 - response pipeline: Header, Payload types, ResponseFactory (200/400/403/404/500)
