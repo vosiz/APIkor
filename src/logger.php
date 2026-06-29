@@ -5,6 +5,7 @@ namespace Apikor;
 use Vosiz\Enums\Enum;
 use Vosiz\Utils\Collections\Collection;
 use Vosiz\Utils\TimeFormat;
+use Vosiz\Utils\Io;
 
 class LoggerException extends \Exceptionf {
 
@@ -142,11 +143,13 @@ final class Logger extends Singleton {
 
         try {
 
-            if(!\is_dir($path) && !@\mkdir($path, 0755, true)) {
+            if(!Io\Dir::Create($path)) {
 
                 $this->FileLogAllowed = false;
                 return;
             }
+
+            Io\Path::SetPermissions($path);
 
             $filename = sprintf("%s.log", \now('Y-m-d'));
 

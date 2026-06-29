@@ -1,5 +1,7 @@
 <?php
 
+use Vosiz\Utils\Io;
+
 try {
 
     // Essentials
@@ -12,7 +14,7 @@ try {
     require_once(__DIR__.'/tools/tools.php');
 
     // Engine
-    IncludeFolder('engine', [
+    IncludeFiles('engine', [
         'exc',
         'status',
         'mode',
@@ -22,29 +24,29 @@ try {
     ]);
 
     // Core
-    IncludeFolder('core', ['controller']);
+    IncludeFiles('core', ['controller']);
 
     // Models
-    IncludeFolder('core/models/base', [
+    IncludeFiles('core/models/base', [
         'model',
         'dbmodel'
     ]);
-    IncludeFolder('core/models', ['user', 'stats_users']);
+    IncludeDir('core/models');
 
     // Services
-    IncludeFolder('core/services/base', [
+    IncludeFiles('core/services/base', [
         'service',
         'dataservice',
         'dbservice'
     ]);
-    IncludeFolder('core/services', ['users']);
+    IncludeDir('core/services');
 
     // Output
-    IncludeFolder('output', ['formatter']);
-    IncludeFolder('output/formats', ['var', 'pre', 'xml']);
+    IncludeFiles('output', ['formatter']);
+    IncludeFiles('output/formats', ['var', 'pre', 'xml']);
 
     // Response
-    IncludeFolder('response', [
+    IncludeFiles('response', [
         'header',
         'payload',
         'types',
@@ -53,11 +55,11 @@ try {
     ]);
 
     // Mappers
-    IncludeFolder('core/mappers/base', [
+    IncludeFiles('core/mappers/base', [
         'mapper',
         'dbmapper'
     ]);
-    IncludeFolder('core/mappers/base/db', [
+    IncludeFiles('core/mappers/base/db', [
         'entity_dbmapper',
         'enum_dbmapper'
     ]);
@@ -70,15 +72,20 @@ try {
 
 
 /**
- * Includes folder to APIkor
+ * Includes list of files from folder
  * @param string $path Path to folder (no leading or trailing '/')
- * @param array $files List of files (only names)
+ * @param array $files List of files (only names, no extension)
  */
-function IncludeFolder(string $path, array $files = []) {
+function IncludeFiles(string $path, array $files = []) {
 
-    $base = __DIR__;
-    foreach($files as $f) {
+    Io\Inc::Files(__DIR__ . '/' . $path, $files);
+}
 
-        require_once(sprintf("%s/%s/%s.php", __DIR__, $path, $f));
-    }
+/**
+ * Includes all PHP files in folder
+ * @param string $path Path to folder (no leading or trailing '/')
+ */
+function IncludeDir(string $path) {
+
+    Io\Inc::Dir(__DIR__ . '/' . $path);
 }

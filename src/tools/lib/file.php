@@ -3,6 +3,7 @@
 namespace Apikor\Tools;
 
 use \Vosiz\Enums\Enum;
+use Vosiz\Utils\Io;
 
 class SpaceEnum extends Enum {
 
@@ -29,30 +30,15 @@ class SpaceEnum extends Enum {
  */
 function FILEOPS_Exists(string $user_space, string $apikor_space, string $file, string $ext = 'php') {
 
-    try {
+    $file .= '.'.$ext;
 
-        $file .= '.'.$ext;
-        $user_file = sprintf("%s/%s", $user_space, $file);
-        $apikor_file = sprintf("%s/%s", $apikor_space, $file);
+    if($path = Io\File::Exists(Io\Path::Combine($user_space, $file)))
+        return [SpaceEnum::GetEnum('user'), $path];
 
-        if(file_exists($user_file)) { // user based - overrides master
+    if($path = Io\File::Exists(Io\Path::Combine($apikor_space, $file)))
+        return [SpaceEnum::GetEnum('master'), $path];
 
-            return [SpaceEnum::GetEnum('user'), $user_file];
-
-        } else if(file_exists($apikor_file)) { // master based
-
-            return [SpaceEnum::GetEnum('master'), $apikor_file];
-
-        } else {
-
-            throw new \Exceptionf("'$file' not found");
-        }
-
-    } catch (\Exception $exc) {
-
-        throw $exc;
-    }
-
+    throw new \Exceptionf("'$file' not found");
 }
 
 /**
@@ -61,7 +47,7 @@ function FILEOPS_Exists(string $user_space, string $apikor_space, string $file, 
  * @return string full path
  */
 function FILEOPS_PathCombine(...$paths) {
-    return preg_replace('~[/\\\\]+~', DIRECTORY_SEPARATOR, join(DIRECTORY_SEPARATOR, array_map(fn($p) => trim($p, "/\\"), $paths)));
+    return Io\Path::Combine(...$paths);
 }
 
 /**
@@ -71,12 +57,7 @@ function FILEOPS_PathCombine(...$paths) {
  */
 function FILEOPS_GetFiles(string $dir_path, string $ext = '*') {
 
-    $dir_path = rtrim($dir_path, '/\\');
-    $dir_path = ltrim($dir_path, '/\\');
-
-    $allowed = '/*';
-    if($ext !== '*')
-        $allowed = '/*.'.$ext;
-
-    return glob($dir_path.$allowed);
-} 
+    $files = Io\Dir::GetFiles($dir_path);
+    if($ext === '*') return $files;
+    return array_values(array_filter($files, fn($f) => pathinfo($f, PATHINFO_EXTENSION) === $ext));
+}

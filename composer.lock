@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d605a3fbcf1398f73c2faf434e1a1045",
+    "content-hash": "6590fbf19954e2735ef9f5ea1f4ccbb4",
     "packages": [
         {
             "name": "vosiz/php-enum",
@@ -46,16 +46,16 @@
         },
         {
             "name": "vosiz/php-utils",
-            "version": "1.10.1",
+            "version": "v1.11.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/vosiz/php-utils.git",
-                "reference": "99b082949cc082b25cd7f7c07740446217f141a6"
+                "reference": "9c8164a9cfd1c329703723bf43310e016a44b121"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/99b082949cc082b25cd7f7c07740446217f141a6",
-                "reference": "99b082949cc082b25cd7f7c07740446217f141a6",
+                "url": "https://api.github.com/repos/vosiz/php-utils/zipball/9c8164a9cfd1c329703723bf43310e016a44b121",
+                "reference": "9c8164a9cfd1c329703723bf43310e016a44b121",
                 "shasum": ""
             },
             "require": {
@@ -68,6 +68,11 @@
                     "src/functions.php",
                     "src/exc.php",
                     "src/object.php",
+                    "src/collections/exc.php",
+                    "src/io/path.php",
+                    "src/io/file.php",
+                    "src/io/dir.php",
+                    "src/io/inc.php",
                     "src/collections/collection.php",
                     "src/collections/dic.php",
                     "src/singleton.php",
@@ -86,9 +91,9 @@
             "description": "A PHP utilities library",
             "support": {
                 "issues": "https://github.com/vosiz/php-utils/issues",
-                "source": "https://github.com/vosiz/php-utils/tree/1.10.1"
+                "source": "https://github.com/vosiz/php-utils/tree/v1.11.0"
             },
-            "time": "2026-06-27T00:08:01+00:00"
+            "time": "2026-06-28T23:42:46+00:00"
         },
         {
             "name": "vosiz/va-tools",
