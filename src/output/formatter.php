@@ -16,6 +16,9 @@ interface IFormat {
 
 abstract class Formatter implements IFormat {
 
+    const FORMATS = ['html', 'pre', 'var', 'xml'];
+
+
     /**
      * Resolves format key to formatter instance
      * @param string $format Format key from URL
@@ -26,14 +29,17 @@ abstract class Formatter implements IFormat {
 
         switch($format) {
 
-            case 'xml':
-                return new XmlFormat();
+            case 'html':
+                return new HtmlFormat();
+
+            case 'pre':
+                return new PreFormat();
 
             case 'var':
                 return new VarFormat();
 
-            case 'pre':
-                return new PreFormat();
+            case 'xml':
+                return new XmlFormat();
 
             default:
                 throw new \Exceptionf("Unknown output format: %s", $format);

@@ -1,5 +1,13 @@
 # Change log
 ## Current version
+### 0.4.0 - HTML format
+- HtmlFormat — full HTML document output via va-tools HtmlBuilder
+- header rendered as ul, payload recursively as ul/headings by type
+- Formatter::FORMATS constant as single source of truth for valid format keys
+- Config::ValidateFormatDefault uses Formatter::FORMATS
+- va-tools dependency bumped to >=1.9.0
+
+## History
 ### 0.3.0 - Deployment
 - Deployer: auto-install on first request when apikor_info not found
 - Deployer: Install() runs all migrations ordered by filename date, Update() runs only newer ones (tolerant mode)
@@ -8,8 +16,6 @@
 - DbConnection: Raw() for parameterized raw SQL (used by migrations)
 - inc.php: IncludeFiles/IncludeDir wrappers via Io\Inc, models/services auto-loaded with IncludeDir
 - logger: Dir::Create() + SetPermissions() instead of raw mkdir
-
-## History
 ### 0.2.0 - Core DB tables
 - apikor_info: installation tracking (version, installed, updated)
 - apikor_logs: fatal error logging with guid, origin, message

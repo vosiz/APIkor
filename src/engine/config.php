@@ -84,11 +84,10 @@ class Config {
      */
     private function ValidateFormatDefault() {
 
-        $valid = ['xml', 'var', 'pre'];
         $value = $this->Get('format.default');
 
-        if(!in_array($value, $valid))
-            return sprintf("'format.default' has invalid value '%s', valid: %s", $value, implode(', ', $valid));
+        if(!in_array($value, \Apikor\Output\Formatter::FORMATS))
+            return sprintf("'format.default' has invalid value '%s', valid: %s", $value, implode(', ', \Apikor\Output\Formatter::FORMATS));
 
         return null;
     }

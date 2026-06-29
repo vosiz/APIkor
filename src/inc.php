@@ -46,7 +46,7 @@ try {
 
     // Output
     IncludeFiles('output', ['formatter']);
-    IncludeFiles('output/formats', ['var', 'pre', 'xml']);
+    IncludeFiles('output/formats', ['var', 'pre', 'xml', 'html']);
 
     // Response
     IncludeFiles('response', [
