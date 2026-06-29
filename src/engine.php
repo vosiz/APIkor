@@ -13,6 +13,7 @@ use Apikor\Engine\EngineStatus;
 use Apikor\Engine\Container;
 use Apikor\Engine\Config;
 
+use Apikor\Deploy as Deploy;
 use Apikor\Tools\UrlParser;
 use Apikor\Tools\DbConnection;
 use Apikor\Output\Formatter;
@@ -134,6 +135,20 @@ final class Engine extends Singleton {
     }
 
     /**
+     * Runs deployment — installs or updates apikor DB and directories
+     * @param bool $update If true, runs update instead of full install
+     * @throws Engine\EngineException if DB not configured
+     */
+    public function Deploy(bool $update = false) {
+
+        if(!$this->Container->Has('db'))
+            throw new Engine\EngineException("Deploy: DB not configured");
+
+        $deployer = $this->CreateDeployer();
+        $update ? $deployer->Update() : $deployer->Install();
+    }
+
+    /**
      * Processes request and sends response
      */
     public function Work() {
@@ -146,6 +161,18 @@ final class Engine extends Singleton {
             $this->Status->Work();
 
             $formatter = Formatter::Resolve($this->Config->Get('format.default', 'xml')); // fallback before URL is parsed
+
+            // auto-deploy if DB not installed
+            if($this->Container->Has('db')) {
+
+                $deployer = $this->CreateDeployer();
+                if(!$deployer->IsInstalled()) {
+
+                    $deployer->Install();
+                    echo $formatter->Format(ResponseFactory::Ok(['deployed' => true], null));
+                    return;
+                }
+            }
 
             // parse URL
             $parser = UrlParser::Create();
@@ -255,6 +282,26 @@ final class Engine extends Singleton {
 
         $this->Config->SetBulk($cfg);
         return $this;
+    }
+
+    /**
+     * Creates and configures a Deployer instance
+     * @return Deploy\Deployer
+     */
+    private function CreateDeployer() {
+
+        $deployer = new Deploy\Deployer(
+            $this->Container->Get('db'),
+            __DIR__ . '/modules/installer/migrations'
+        );
+
+        $base = $this->Config->Get('deploy.base_path', __DIR__ . '/..');
+        foreach(Deploy\Dirs::Get($base) as $dir) {
+
+            $deployer->AddDir($dir);
+        }
+
+        return $deployer;
     }
 
     /**

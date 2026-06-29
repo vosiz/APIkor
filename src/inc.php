@@ -13,6 +13,9 @@ try {
     // tools
     require_once(__DIR__.'/tools/tools.php');
 
+    // Deploy
+    IncludeFiles('deploy', ['dirs', 'deployer']);
+
     // Engine
     IncludeFiles('engine', [
         'exc',

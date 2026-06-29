@@ -1,5 +1,15 @@
 # Change log
 ## Current version
+### 0.3.0 - Deployment
+- Deployer: auto-install on first request when apikor_info not found
+- Deployer: Install() runs all migrations ordered by filename date, Update() runs only newer ones (tolerant mode)
+- Deployer: creates required directories (logs) on deploy, sets permissions
+- Engine: Deploy() public method, CreateDeployer() wired to deploy.base_path config
+- DbConnection: Raw() for parameterized raw SQL (used by migrations)
+- inc.php: IncludeFiles/IncludeDir wrappers via Io\Inc, models/services auto-loaded with IncludeDir
+- logger: Dir::Create() + SetPermissions() instead of raw mkdir
+
+## History
 ### 0.2.0 - Core DB tables
 - apikor_info: installation tracking (version, installed, updated)
 - apikor_logs: fatal error logging with guid, origin, message
