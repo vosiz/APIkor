@@ -16,7 +16,6 @@
 - apikor_comments: polymorphic comments (table_name + record_id)
 - apikor_settings: key-value app configuration with type and description
 
-## History
 ### 0.1.0 - Big refactor
 - engine routing: module/controller/action + versioned actions
 - response pipeline: Header, Payload types, ResponseFactory (200/400/403/404/500)
@@ -29,11 +28,11 @@
 - Io utilities via vosiz/php-utils v1.11.0 (Path, File, Dir, Inc)
 - UBCRM concept-proof: stats/users/counts working
 
-## History
 ### 0.0.2 - Engine work
-- engine pathing anc ocnfiguration
+- engine pathing and configuration
 - test response and formatting
 - test CRM project (test project)
+
 ### 0.0.1 - (Pre)Basics
 - engine pre-basics
 - configurator and configs
