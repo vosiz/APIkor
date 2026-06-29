@@ -27,7 +27,7 @@ Version 0.x.y are not supposed to be used. Wait for 1+.x.y
 - [ ] Response - output nodes 
 - [x] Response - output xml
 - [ ] Response - output json
-- [ ] Response - output html
+- [x] Response - output html
 - [x] Response - output dump
 - [x] Response - output PRE
 - [x] Logging
